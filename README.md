@@ -9,9 +9,13 @@ The TrainTrack project was assigned by Dr. Rodney Tosten.  The basic idea of the
 Each team member was assigned a primary role for the project in addition to being a full stack developer.  Therefor, each team member will have programed at least part of every portion of the project, and will have experience as both a lead programmer and a bug hunter. 
 
 The team members and their primary responsibilities are:
-Colin Messinger - Primary: GUI designer; Secondary: Full-Stack development 
+
+Colin Messinger - Primary: GUI designer; Secondary: Full-Stack development
+
 Aiden Egglin - Primary: ; Secondary: Full-Stack development
+
 Nate Grosskopf - Primary: ; Secondary: Full-Stack development
+
 William Czubakowski - Primary: Team Management and Full-Stack development; Secondary: Repository Management
 
 # License
