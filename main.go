@@ -1,13 +1,12 @@
 package main
 
 import (
-
 	"time"
 	"net"
 	"bufio"
-	//"os"
 	"fmt"
 	"os"
+	"encoding/hex"
 )
 
 
@@ -21,7 +20,8 @@ var Connect  net.Conn
 // This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
 func main() {
 	url := "NS-HbgDiv.dyndns.org"
-	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800) on the ATCSMon server, and waits for data arrival."
+	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800)
+	// 	on the ATCSMon server, and waits for data arrival."
 
 	// connect to this socket
 	conn, err := net.Dial("tcp", url + ":4800")
@@ -92,12 +92,13 @@ func main() {
 	dis := []byte( "DISCONNECT")
 	defer Connect.Write(dis)
 
-	// Read the packets from the server
-	p :=  make([]byte, 2048)
+	p := make([]byte, 32)
 	_, err = bufio.NewReader(Connect).Read(p)
 	CheckError(err)
-
 	fmt.Printf("Packet: %s\n", p)
+	print("Dumping: ")
+	println(hex.Dump(p))
+
 
 
 }
