@@ -4,7 +4,7 @@ import (
 	"time"
 	"net"
 	"bufio"
-	"fmt"
+	//"fmt"
 	"os"
 	"encoding/hex"
 )
@@ -15,7 +15,8 @@ func CheckError (e error) {
 		panic(e)
 	}
 }
-var Connect  net.Conn
+
+var Connect net.Conn
 
 // This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
 func main() {
@@ -91,13 +92,17 @@ func main() {
 	// Again, we defer this until the program is done.
 	dis := []byte( "DISCONNECT")
 	defer Connect.Write(dis)
+	for {
+		p := make([]byte, 32)
+		_, err = bufio.NewReader(Connect).Read(p)
+		CheckError(err)
+		//fmt.Printf("Packet: %s\n", p)
+		print("Dumping: ")
+		println(hex.Dump(p))
+		time.Sleep(time.Second * 1)
+	}
 
-	p := make([]byte, 32)
-	_, err = bufio.NewReader(Connect).Read(p)
-	CheckError(err)
-	fmt.Printf("Packet: %s\n", p)
-	print("Dumping: ")
-	println(hex.Dump(p))
+
 
 
 
