@@ -93,3 +93,9 @@ func (c App) Logout() revel.Result {
 	}
 	return c.Redirect(routes.App.Index())
 }
+func (c App) AddUser() revel.Result {
+	if user := c.connected(); user != nil {
+		c.RenderArgs["user"] = user
+	}
+	return nil
+}
