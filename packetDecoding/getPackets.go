@@ -1,14 +1,12 @@
-package main
+package packetDecoding
 
 import (
-	"time"
-	"net"
-	"bufio"
-	//"fmt"
 	"os"
+	"net"
+	"time"
+	"bufio"
 	"encoding/hex"
 )
-
 
 func CheckError (e error) {
 	if e != nil {
@@ -18,8 +16,18 @@ func CheckError (e error) {
 
 var Connect net.Conn
 
-// This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
-func main() {
+/*
+   Purpose: To Get a single packet from the server
+   Params:
+   	v - the array of ints where the swap will occur
+   	i - the index of the first element to swap
+   	j - the index of the second element to swap
+   Returns:
+   	Nothing
+   Prints:
+   	Nothing
+*/
+func GetPacket() string {
 	url := "NS-HbgDiv.dyndns.org"
 	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800)
 	// 	on the ATCSMon server, and waits for data arrival."
@@ -92,18 +100,23 @@ func main() {
 	// Again, we defer this until the program is done.
 	dis := []byte( "DISCONNECT")
 	defer Connect.Write(dis)
-	for {
-		p := make([]byte, 32)
-		_, err = bufio.NewReader(Connect).Read(p)
-		CheckError(err)
-		//fmt.Printf("Packet: %s\n", p)
-		print("Dumping: ")
-		println(hex.Dump(p))
-		time.Sleep(time.Second * 1)
-	}
+	//for {
+	//	p := make([]byte, 32)
+	//	_, err = bufio.NewReader(Connect).Read(p)
+	//	CheckError(err)
+	//	//fmt.Printf("Packet: %s\n", p)
+	//	print("Dumping: ")
+	//	println(hex.Dump(p))
+	//	time.Sleep(time.Second * 1)
+	//}
 
+	p := make([]byte, 41)
+	_, err = bufio.NewReader(Connect).Read(p)
+	CheckError(err)
 
-
-
-
+	//p2 := make([]byte, 41)
+	//_, err = bufio.NewReader(Connect).Read(p2)
+	//CheckError(err)
+	//println(hex.Dump(p2))
+	return hex.Dump(p)
 }
