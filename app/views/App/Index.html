@@ -13,12 +13,11 @@
 <head>
 <link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
 <script type="text/javascript" src="/public/js/login-register.js"></script>
+<script type="text/javascript" src="/public/js/clear.js"></script>
 </head>
-<!-- This isn't right... You need to look at the booking example and edit this accordingly.
- The back end of Train Track is implemented the same way as the backend of the revel booking sample,
- so you can follow that view formatting and it will work.-->
+
 <div class="form">
-      
+<!-- Registration form -->      
       <ul class="tab-group">
         <li class="tab active"><a href="#signup">Sign Up</a></li>
         <li class="tab"><a href="#login">Log In</a></li>
@@ -28,61 +27,141 @@
         <div id="signup">   
           <h1>Sign Up for Free</h1>
           
-          <form action="/" method="post">
-          
-          <div class="top-row">
-            <div class="field-wrap">
-              <label>
-                First Name<span class="req">*</span>
-              </label>
-              <input type="text" required autocomplete="off" />
-            </div>
-        
-            <div class="field-wrap">
-              <label>
-                Last Name<span class="req">*</span>
-              </label>
-              <input type="text"required autocomplete="off"/>
-            </div>
-          </div>
+          <form action="{{url "App.SaveUser"}}" method="post">
 
-          <div class="field-wrap">
-            <label>
-              Email Address<span class="req">*</span>
-            </label>
-            <input type="email"required autocomplete="off"/>
+          <div class="top-row">
+				{{with $field := field "user.FirstName" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                First Name <span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}"  style="font-weight: bold;" id = "{{$field.Name}}" value = "First Name" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>					
+					</p>            
+            </div>
+        		{{end}}
+				{{with $field := field "user.LastName" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                Last Name<span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "Last Name" onClick = "Clear(id);"required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>							
+					</p>            
+            </div>
+				{{end}}
           </div>
+			
+			{{with $field := field "user.StreetAddress" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                Street Address<span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "Street Address" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>							
+					</p>            
+            </div>
+          {{end}}
           
+          {{with $field := field "user.City" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                City<span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "City" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>							
+					</p>            
+            </div>
+          {{end}}
+          
+          {{with $field := field "user.State" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                State<span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "State" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>							
+					</p>            
+            </div>
+          {{end}}
+          
+          {{with $field := field "user.Country" .}}            
+            <div class="field-wrap">
+					<p class="{{$field.ErrorClass}}">              
+<!--              <label>
+                Country<span class="req">*</span>
+              </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "Country" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+					<span class="error">{{$field.Error}}</span>							
+					</p>            
+            </div>
+          {{end}}
+			
+		    {{with $field := field "user.Email" .}}            
           <div class="field-wrap">
-            <label>
+          	<p class="{{$field.ErrorClass}}">
+<!--            <label>
+              Email Address<span class="req">*</span>
+            </label> -->
+              <input type="text" name = "{{$field.Name}}" style="font-weight: bold;" id = "{{$field.Name}}" value = "Email Address" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
+				<span class="error">{{$field.Error}}</span>				
+				</p>          
+          </div>
+			 {{end}}          
+          
+         {{with $field := field "user.Password" .}}            
+          <div class="field-wrap">
+			   <p class="{{$field.ErrorClass}}">            
+           <label>
               Set A Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+              <input type="password" name = "{{$field.Name}}" required autocomplete="off" value="{{$field.Flash}}"/>*
+				<span class="error">{{$field.Error}}</span>				
+				</p>          
           </div>
+          {{end}}
           
+          {{with $field := field "verifyPassword" .}}            
+          <div class="field-wrap">
+			   <p class="{{$field.ErrorClass}}">            
+           <label>
+              Verify Password<span class="req">*</span>
+            </label>
+              <input type="password" name = "{{$field.Name}}" required autocomplete="off" value="{{$field.Flash}}"/>*
+				<span class="error">{{$field.Error}}</span>				
+				</p>          
+          </div>
+          {{end}}
+<!-- Add link to proper page (registration confirmation?) once created below -->
+          		          
           <button type="submit" class="button button-block"/>Get Started</button>
           
           </form>
 
         </div>
-        
+       
+<!-- Login form -->
         <div id="login">   
           <h1>Welcome Back!</h1>
           
-          <form action="/" method="post">
-          
+          <form action="/" id = "formLogin" method="post">
             <div class="field-wrap">
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email" name="email" value="{{.flash.email}}" required autocomplete="off"/>
           </div>
           
           <div class="field-wrap">
             <label>
               Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+            <input type="password" name="password" required autocomplete="off"/>
           </div>
           
           <p class="forgot"><a href="#">Forgot Password?</a></p>

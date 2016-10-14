@@ -3,9 +3,12 @@ package controllers
 import "github.com/revel/revel"
 
 func init() {
+	print("InitDB...")
+
 	//When the app starts, initialize the db
 	revel.OnAppStart(InitDB)
 
+	print("Registering Interceptors...")
 	/* REGISTER INTERCEPTORS: run on every action*/
 	//All interceptors that run before the action!
 	//Start registering with the DB
@@ -20,4 +23,7 @@ func init() {
 
 	//The last thing to run.. is to rollback the DB
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
+
+	print("Init Complete.")
+
 }

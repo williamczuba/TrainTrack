@@ -5,7 +5,7 @@
 module:testrunner
 
 GET     /                                       App.Index
-GET     /map                                    Map.Index
+# GET     /map                                    Map.Index
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
