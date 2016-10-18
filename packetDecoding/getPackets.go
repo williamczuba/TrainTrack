@@ -8,6 +8,12 @@ import (
 	"encoding/hex"
 )
 
+//Purpose: Check for an error, and panic if necessary
+//Params: error
+//Returns:
+//	Nothing
+//Prints:
+//	Nothing
 func CheckError (e error) {
 	if e != nil {
 		panic(e)
@@ -16,17 +22,13 @@ func CheckError (e error) {
 
 var Connect net.Conn
 
-/*
-   Purpose: To Get a single packet from the server
-   Params:
-   	v - the array of ints where the swap will occur
-   	i - the index of the first element to swap
-   	j - the index of the second element to swap
-   Returns:
-   	Nothing
-   Prints:
-   	Nothing
-*/
+
+   //Purpose: To Get a single packet from the server
+   //Params: None
+   //Returns:
+   //	Nothing
+   //Prints:
+   //	Nothing
 func GetPacket() string {
 	url := "NS-HbgDiv.dyndns.org"
 	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800)
