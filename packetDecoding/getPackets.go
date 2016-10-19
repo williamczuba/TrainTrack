@@ -112,7 +112,7 @@ func GetPacket() string {
 	//	time.Sleep(time.Second * 1)
 	//}
 
-	p := make([]byte, 41)
+	p := make([]byte, 45)
 	_, err = bufio.NewReader(Connect).Read(p)
 	CheckError(err)
 
