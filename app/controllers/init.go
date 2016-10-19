@@ -2,6 +2,7 @@ package controllers
 
 import "github.com/revel/revel"
 
+//Register the revel intercepts and initialize the database
 func init() {
 	print("InitDB...")
 

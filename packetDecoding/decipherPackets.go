@@ -4,12 +4,82 @@ import (
 	"strconv"
 )
 
+//Struct to store all of the Layer information
 type TrainInfo struct {
+	hexDump string
+	l2 Layer2
+	l3 Layer3
+	l4 Layer4
+	l5 Layer5
+	l6 Layer6
+	l7 Layer7
+}
+
+//Struct to store the data from Layer2
+type Layer2 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+	//Destination type
 	destType int
 }
 
+//Struct to store the data from Layer3
+type Layer3 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+}
 
-func Layer2(hex string){
+//Struct to store the data from Layer4
+type Layer4 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+}
+
+//Struct to store the data from Layer5
+type Layer5 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+}
+
+//Struct to store the data from Layer6
+type Layer6 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+}
+
+//Struct to store the data from Layer7
+type Layer7 struct {
+	//Starting byte index of the layer from the hex dump
+	start int
+	//Ending byte index of the layer from the hex dump
+	end int
+	//size (# of bytes) of the layer
+	size int
+
+}
+
+//Function to generate Layer2 information
+func (l2 Layer2) GenLayer2(hex string){
 	println("Hex Dump: ", hex)
 
 	//Destination Address

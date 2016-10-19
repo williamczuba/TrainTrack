@@ -2,6 +2,8 @@ package app
 
 import "github.com/revel/revel"
 
+//Main revel app initialization
+//Set all revel filters
 func init() {
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
@@ -25,9 +27,7 @@ func init() {
 	// revel.OnAppStart(FillCache)
 }
 
-// TODO turn this into revel.HeaderFilter
-// should probably also have a filter for CSRF
-// not sure if it can go in the same filter or not
+//Define Header filters for the app
 var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	// Add some common security headers
 	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")

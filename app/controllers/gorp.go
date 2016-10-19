@@ -15,8 +15,8 @@ var (
 )
 
 //Purpose: Initialize the Database Table
-//Params:
-//Returns:
+//Params: None
+//Returns: Nothing
 //Prints:
 //	Nothing
 func InitDB() {
@@ -62,11 +62,13 @@ func InitDB() {
 	}
 }
 
+//Gorp Controller that extends the revel controller and allows us to use gorp transactions with the DB
 type GorpController struct {
 	*r.Controller
 	Txn *gorp.Transaction
 }
 
+//Start the database transaction and return the revel result (should be nil)
 func (c *GorpController) Begin() r.Result {
 	txn, err := Dbm.Begin()
 	if err != nil {
@@ -76,6 +78,7 @@ func (c *GorpController) Begin() r.Result {
 	return nil
 }
 
+//Commit the changes to the database and return the revel result (should be nil)
 func (c *GorpController) Commit() r.Result {
 	if c.Txn == nil {
 		return nil
@@ -87,6 +90,7 @@ func (c *GorpController) Commit() r.Result {
 	return nil
 }
 
+//Rollback the changes to the databases and return the revel result (should be nil)
 func (c *GorpController) Rollback() r.Result {
 	if c.Txn == nil {
 		return nil
