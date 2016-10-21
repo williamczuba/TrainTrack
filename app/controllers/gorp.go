@@ -14,28 +14,46 @@ var (
 	Dbm *gorp.DbMap
 )
 
+//Purpose: Initialize the Database Table
+//Params: None
+//Returns: Nothing
+//Prints:
+//	Nothing
 func InitDB() {
+	//Initialize the database (for the import)
 	db.Init()
+
+	//Get Sqlite
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.SqliteDialect{}}
 
+	// Function to set the columns for our Table
 	setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
 		for col, size := range colSizes {
 			t.ColMap(col).MaxSize = size
 		}
 	}
 
+	// Add the table to the Database with the key as the UserId
 	t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
+
+	// Ensure the password is transient (we DONT save it)
 	t.ColMap("Password").Transient = true
+
+	// Set the column sizes for the username and name
 	setColumnSizes(t, map[string]int{
 		"Username": 20,
 		"Name":     100,
 	})
 
 
-
+	// Set up database tracing for errors
 	Dbm.TraceOn("[gorp]", r.INFO)
+
+	// Create the Table
 	Dbm.CreateTables()
 
+	// Make a temporary user demo (pass demo)
+	// Hash/encrypt the temp user password
 	bcryptPassword, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
 	demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
@@ -44,11 +62,13 @@ func InitDB() {
 	}
 }
 
+//Gorp Controller that extends the revel controller and allows us to use gorp transactions with the DB
 type GorpController struct {
 	*r.Controller
 	Txn *gorp.Transaction
 }
 
+//Start the database transaction and return the revel result (should be nil)
 func (c *GorpController) Begin() r.Result {
 	txn, err := Dbm.Begin()
 	if err != nil {
@@ -58,6 +78,7 @@ func (c *GorpController) Begin() r.Result {
 	return nil
 }
 
+//Commit the changes to the database and return the revel result (should be nil)
 func (c *GorpController) Commit() r.Result {
 	if c.Txn == nil {
 		return nil
@@ -69,6 +90,7 @@ func (c *GorpController) Commit() r.Result {
 	return nil
 }
 
+//Rollback the changes to the databases and return the revel result (should be nil)
 func (c *GorpController) Rollback() r.Result {
 	if c.Txn == nil {
 		return nil

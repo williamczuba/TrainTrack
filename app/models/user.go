@@ -6,6 +6,7 @@ import (
 	"regexp"
 )
 
+//Struct for the user
 type User struct {
 	UserId             int
 	Name               string
@@ -13,12 +14,15 @@ type User struct {
 	HashedPassword     []byte
 }
 
+//Return the username as a string
 func (u *User) String() string {
 	return fmt.Sprintf("User(%s)", u.Username)
 }
 
+//Only allow certain characters for a username (prevent sql injection)
 var userRegex = regexp.MustCompile("^\\w*$")
 
+//Validate the user credentials (make sure the user info is valid)
 func (user *User) Validate(v *revel.Validation) {
 	v.Check(user.Username,
 		revel.Required{},
@@ -27,6 +31,7 @@ func (user *User) Validate(v *revel.Validation) {
 		revel.Match{userRegex},
 	)
 
+	//Call the validate password function
 	ValidatePassword(v, user.Password).
 		Key("user.Password")
 
@@ -36,6 +41,7 @@ func (user *User) Validate(v *revel.Validation) {
 	)
 }
 
+//Validate the user password (since we don't store plain text passwords, we need to verify it separately)
 func ValidatePassword(v *revel.Validation, password string) *revel.ValidationResult {
 	return v.Check(password,
 		revel.Required{},
