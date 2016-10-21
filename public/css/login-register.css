@@ -1,4 +1,4 @@
-
+/* Color variables */
 $body-bg: #c1bdba;
 $form-bg: #13232f;
 $white: #ffffff;
@@ -15,19 +15,23 @@ $normal: 400;
 $bold: 600;
 $br: 4px;
 
+/* Sets default box sizing to border-box */
 *, *:before, *:after {
   box-sizing: border-box;
 }
 
+/* Selector for all HTML */
 html {
 	overflow-y: scroll; 
 }
 
+/* Applies background and font to all items in body */
 body {
   background:$body-bg;
   font-family: 'Titillium Web', sans-serif;
 }
 
+/* Applies to all hyperlinks */
 a {
   text-decoration:none;
   color:$main;
@@ -37,6 +41,7 @@ a {
   }
 }
 
+/* Applies to all forms */
 .form {
   background:rgba($form-bg,.9);
   padding: 40px;
@@ -46,6 +51,7 @@ a {
   box-shadow:0 4px 10px 4px rgba($form-bg,.3);
 }
 
+/* Applies traits to tab groups */
 .tab-group {
   list-style:none;
   padding:0;
@@ -55,6 +61,8 @@ a {
     display: table;
     clear: both;
   }
+
+  /* Applies to all hyperlinks in list elements */
   li a {
     display:block;
     text-decoration:none;
@@ -72,6 +80,8 @@ a {
       color:$white;
     }
   }
+
+  /* Applies to all active hyperlinks */
   .active a {
     background:$main;
     color:$white;
@@ -82,7 +92,7 @@ a {
   display:none;
 }
 
-
+/* Applies to the main header */
 h1 {
   text-align:center;
   color:$white;
@@ -90,6 +100,7 @@ h1 {
   margin:0 0 40px;
 }
 
+/* Applies to all labels */
 label {
   position:absolute;
   transform:translateY(6px);
@@ -105,6 +116,7 @@ label {
   }
 }
 
+/* Applies to all active labels */
 label.active {
   transform:translateY(50px);
   left:2px;
@@ -114,10 +126,12 @@ label.active {
   }
 }
 
+/* Sets color for highlighting a label */
 label.highlight {
 	color:$white;
 }
 
+/* Applies to all inputs and textareas */
 input, textarea {
   font-size:22px;
   display:block;
@@ -136,16 +150,19 @@ input, textarea {
   }
 }
 
+/* Applies specifically to textareas */
 textarea {
   border:2px solid $gray-light;
   resize: vertical;
 }
 
+/* Applies to all elements of the fieldwrap class */
 .field-wrap {
   position:relative;
   margin-bottom:40px;
 }
 
+/* Applies to all elements of the top-row class */
 .top-row {
   &:after {
     content: "";
@@ -163,6 +180,7 @@ textarea {
   }
 }
 
+/* Applies to all elements in the button class */
 .button {
   border:0;
   outline:none;
@@ -181,11 +199,13 @@ textarea {
   }
 }
 
+/* Applies to all elements in the button-block class*/
 .button-block {
   display:block;
   width:100%;
 }
 
+/* Applies to all elements in the forgot class */
 .forgot {
   margin-top:-20px;
   text-align:right;

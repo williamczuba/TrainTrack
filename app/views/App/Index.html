@@ -1,32 +1,61 @@
-{{set . "title" "Home"}}
+<!-- Sets page title -->
+{{set . "title" "TrainTrack"}}
+<!-- Calls Revel Header template -->
 {{template "header.html" .}}
 
+<!--
+Copyright (c) 2016 by Eric (http://codepen.io/ehermanson/pen/KwKWEv)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!-- Header - used here to import CSS and JS files -->
 <head>
-<link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
-<script type="text/javascript" src="/public/js/login-register.js"></script>
-<script type="text/javascript" src="/public/js/clear.js"></script>
+    <link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+    <link rel="stylesheet" type= "text/css" href="/public/css/bootstrap-3.3.6.min.css">
+    <script type="text/javascript" src="/public/js/login-register.js"></script>
+    <script type="text/javascript" src="/public/js/clear.js"></script>
+    <script type="text/javascript" src="/public/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap-3.3.6.min.js"></script>
 </head>
 
 <div class="form">
-<!-- Registration form -->      
+<!-- Registration form -->
+      <!-- Creates login & signup tabs - signup active on page load-->
       <ul class="tab-group">
         <li class="tab active"><a href="#signup">Sign Up</a></li>
         <li class="tab"><a href="#login">Log In</a></li>
       </ul>
-      
+
+    <!--Creates all of the items (form fields, buttons, etc) that appear when either tab is clicked-->
       <div class="tab-content">
-        <div id="signup">   
+        <div id="signup">
           <h1>Sign Up for Free</h1>
-          
+
+            <!-- Calls App struct's save function on submission -->
           <form action="{{url "App.SaveUser"}}" method="post">
 
+            <!--creates the top row with the fields of "first name" and "last name"-->
           <div class="top-row">
 				{{with $field := field "user.FirstName" .}}            
             <div class="field-wrap">
-					<p class="{{$field.ErrorClass}}">              
+					<p class="{{$field.ErrorClass}}">
+                        <!-- Labels to be implemented -->
 <!--              <label>
                 First Name <span class="req">*</span>
               </label> -->
+                <!-- Text field - allows user to enter text
+                    name - name of the field
+                    style - sets style of text in field, bold here
+                    id - the text field's id, same as name here
+                    value - the text field's value
+                    onClick - action that occurs when field is clicked on
+                    required - field must have data entered into it for form to be submitted
+                    autocomplete - specifies whether field should autocomplete entry -->
               <input type="text" name = "{{$field.Name}}"  style="font-weight: bold;" id = "{{$field.Name}}" value = "First Name" onClick = "Clear(id);" required autocomplete="off" value="{{$field.Flash}}"/>*
 					<span class="error">{{$field.Error}}</span>					
 					</p>            
@@ -44,7 +73,8 @@
             </div>
 				{{end}}
           </div>
-			
+
+
 			{{with $field := field "user.StreetAddress" .}}            
             <div class="field-wrap">
 					<p class="{{$field.ErrorClass}}">              
@@ -104,19 +134,28 @@
 				</p>          
           </div>
 			 {{end}}          
-          
+
+            <!-- User password field -->
          {{with $field := field "user.Password" .}}            
           <div class="field-wrap">
-			   <p class="{{$field.ErrorClass}}">            
+			   <p class="{{$field.ErrorClass}}">
+           <!-- Creates a label for the password field -->
            <label>
               Set A Password<span class="req">*</span>
             </label>
+               <!-- Attributes
+               input type - specifies this is a password field
+               name - the field's name
+               required - field must be completed to submit form
+               autocomplete - determines if field will be autocompleted
+               value - the field's value-->
               <input type="password" name = "{{$field.Name}}" required autocomplete="off" value="{{$field.Flash}}"/>*
 				<span class="error">{{$field.Error}}</span>				
 				</p>          
           </div>
           {{end}}
-          
+
+            <!-- Password verification field -->
           {{with $field := field "verifyPassword" .}}            
           <div class="field-wrap">
 			   <p class="{{$field.ErrorClass}}">            
@@ -129,8 +168,9 @@
           </div>
           {{end}}
 <!-- Add link to proper page (registration confirmation?) once created below -->
-          		          
-          <button type="submit" class="button button-block"/>Get Started</button>
+
+            <!-- Button submits form -->
+            <button type="submit" class="button button-block"/>Get Started</button>
           
           </form>
 
@@ -139,24 +179,39 @@
 <!-- Login form -->
         <div id="login">   
           <h1>Welcome Back!</h1>
-          
+
           <form action="/" id = "formLogin" method="post">
             <div class="field-wrap">
+            <!-- Email address field -->
+            <!-- Creates a label for the e-mail field -->
             <label>
               Email Address<span class="req">*</span>
             </label>
+            <!-- Attributes
+                input type - specifies this is an e-mail field
+                name - specifies the field's name
+                value - specifies the field's value
+                required - field must be completed to submit form
+               autocomplete - determines if field will be autocompleted -->
             <input type="email" name="email" value="{{.flash.email}}" required autocomplete="off"/>
           </div>
-          
+          <!-- Login password field -->
           <div class="field-wrap">
             <label>
               Password<span class="req">*</span>
             </label>
+              <!-- Attributes
+              input type - specifies this is a password field
+              name - specifies the field's name
+              required - field must be completed to submit form
+              autocomplete - determines if field will be autocompleted -->
             <input type="password" name="password" required autocomplete="off"/>
           </div>
-          
+
+          <!-- Redirects to forgotten password page -->
           <p class="forgot"><a href="#">Forgot Password?</a></p>
-          
+
+          <!-- Log in button - submits form -->
           <button class="button button-block"/>Log In</button>
           
           </form>
