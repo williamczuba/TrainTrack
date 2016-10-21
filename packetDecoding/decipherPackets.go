@@ -3,6 +3,7 @@ package packetDecoding
 import (
 	"encoding/hex"
 	"fmt"
+	"strconv"
 )
 
 const BLOCKBITS  = 60
@@ -118,12 +119,23 @@ func GenLayer2(hex string) Layer2{
 	dec := HexToDec(str)
 	l2.destType = dec
 
-	//TODO Padding of the frame - how can we use this
 	//1 spaces in between hex's
-	str = hex[13:15]
-	println("Hex: ", str)
-	println("Dec: ", HexToDec(str))
 
+	// # 0's
+	str = hex[13:15]
+	dec = HexToDec(str)
+	l2.padZeros = dec
+
+	// # Blocks
+	str = hex[16:18]
+	dec = HexToDec(str)
+	l2.numBlocks = dec
+
+	// CRC
+	l2.crc = hex[19:24]
+
+	l2.end = 24
+	l2.size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
 	return l2
 }
 
@@ -134,12 +146,51 @@ func GenLayer3(hex string) Layer3{
 
 	//TODO start of layer 3 header (should be 64, or can it change?)
 	str := hex[25:27]  // Maybe convert this to bit array, similar to how he does in his notes.
+	bin := []byte(HexToBinary(str))
 	println("Hex: ", str)
-	println("Dec: ", HexToDec(str))
+	println("Dec: ", string(bin))
+	println("Length : ", len(bin))
+	//Q is always 0 and is cut off from the string...
+	l3.Q = 0
+	//d
+	// array indexing is backwards compared to bit[] indexing...
+	if string(string(bin[0])) == "1" {
+		l3.d = true
+	} // false by default...
+	//Type
+	tip := string(bin[1:3])
+	if  tip == "10" {
+		l3.packetType = "Info"
+	} else if tip == "00" {
+		l3.packetType = "Nack"
+	} else if tip == "11" {
+		l3.packetType = "Ack"
+	} else {
+		fmt.Println("ERROR: Packet type = ", tip)
+	}
+
+	// priority
+	pS := string(bin[3:6])
+	l3p64, _ := strconv.ParseInt(pS, 2, 32)
+	l3.priority = int(l3p64)
+	//RF ack disabled?
+	if string(bin[6]) == "0" {
+		l3.rfAck = true // not disabled = enabled
+	}
+
 
 	str = hex[28:30]
 	println("Hex: ", str)
 	println("Dec: ", HexToDec(str))
+	if str != "00" {
+		fmt.Println("ERROR, channel should be 00!")
+	}
+	l3.channel = 0
+
+	str = hex[31:33]
+	println("Hex: ", str)
+	println("Dec: ", HexToDec(str))
+	bin = []byte(HexToBinary(str))
 
 	return l3
 }
