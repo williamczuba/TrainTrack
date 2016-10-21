@@ -80,7 +80,7 @@ type Layer4to7 struct {
 	// part number
 	partNum int
 	// End to End ACK required?
-	e2eAck int
+	e2eAck bool
 	// number of parts of message
 	numParts int
 	// message vital?
@@ -199,13 +199,160 @@ func GenLayer4to7(hex string) Layer4to7{
 	l4p := Layer4to7{}
 	println("Hex Dump: ", hex)
 
+	//Declare the variables we know already
+	l4p.start = 46
+	l4p.end = 81
+	l4p.size = 36
+
+	//Make the first slice -- Message number and whether or not there are more parts
+	str := hex[46:48]
+	fmt.Println("Hex1: ", str)
+	//convert those digits into binary string
+	binary := HexToBinary(str)
+	//slice the resulting binary string into the message number and more parts section
+	msgNumBinStr := binary[0:7]
+	morePartsBinStr := binary[7:]
+	//check whether more parts binary bit is true or false and set it
+	if morePartsBinStr == "1"{
+		l4p.more = true
+	}else {
+		l4p.more = false
+	}
+	//Convert the message number from binary string to decimal int
+	msgNumDecInt, err := strconv.ParseInt(msgNumBinStr, 2, 16)
+	if err != nil{
+		panic(err)
+	}
+	//set the message number value and print both values
+	l4p.messNum = msgNumDecInt
+	fmt.Println("Message num: ", msgNumDecInt)
+	fmt.Println("More parts: ", morePartsBinStr)
+
+
+	//make second slice -- Part number and END-TO-END ACK
+	str = hex[48:50]
+	fmt.Println("Hex2: ", str)
+	binary = HexToBinary(str)
+	//slice the resulting binary string into the part number and END-TO-END ACK
+	partNumBinStr := binary[0:7]
+	e2eAckBinStr := binary[7:]
+	//Check whether the END-TO-END ACK bit is true or false and set it
+	if e2eAckBinStr == "1"{
+		l4p.e2eAck = true
+	}else {
+		l4p.e2eAck = false
+	}
+	//Convert the part number from binary string to decimal int
+	partNumDecInt, err := strconv.ParseInt(partNumBinStr, 2, 16)
+	if err != nil{
+		panic(err)
+	}
+	//Set the part number and print both values
+	l4p.partNum = partNumDecInt
+	fmt.Println("Part number: ", partNumDecInt)
+	fmt.Println("Ack e2e: ", e2eAckBinStr)
+
+
+	//make third slice -- Number of parts and message vitality
+	str = hex [50:52]
+	fmt.Println("Hex3: ", str)
+	binary = HexToBinary(str)
+	//slice the resulting binary string into the number of parts and whether or not it is vitaL
+	numPartsBinStr := binary[0:7]
+	vitalBinStr := binary[7:]
+	//Check the last bit to see if message is vital and set it
+	if vitalBinStr == "1"{
+		l4p.vital = true
+	}else {
+		l4p.vital = false
+	}
+	//Convert the number of parts from binary string to decimal int
+	numPartsDecInt, err := strconv.ParseInt(numPartsBinStr, 2, 16)
+	if err != nil{
+		panic(err)
+	}
+	//Set the number of parts and print both values
+	l4p.numParts = numPartsDecInt
+	fmt.Println("Num parts: ", numPartsDecInt)
+	fmt.Println("Vital: ", vitalBinStr)
+
+
+	//make fourth slice -- Label
+	//First convert the hex to decimal, then follow this formula:
+	//Divide the decimal by 512 to get the first part of the label
+	//Divide the remainder of the first divison by 64 to get the second part
+	//Take whatever remainder is left (this is the third part) i.e. 128B = 4747, 4747 = 9 * 512 + 2 * 64 + 11(remainder from those operations), so the label is: "9.2.11"
+	str = hex[52:56]
+	fmt.Println("Hex4: ", str)
+	//convert from hex to decimal
+	labelDecInt, err := strconv.ParseInt(str, 16, 16)
+	if err != nil{
+		panic(err)
+	}
+	//Divide the decimal by 512 and save the remainder
+	labelPt1 := labelDecInt / 512
+	firstRem := labelDecInt % 512
+	//Divide the remainder by 64 and save the remainder
+	labelPt2 := firstRem / 64
+	finalRem:= firstRem % 64
+	//Format the label
+	label := fmt.Sprintf("%d.%d.%d", labelPt1, labelPt2, finalRem)
+	//Print and set the value
+	l4p.label = label
+	fmt.Println("Label: ", label)
+
+
+	//make fifth slice -- rev level
+	str = hex[56:58]
+	fmt.Println("Hex5: ", str)
+	revLvl := HexToDec(str)
+	//set the value and print it
+	l4p.revLvl = revLvl
+	fmt.Println("revLvl: ", revLvl)
+
+	//Bits 58 and 59 are skipped
+
+	//make sixth slice -- number of octets in the data
+	str = hex[60:62]
+	fmt.Println("Hex6: ", str)
+	numOctets := HexToDec(str)
+	//set the value and print it
+	l4p.numBytes = numOctets
+	fmt.Println("numBytes: ", numOctets)
+
+
+	//make seventh slice -- number of data bits in the last octet
+	str = hex[62:64]
+	fmt.Println("Hex7: ", str)
+	numLastBits := HexToDec(str)
+	//set the value and print it
+	l4p.numLastBits = numLastBits
+	fmt.Println("numLastBytes: ", numLastBits)
+
+
+	//make the eighth slice -- code line data
+	str = hex[64:78]
+	fmt.Println("Hex8: ", str)
+	//convert from hex to binary
+	codeLine := HexToBinary(str)
+	//set the value and print it
+	l4p.codeLineData = codeLine
+	fmt.Println("codeLine: ", codeLine)
+
+
+	//make the last slice -- CRC 16 check. Just need to store string version of the hex
+	str = hex[78:82]
+	fmt.Println("Hex9: ", str)
+	//set and print the value
+	l4p.crc = str
+	fmt.Println("crc: ", str)
+
 	return l4p
 }
 
-
 /* Utilities */
 
-// Converts a 2 digit hex to a stirng of the bits
+// Converts a 2 digit hex to a string of the bits
 func HexToBinary(s string) string{
 	if len(s) != 2 {
 		return ""
