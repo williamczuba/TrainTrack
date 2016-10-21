@@ -1,5 +1,6 @@
+/* Hides label while user is typing */
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
-  
+  console.log("On Text click entered");
   var $this = $(this),
       label = $this.prev('label');
 
@@ -27,8 +28,9 @@ $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
 });
 
+/*Switches between registration and log in tabs */
 $('.tab a').on('click', function (e) {
-  
+  console.log("On Tab Click Entered");
   e.preventDefault();
   
   $(this).parent().addClass('active');
