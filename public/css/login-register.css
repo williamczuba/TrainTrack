@@ -1,212 +1,250 @@
-/* Color variables */
-$body-bg: #c1bdba;
-$form-bg: #13232f;
-$white: #ffffff;
 
-$main: #1ab188;
-$main-light: lighten($main,5%);
-$main-dark: darken($main,5%);
-
-$gray-light: #a0b3b0;
-$gray: #ddd;
-
-$thin: 300;
-$normal: 400;
-$bold: 600;
-$br: 4px;
-
-/* Sets default box sizing to border-box */
-*, *:before, *:after {
-  box-sizing: border-box;
+.pad-adjust {
+    padding-top: 5px; 
+    padding-bottom: 5px;
 }
 
-/* Selector for all HTML */
-html {
-	overflow-y: scroll; 
-}
-
-/* Applies background and font to all items in body */
-body {
-  background:$body-bg;
-  font-family: 'Titillium Web', sans-serif;
-}
-
-/* Applies to all hyperlinks */
-a {
-  text-decoration:none;
-  color:$main;
-  transition:.5s ease;
-  &:hover {
-    color:$main-dark;
-  }
-}
-
-/* Applies to all forms */
-.form {
-  background:rgba($form-bg,.9);
-  padding: 40px;
-  max-width:600px;
-  margin:40px auto;
-  border-radius:$br;
-  box-shadow:0 4px 10px 4px rgba($form-bg,.3);
-}
-
-/* Applies traits to tab groups */
-.tab-group {
-  list-style:none;
-  padding:0;
-  margin:0 0 40px 0;
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  /* Applies to all hyperlinks in list elements */
-  li a {
-    display:block;
-    text-decoration:none;
-    padding:15px;
-    background:rgba($gray-light,.25);
-    color:$gray-light;
-    font-size:20px;
-    float:left;
-    width:50%;
+.text-center {
     text-align:center;
-    cursor:pointer;
-    transition:.5s ease;
-    &:hover {
-      background:$main-dark;
-      color:$white;
-    }
-  }
+}
 
-  /* Applies to all active hyperlinks */
-  .active a {
-    background:$main;
-    color:$white;
-  }
+h6 {
+  text-align: center;
+  color: #ffffff;
+  font-weight: 300;
+  margin: 0 0 40px;
+  font-size: 24px;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+a {
+  text-decoration: none;
+  color: #1ab188;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+}
+a:hover {
+  color: #179b77;
+}
+
+.form {
+  background: rgba(19, 35, 47, 0.9);
+  padding: 40px;
+  max-width: 600px;
+  margin: 40px auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+.tab-group {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+}
+.tab-group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.tab-group li a {
+  display: block;
+  text-decoration: none;
+  padding: 15px;
+  background: rgba(160, 179, 176, 0.25);
+  color: #a0b3b0;
+  font-size: 28px;
+  float: left;
+  width: 50%;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+}
+.tab-group li a:hover {
+  background: rgba(0, 175, 255, 1);
+  color: #ffffff;
+}
+.tab-group .active a {
+  background: rgba(0, 122, 255, 0.8);
+  color: #ffffff;
 }
 
 .tab-content > div:last-child {
-  display:none;
+  display: none;
 }
 
-/* Applies to the main header */
-h1 {
-  text-align:center;
-  color:$white;
-  font-weight:$thin;
-  margin:0 0 40px;
+.space-free {
+    height:100px;
 }
 
-/* Applies to all labels */
+.g-pad-bottom {
+    padding-bottom:40px;
+}
+.for-full-back {
+     /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+
+  /* IE 5-7 */
+  filter: alpha(opacity=90);
+
+  /* Netscape */
+  -moz-opacity: 0.9;
+
+  /* Safari 1.x */
+  -khtml-opacity: 0.9;
+
+  /* Good browsers */
+  opacity: 0.9;
+}
+section {
+    padding-top:20px;
+}
+
+/*=======================================
+    COLOR CODES
+==================================================*/
+
+.color-orange-one {
+    background-color:rgba(255, 160, 0, 1)!important;
+    color:#000;
+}
+
+.color-orange-two {
+    background-color:rgba(255, 160, 0, 1)!important;
+    color:rgba(0, 122, 255, 1);
+}
+
+.color-bg-one {
+    background-color:rgba(0, 122, 255, 1)!important;
+    color:#efe;
+
+}
+
+.color-bg-three {
+    background-color:rgba(0, 122, 255, 1)!important;
+    color:#fff;
+
+}
+
+.color-white {
+   background-color:#fff!important;
+}
+.color-dark {
+   background-color:#696969!important;
+}
+
+.color-light {
+   background-color:#E9E9E9!important;
+}
+
+
+
+
 label {
-  position:absolute;
-  transform:translateY(6px);
-  left:13px;
-  color:rgba($white,.5);
-  transition:all 0.25s ease;
+  position: absolute;
+  -webkit-transform: translateY(6px);
+          transform: translateY(6px);
+  left: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
   -webkit-backface-visibility: hidden;
   pointer-events: none;
-  font-size:22px;
-  .req {
-  	margin:2px;
-  	color:$main;
-  }
+  font-size: 22px;
+}
+label .req {
+  margin: 2px;
+  color: #1ab188;
 }
 
-/* Applies to all active labels */
 label.active {
-  transform:translateY(50px);
-  left:2px;
-  font-size:14px;
-  .req {
-    opacity:0;
-  }
+  -webkit-transform: translateY(50px);
+          transform: translateY(50px);
+  left: 2px;
+  font-size: 14px;
+}
+label.active .req {
+  opacity: 0;
 }
 
-/* Sets color for highlighting a label */
 label.highlight {
-	color:$white;
+  color: #ffffff;
 }
 
-/* Applies to all inputs and textareas */
 input, textarea {
-  font-size:22px;
-  display:block;
-  width:100%;
-  height:100%;
-  padding:5px 10px;
-  background:none;
-  background-image:none;
-  border:1px solid $gray-light;
-  color:$white;
-  border-radius:0;
-  transition:border-color .25s ease, box-shadow .25s ease;
-  &:focus {
-		outline:0;
-		border-color:$main;
-  }
+  font-size: 22px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 10px;
+  background: none;
+  background-image: none;
+  border: 1px solid #a0b3b0;
+  color: #ffffff;
+  border-radius: 0;
+  -webkit-transition: border-color .25s ease, box-shadow .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+input:focus, textarea:focus {
+  outline: 0;
+  border-color: #1ab188;
 }
 
-/* Applies specifically to textareas */
 textarea {
-  border:2px solid $gray-light;
+  border: 2px solid #a0b3b0;
   resize: vertical;
 }
 
-/* Applies to all elements of the fieldwrap class */
 .field-wrap {
-  position:relative;
-  margin-bottom:40px;
+  position: relative;
+  margin-bottom: 40px;
 }
 
-/* Applies to all elements of the top-row class */
-.top-row {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  > div {
-    float:left;
-    width:48%;
-    margin-right:4%;
-    &:last-child { 
-      margin:0;
-    }
-  }
+.top-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.top-row > div {
+  float: left;
+  width: 48%;
+  margin-right: 4%;
+}
+.top-row > div:last-child {
+  margin: 0;
 }
 
-/* Applies to all elements in the button class */
 .button {
-  border:0;
-  outline:none;
-  border-radius:0;
-  padding:15px 0;
-  font-size:2rem;
-  font-weight:$bold;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  background:$main;
-  color:$white;
-  transition:all.5s ease;
+  border: 0;
+  outline: none;
+  border-radius: 0;
+  padding: 15px 0;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  background: rgba(0, 122, 255, 0.8);
+  color: #ffffff;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
   -webkit-appearance: none;
-  &:hover, &:focus {
-    background:$main-dark;
-  }
+}
+.button:hover, .button:focus {
+  background: rgba(0, 175, 255, 1);
+    color: #ffffff;
 }
 
-/* Applies to all elements in the button-block class*/
 .button-block {
-  display:block;
-  width:100%;
+  display: block;
+  width: 100%;
 }
 
-/* Applies to all elements in the forgot class */
 .forgot {
-  margin-top:-20px;
-  text-align:right;
+  margin-top: -20px;
+  text-align: right;
 }
+
+
