@@ -1,41 +1,31 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;TrainTrack&gt;">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../nos2" />
-      <root url="file://$USER_HOME$/goWorkspace/src/github.com" />
-      <root url="file://$PROJECT_DIR$/../booking" />
-      <root url="file://$PROJECT_DIR$/../math201testing" />
-      <root url="file://$PROJECT_DIR$/../nos2 - old no git" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/apps" />
-      <root url="file://$USER_HOME$/goWorkspace/src/golang.org" />
-      <root url="file://$PROJECT_DIR$/../AWS" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/mymath" />
-      <root url="file://$USER_HOME$/IdeaProjects/src/github.com" />
-      <root url="file://$PROJECT_DIR$/../golang.org" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/main" />
-      <root url="file://$PROJECT_DIR$/../gopkg.in" />
-      <root url="file://$PROJECT_DIR$/../Copy nos2" />
+      <root url="file://$PROJECT_DIR$/../goNoScribe" />
+      <root url="file://$PROJECT_DIR$/../rpi" />
       <root url="file://$PROJECT_DIR$/../math201" />
+      <root url="file://$PROJECT_DIR$/../ProbStats" />
+      <root url="file://$PROJECT_DIR$/../test" />
+      <root url="file://$PROJECT_DIR$/../nos1" />
       <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../nos2" />
+      <root url="file://$PROJECT_DIR$/../.idea" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../nos2" />
-      <root url="file://$USER_HOME$/goWorkspace/src/github.com" />
-      <root url="file://$PROJECT_DIR$/../booking" />
-      <root url="file://$PROJECT_DIR$/../math201testing" />
-      <root url="file://$PROJECT_DIR$/../nos2 - old no git" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/apps" />
-      <root url="file://$USER_HOME$/goWorkspace/src/golang.org" />
-      <root url="file://$PROJECT_DIR$/../AWS" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/mymath" />
-      <root url="file://$USER_HOME$/IdeaProjects/src/github.com" />
-      <root url="file://$PROJECT_DIR$/../golang.org" />
-      <root url="file://$USER_HOME$/goWorkspace/whysdf/src/main" />
-      <root url="file://$PROJECT_DIR$/../gopkg.in" />
-      <root url="file://$PROJECT_DIR$/../Copy nos2" />
+      <root url="file://$PROJECT_DIR$/../goNoScribe" />
+      <root url="file://$PROJECT_DIR$/../rpi" />
       <root url="file://$PROJECT_DIR$/../math201" />
+      <root url="file://$PROJECT_DIR$/../ProbStats" />
+      <root url="file://$PROJECT_DIR$/../test" />
+      <root url="file://$PROJECT_DIR$/../nos1" />
       <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../nos2" />
+      <root url="file://$PROJECT_DIR$/../.idea" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />

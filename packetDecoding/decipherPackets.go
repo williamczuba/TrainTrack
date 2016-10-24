@@ -178,7 +178,7 @@ func GenLayer3(hex string) Layer3{
 		l3.rfAck = true // not disabled = enabled
 	}
 
-
+	// Channel - should be constant 00
 	str = hex[28:30]
 	println("Hex: ", str)
 	println("Dec: ", HexToDec(str))
@@ -187,11 +187,52 @@ func GenLayer3(hex string) Layer3{
 	}
 	l3.channel = 0
 
+	// TX or SSeq Number
 	str = hex[31:33]
-	println("Hex: ", str)
-	println("Dec: ", HexToDec(str))
+	//println("Hex: ", str)
+	//println("Dec: ", HexToDec(str))
 	bin = []byte(HexToBinary(str))
+	//last bit is always 0, only use the first 7 bits for number
+	if len(bin) == 8 { //go cuts out any leading 0's, so we need to check the size
+		l3p64, _ = strconv.ParseInt(string(bin[:7]), 2, 32)
+	} else {
+		l3p64, _ = strconv.ParseInt(string(bin), 2, 32)
+	}
+	l3.tx = int(l3p64)
+	println(hex[31:])
+	//RX or Rseq number
+	str = hex[35:37]
+	println(str)
+	bin = []byte(HexToBinary(str))
+	//last bit is always 0, only use the first 7 bits for number
+	if len(bin) == 8 { //go cuts out any leading 0's, so we need to check the size
+		l3p64, _ = strconv.ParseInt(string(bin[:7]), 2, 32)
+	} else {
+		l3p64, _ = strconv.ParseInt(string(bin), 2, 32)
+	}
+	l3.rx = int(l3p64)
 
+	// length of soruce and destination
+	str = hex[38:40]
+	dec := HexToDec(string(str[0]))
+	l3.lenSrc = dec // nibbles = 4 bits * the decimal number
+	dec = HexToDec(string(str[1]))
+	l3.lenDest = dec // nibbles = 4 bits * the decimal number
+
+	// destination address
+	dEnd := 41+l3.lenDest+((l3.lenDest/2)-1) // must account for spaces.
+	fmt.Printf("DEND: %d, len Dest: %d \n", dEnd, l3.lenDest)
+	str = hex[41:dEnd]
+	l3.sourceAddr = str
+	sStart := (dEnd + 1)
+	sEnd := sStart + l3.lenSrc + ((l3.lenSrc/2)-1)
+	str = hex[sStart:sEnd]
+	l3.destAddr = str
+
+	// Fil3
+	str = hex[sEnd + 1: sEnd+3]
+	fmt.Println("FIL3:", str)
+	l3.fil3 = HexToDec(str)
 	return l3
 }
 
@@ -200,7 +241,7 @@ func GenLayer4to7(hex string) Layer4to7{
 	println("Hex Dump: ", hex)
 
 	//Declare the variables we know already
-	l4p.start = 46
+	l4p.start = 46// 46 - notice that 46 was only for the example, in reality, we want to pick up from the end of layer 3.
 	l4p.end = 81
 	l4p.size = 36
 
@@ -224,7 +265,7 @@ func GenLayer4to7(hex string) Layer4to7{
 		panic(err)
 	}
 	//set the message number value and print both values
-	l4p.messNum = msgNumDecInt
+	l4p.messNum = int(msgNumDecInt)
 	fmt.Println("Message num: ", msgNumDecInt)
 	fmt.Println("More parts: ", morePartsBinStr)
 
@@ -248,7 +289,7 @@ func GenLayer4to7(hex string) Layer4to7{
 		panic(err)
 	}
 	//Set the part number and print both values
-	l4p.partNum = partNumDecInt
+	l4p.partNum = int(partNumDecInt)
 	fmt.Println("Part number: ", partNumDecInt)
 	fmt.Println("Ack e2e: ", e2eAckBinStr)
 
@@ -272,7 +313,7 @@ func GenLayer4to7(hex string) Layer4to7{
 		panic(err)
 	}
 	//Set the number of parts and print both values
-	l4p.numParts = numPartsDecInt
+	l4p.numParts = int(numPartsDecInt)
 	fmt.Println("Num parts: ", numPartsDecInt)
 	fmt.Println("Vital: ", vitalBinStr)
 
