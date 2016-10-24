@@ -105,6 +105,8 @@ type TrainInfo struct {
 	l2 Layer2
 	l3 Layer3
 	l4p Layer4to7
+	l3End int
+	l4End int
 }
 
 //Function to generate Layer2 information

@@ -1,6 +1,5 @@
 /* Hides label while user is typing */
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
-  console.log("On Text click entered");
   var $this = $(this),
       label = $this.prev('label');
 
