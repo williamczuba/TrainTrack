@@ -176,31 +176,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         <div id="login">
             <h1>Welcome Back!</h1>
 
-            <form action="/" id = "formLogin" method="post">
+            <form action="/login" id = "formLogin" method="post">
                 <div class="field-wrap">
                     <!-- Email address field -->
                     <!-- Creates a label for the e-mail field -->
                     <label>
-                        Email Address<span class="req">*</span>
+                        User Name<span class="req">*</span>
                     </label>
-                    <!-- Attributes
-                        input type - specifies this is an e-mail field
-                        name - specifies the field's name
-                        value - specifies the field's value
-                        required - field must be completed to submit form
-                       autocomplete - determines if field will be autocompleted -->
-                    <input type="email" name="email" value="{{.flash.email}}" required autocomplete="off"/>
+                    <input type="text" name="username" required autocomplete="off"/>
                 </div>
                 <!-- Login password field -->
                 <div class="field-wrap">
                     <label>
                         Password<span class="req">*</span>
                     </label>
-                    <!-- Attributes
-                    input type - specifies this is a password field
-                    name - specifies the field's name
-                    required - field must be completed to submit form
-                    autocomplete - determines if field will be autocompleted -->
                     <input type="password" name="password" required autocomplete="off"/>
                 </div>
 

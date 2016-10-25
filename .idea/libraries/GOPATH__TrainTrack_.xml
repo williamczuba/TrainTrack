@@ -10,6 +10,7 @@
       <root url="file://$PROJECT_DIR$/../github.com" />
       <root url="file://$PROJECT_DIR$/../gopkg.in" />
       <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../MySqlTesting" />
       <root url="file://$PROJECT_DIR$/../nos2" />
       <root url="file://$PROJECT_DIR$/../.idea" />
     </CLASSES>
@@ -24,6 +25,7 @@
       <root url="file://$PROJECT_DIR$/../github.com" />
       <root url="file://$PROJECT_DIR$/../gopkg.in" />
       <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../MySqlTesting" />
       <root url="file://$PROJECT_DIR$/../nos2" />
       <root url="file://$PROJECT_DIR$/../.idea" />
     </SOURCES>

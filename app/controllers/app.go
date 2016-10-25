@@ -172,3 +172,4 @@ func (c App) AddUser() revel.Result {
 	}
 	return nil
 }
+

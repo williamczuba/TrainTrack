@@ -18,6 +18,4 @@ func main() {
 	//packetDecoding.Layer2(str)
 	l3 := packetDecoding.GenLayer3(str)
 	fmt.Println("L3: ", l3)
-
-
 }
