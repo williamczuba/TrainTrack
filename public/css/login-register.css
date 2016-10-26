@@ -8,13 +8,7 @@
     text-align:center;
 }
 
-h6 {
-  text-align: center;
-  color: #ffffff;
-  font-weight: 300;
-  margin: 0 0 40px;
-  font-size: 24px;
-}
+
 
 html {
   overflow-y: scroll;
@@ -106,28 +100,6 @@ section {
 /*=======================================
     COLOR CODES
 ==================================================*/
-
-.color-orange-one {
-    background-color:rgba(255, 160, 0, 1)!important;
-    color:#000;
-}
-
-.color-orange-two {
-    background-color:rgba(255, 160, 0, 1)!important;
-    color:rgba(0, 122, 255, 1);
-}
-
-.color-bg-one {
-    background-color:rgba(0, 122, 255, 1)!important;
-    color:#efe;
-
-}
-
-.color-bg-three {
-    background-color:rgba(0, 122, 255, 1)!important;
-    color:#fff;
-
-}
 
 .color-white {
    background-color:#fff!important;
@@ -246,5 +218,3 @@ textarea {
   margin-top: -20px;
   text-align: right;
 }
-
-

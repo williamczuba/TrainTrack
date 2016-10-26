@@ -17,4 +17,9 @@ func (c Admin) Index() revel.Result {
 	return c.Render()
 }
 
-
+// Log the admin in
+// TODO: backend team should implement this similar to the regular user login,
+// 		but utilizing an Admin Database as well.
+func (c Admin) Login() revel.Result {
+	return nil
+}

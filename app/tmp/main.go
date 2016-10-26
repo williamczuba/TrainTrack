@@ -145,7 +145,7 @@ func main() {
 			&revel.MethodType{
 				Name: "Login",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "username", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "remember", Type: reflect.TypeOf((*bool)(nil)) },
 				},
@@ -183,17 +183,39 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Admin)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					17: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Login",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
 			79: "verifyPassword",
 			80: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
-			32: "user.Username",
-			41: "user.Name",
+			40: "user.Email",
+			49: "user.FirstName",
+			54: "user.LastName",
 		},
 		"TrainTrack/app/models.ValidatePassword": { 
-			50: "password",
+			63: "password",
 		},
 	}
 	testing.TestSuites = []interface{}{ 

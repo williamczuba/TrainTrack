@@ -1,0 +1,46 @@
+<!-- Sets page title -->
+{{set . "title" "AdminPage"}}
+<!-- Calls Revel Header template -->
+{{template "header.html" .}}
+<link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+<link rel="stylesheet" type="text/css" href="/public/css/welcome.css">
+<div class="form">
+    <h1>Welcome Back!</h1>
+    <!--<div class="tab-content">-->
+        <div id="login">
+
+
+
+            <form action="/admin-login" id = "formLogin" method="POST">
+                <div class="field-wrap">
+                    <!-- Email address field -->
+                    <!-- Creates a label for the e-mail field -->
+                    <label>
+                        E-mail<span class="req">*</span>
+                    </label>
+                    <input type="text" name="email" required autocomplete="off"/>
+                </div>
+                <!-- Login password field -->
+                <div class="field-wrap">
+                    <label>
+                        Password<span class="req">*</span>
+                    </label>
+                    <input type="password" name="password" required autocomplete="off"/>
+                </div>
+
+                <!-- Redirects to forgotten password page -->
+                <p class="forgot"><a href="#">Forgot Password?</a></p>
+
+                <!-- Log in button - submits form -->
+                <button class="button button-block"/>Log In</button>
+
+            </form>
+
+        </div>
+
+    <!--</div>&lt;!&ndash; tab-content &ndash;&gt;-->
+</div> <!-- /form -->
+
+<script type="text/javascript" src="/public/js/login-register.js"></script>
+
+{{template "footer.html" .}}

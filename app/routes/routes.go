@@ -121,13 +121,13 @@ func (_ tApp) SaveUser(
 }
 
 func (_ tApp) Login(
-		username string,
+		email string,
 		password string,
 		remember bool,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "username", username)
+	revel.Unbind(args, "email", email)
 	revel.Unbind(args, "password", password)
 	revel.Unbind(args, "remember", remember)
 	return revel.MainRouter.Reverse("App.Login", args).Url
@@ -157,6 +157,25 @@ func (_ tMap) Index(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("Map.Index", args).Url
+}
+
+
+type tAdmin struct {}
+var Admin tAdmin
+
+
+func (_ tAdmin) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Admin.Index", args).Url
+}
+
+func (_ tAdmin) Login(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Admin.Login", args).Url
 }
 
 

@@ -4,12 +4,13 @@
 
 module:testrunner
 
-GET     /                                       App.Index
-POST    /register                               App.SaveUser
-POST    /login                                  App.Login
-GET     /logout                                 App.Logout
-GET     /map                                    Map.Index
-GET     /admin                                  Admin.Index
+GET     /               App.Index
+POST    /register       App.SaveUser
+POST    /login          App.Login
+GET     /logout         App.Logout
+GET     /map            Map.Index
+GET     /admin          Admin.Index
+POST    /admin-login    Admin.Login
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

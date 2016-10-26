@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
+<head>
     <title>{{.title}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,36 +13,24 @@
     <script src="/public/js/bootstrap-3.3.6.min.js"></script>
 
     {{range .moreStyles}}
-      <link rel="stylesheet" type="text/css" href="/public/{{.}}">
+    <link rel="stylesheet" type="text/css" href="/public/{{.}}">
     {{end}}
-    <link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+
 
     {{range .moreScripts}}
-      <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
 
-  </head>
-  <body>
-  <!-- Navigation -->
-  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-      <div class="container">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header page-scroll">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                  <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-              </button>
-              <a class="navbar-brand" href="#page-top">TrainTrack</a>
-          </div>
+</head>
+<body>
+<!-- Navigation -->
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <a class="navbar-brand" href="/">TrainTrack</a>
 
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav navbar-right">
-                  <li >
-                      <a href="/logout">Logout</a>
-                  </li>
-              </ul>
-          </div>
-          <!-- /.navbar-collapse -->
-      </div>
-      <!-- /.container-fluid -->
-  </nav>
+        <a class="navbar-brand" href="/logout">Logout</a>
+    </div>
+
+    <!-- /.container-fluid -->
+</nav>
