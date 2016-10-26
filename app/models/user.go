@@ -4,19 +4,27 @@ import (
 	"fmt"
 	"github.com/revel/revel"
 	"regexp"
+	//"TrainTrack/app/controllers"
 )
 
 //Struct for the user
 type User struct {
 	UserId             int
-	Name               string
-	Username, Password string
+	FirstName          string
+	LastName	   string
+	StreetAddress	   string
+	City		   string
+	State	           string
+	Country		   string
+	Email		   string
+	Password           string
 	HashedPassword     []byte
+	Admin		   bool
 }
 
 //Return the username as a string
 func (u *User) String() string {
-	return fmt.Sprintf("User(%s)", u.Username)
+	return fmt.Sprintf("User(%s)", u.Email)
 }
 
 //Only allow certain characters for a username (prevent sql injection)
@@ -24,9 +32,9 @@ var userRegex = regexp.MustCompile("^\\w*$")
 
 //Validate the user credentials (make sure the user info is valid)
 func (user *User) Validate(v *revel.Validation) {
-	v.Check(user.Username,
+	v.Check(user.Email,
 		revel.Required{},
-		revel.MaxSize{15},
+		revel.MaxSize{50},
 		revel.MinSize{4},
 		revel.Match{userRegex},
 	)
@@ -35,7 +43,12 @@ func (user *User) Validate(v *revel.Validation) {
 	ValidatePassword(v, user.Password).
 		Key("user.Password")
 
-	v.Check(user.Name,
+	v.Check(user.FirstName,
+		revel.Required{},
+		revel.MaxSize{100},
+	)
+
+	v.Check(user.LastName,
 		revel.Required{},
 		revel.MaxSize{100},
 	)

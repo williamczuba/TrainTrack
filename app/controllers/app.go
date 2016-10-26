@@ -38,22 +38,22 @@ func (c App) connected() *models.User {
 		return c.RenderArgs["user"].(*models.User)
 	}
 	//See if they have a valid session (Remember them or no?)
-	if username, ok := c.Session["user"]; ok {
-		return c.getUser(username)
+	if email, ok := c.Session["user"]; ok {
+		return c.getUser(email)
 	}
 	//Otherwise, they aren't logged in
 	return nil
 }
 
 //Purpose: Utility method to get the user as a model based on the username
-//Params: Username as a string
+//Params: Email as a string
 //Returns:
 //	The user type defined in the model
 //Prints:
 //	Nothing
-func (c App) getUser(username string) *models.User {
+func (c App) getUser(email string) *models.User {
 	//Select from our database
-	users, err := c.Txn.Select(models.User{}, `select * from User where Username = ?`, username)
+	users, err := c.Txn.Select(models.User{}, `select * from User where Email = ?`, email)
 	//Check for error
 	if err != nil {
 		panic(err)
@@ -93,6 +93,8 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	//Hash the password
 	user.HashedPassword, _ = bcrypt.GenerateFromPassword(
 		[]byte(user.Password), bcrypt.DefaultCost)
+	////Sets admin privilege to false by default (unsure if necessary here)
+	//user.Admin = false
 	// Insert the user into the DB
 	err := c.Txn.Insert(&user)
 	// check for error
@@ -100,8 +102,8 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 		panic(err)
 	}
 	// Greet and redirect to the map page
-	c.Session["user"] = user.Username
-	c.Flash.Success("Welcome, " + user.Name)
+	c.Session["user"] = user.Email
+	c.Flash.Success("Welcome, " + user.FirstName)
 	return c.Redirect(routes.Map.Index())
 }
 
@@ -113,9 +115,9 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 //	The revel result (redirect to the Map page, or ask to fix errors)
 //Prints:
 //	Nothing
-func (c App) Login(username, password string, remember bool) revel.Result {
+func (c App) Login(email, password string, remember bool) revel.Result {
 	//Look up the username
-	user := c.getUser(username)
+	user := c.getUser(email)
 	//If it exists
 	if user != nil {
 		//Check the password is correct
@@ -123,7 +125,7 @@ func (c App) Login(username, password string, remember bool) revel.Result {
 		//Check if the password was correct
 		if err == nil {
 			//Assign the session to the username
-			c.Session["user"] = username
+			c.Session["user"] = email
 			// If they check remember
 			if remember {
 				// Assign a cookie that expires in 3 days
@@ -132,13 +134,13 @@ func (c App) Login(username, password string, remember bool) revel.Result {
 				// Assign a cookie that will terminate when browser closes
 				c.Session.SetNoExpiration()
 			}
-			//Redirect to the Map
-			c.Flash.Success("Welcome, " + username)
+			//Redirect to the Map - can implement first name on login later, avoiding problems due to extra param. for now
+			c.Flash.Success("Welcome back")
 			return c.Redirect(routes.Map.Index())
 		}
 	}
 	// Otherwise the log in failed, have them try again.
-	c.Flash.Out["username"] = username
+	c.Flash.Out["email"] = email
 	c.Flash.Error("Login failed")
 	return c.Redirect(routes.App.Index())
 }

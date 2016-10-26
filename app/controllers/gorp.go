@@ -40,9 +40,26 @@ func InitDB() {
 	t.ColMap("Password").Transient = true
 
 	// Set the column sizes for the username and name
+	/*
+	FirstName          string
+	LastName	   string
+	StreetAddress	   string
+	City		   string
+	State	           string
+	Email		   string
+	Password           string
+	HashedPassword     []byte
+	Admin		   bool
+	 */
 	setColumnSizes(t, map[string]int{
-		"Username": 20,
-		"Name":     100,
+		"FirstName":     50,		//changed from Username:20
+		"LastName":      50,
+		"StreetAddress": 75,
+		"City":           75,
+		"State":	  50,
+		"Country":        75,
+		"Email":	  50,
+		"Admin":	  20,
 	})
 
 
@@ -56,7 +73,8 @@ func InitDB() {
 	// Hash/encrypt the temp user password
 	bcryptPassword, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
-	demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
+
+	demoUser := &models.User{0, "Demo", "User", "Demo", "Demo", "Demo", "Demo", "demo", "demo", bcryptPassword, false}
 	if err := Dbm.Insert(demoUser); err != nil {
 		panic(err)
 	}

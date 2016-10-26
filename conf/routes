@@ -9,6 +9,7 @@ POST    /register                               App.SaveUser
 POST    /login                                  App.Login
 GET     /logout                                 App.Logout
 GET     /map                                    Map.Index
+GET     /admin                                  Admin.Index
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
