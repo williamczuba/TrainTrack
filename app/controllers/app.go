@@ -135,7 +135,8 @@ func (c App) Login(email, password string, remember bool) revel.Result {
 				c.Session.SetNoExpiration()
 			}
 			//Redirect to the Map - can implement first name on login later, avoiding problems due to extra param. for now
-			c.Flash.Success("Welcome back")
+			welcome:="Welcome back " + user.FirstName + "!"
+			c.Flash.Success(welcome)
 			return c.Redirect(routes.Map.Index())
 		}
 	}

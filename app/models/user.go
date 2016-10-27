@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/revel/revel"
 	"regexp"
-	//"TrainTrack/app/controllers"
 )
 
 //Struct for the user

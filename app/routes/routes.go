@@ -164,6 +164,13 @@ type tAdmin struct {}
 var Admin tAdmin
 
 
+func (_ tAdmin) Dash(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Admin.Dash", args).Url
+}
+
 func (_ tAdmin) Index(
 		) string {
 	args := make(map[string]string)
@@ -172,9 +179,15 @@ func (_ tAdmin) Index(
 }
 
 func (_ tAdmin) Login(
+		email string,
+		password string,
+		remember bool,
 		) string {
 	args := make(map[string]string)
 	
+	revel.Unbind(args, "email", email)
+	revel.Unbind(args, "password", password)
+	revel.Unbind(args, "remember", remember)
 	return revel.MainRouter.Reverse("Admin.Login", args).Url
 }
 

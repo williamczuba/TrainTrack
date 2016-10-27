@@ -74,7 +74,7 @@ func InitDB() {
 	bcryptPassword, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
 
-	demoUser := &models.User{0, "Demo", "User", "Demo", "Demo", "Demo", "Demo", "demo", "demo", bcryptPassword, false}
+	demoUser := &models.User{0, "Demo", "User", "Demo", "Demo", "Demo", "Demo", "demo", "demo", bcryptPassword, true}
 	if err := Dbm.Insert(demoUser); err != nil {
 		panic(err)
 	}
