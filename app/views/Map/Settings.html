@@ -1,0 +1,43 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+<link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+
+<div class="form">
+    <div id="settings">
+
+        <form method="POST" action="{{url "Map.SaveSettings"}}">
+        <h1>Change your password</h1>
+
+        {{with $field := field "password" .}}
+        <div class="field-wrap">
+            <!-- Email address field -->
+            <!-- Creates a label for the e-mail field -->
+            <label>
+                Password<span class="req">*</span>
+            </label>
+            <input type="password" name="{{$field.Name}}" required autocomplete="off"/>
+        </div>
+
+
+        {{end}}
+        {{with $field := field "verifyPassword" .}}
+        <div class="field-wrap">
+            <!-- Email address field -->
+            <!-- Creates a label for the e-mail field -->
+            <label>
+                VerifyPassword<span class="req">*</span>
+            </label>
+            <input type="password" name="{{$field.Name}}" required autocomplete="off"/>
+        </div>
+
+        {{end}}
+
+        <p class="buttons">
+            <input type="submit" value="Save"> <a href="{{url "Map.Index"}}">Cancel</a>
+        </p>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/public/js/login-register.js"></script>
+
+{{template "footer.html" .}}

@@ -19,7 +19,10 @@ type User struct {
 	Email		   string
 	Password           string
 	HashedPassword     []byte
-	Admin		   bool
+	Admin		   bool // TODO, lets do a separate table instead for admins (admins will be separate from users)
+	SecurityQuestion   string
+	SecureAnswer	   string
+	HashedSecureAnswer []byte
 }
 
 //Return the username as a string
@@ -43,15 +46,42 @@ func (user *User) Validate(v *revel.Validation) {
 	ValidatePassword(v, user.Password).
 		Key("user.Password")
 
+	v.Check(user.StreetAddress,
+		revel.MinSize{10},
+		revel.MinSize{100})
+	v.Check(user.City,
+		revel.MinSize{10},
+		revel.MinSize{100})
+	v.Check(user.State,
+		revel.MinSize{10},
+		revel.MinSize{50})
+	v.Check(user.Country,
+		revel.MinSize{10},
+		revel.MinSize{100})
+
 	v.Check(user.FirstName,
 		revel.Required{},
+		revel.MinSize{2},
 		revel.MaxSize{100},
 	)
+	//validate the security question and answer
+	v.Check(user.SecurityQuestion,
+		revel.Required{},
+		revel.MinSize{10},
+		revel.MaxSize{100})
+
+	v.Check(user.SecureAnswer,
+		revel.Required{},
+		revel.MinSize{2},
+		revel.MaxSize{100})
 
 	v.Check(user.LastName,
 		revel.Required{},
+		revel.MinSize{2},
 		revel.MaxSize{100},
 	)
+
+
 }
 
 //Validate the user password (since we don't store plain text passwords, we need to verify it separately)
@@ -59,6 +89,6 @@ func ValidatePassword(v *revel.Validation, password string) *revel.ValidationRes
 	return v.Check(password,
 		revel.Required{},
 		revel.MaxSize{15},
-		revel.MinSize{5},
+		revel.MinSize{4},
 	)
 }

@@ -1,0 +1,34 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+<link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+<div class="form">
+    <h1>{{.email}}</h1>
+    <h1>Recover Password</h1>
+    <!--<div class="tab-content">-->
+    <div id="recovery">
+
+
+        <p>{{.question}}</p>
+        <form action="/recoverInfo" id = "formLogin" method="POST">
+            <div class="field-wrap">
+                <!-- Email address field -->
+                <!-- Creates a label for the e-mail field -->
+                <label>
+                    Answer<span class="req">*</span>
+                </label>
+                <input type="text" name="recoveryAnswer" required autocomplete="off"/>
+            </div>
+            <input type="hidden" name="email" value="{{.email}}" />
+            <!-- Log in button - submits form -->
+            <button class="button button-block"/>Recover</button>
+
+        </form>
+
+    </div>
+
+    <!--</div>&lt;!&ndash; tab-content &ndash;&gt;-->
+</div> <!-- /form -->
+
+<script type="text/javascript" src="/public/js/login-register.js"></script>
+
+{{template "footer.html" .}}

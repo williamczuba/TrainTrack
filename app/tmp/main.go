@@ -10,9 +10,9 @@ import (
 	models "TrainTrack/app/models"
 	tests "TrainTrack/tests"
 	_ "github.com/mattn/go-sqlite3"
-	controllers1 "github.com/revel/modules/static/app/controllers"
+	controllers0 "github.com/revel/modules/static/app/controllers"
 	_ "github.com/revel/modules/testrunner/app"
-	controllers0 "github.com/revel/modules/testrunner/app/controllers"
+	controllers1 "github.com/revel/modules/testrunner/app/controllers"
 	"github.com/revel/revel/testing"
 )
 
@@ -57,7 +57,31 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.TestRunner)(nil),
+	revel.RegisterController((*controllers0.Static)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Serve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ServeModule",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -98,30 +122,6 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers1.Static)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Serve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "ServeModule",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.App)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -129,7 +129,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					26: []string{ 
+					28: []string{ 
 					},
 				},
 			},
@@ -166,17 +166,46 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Map)(nil),
-		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Index",
+				Name: "RecoverPassword",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					15: []string{ 
+					190: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "ShowRecoveryQuestion",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					206: []string{ 
+						"email",
+						"question",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "RecoverInfo",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "recoveryAnswer", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ShowInfo",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "temp", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					246: []string{ 
+						"email",
+						"temp",
 					},
 				},
 			},
@@ -204,18 +233,60 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Map)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					17: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Settings",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					33: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "SaveSettings",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
-			79: "verifyPassword",
-			80: "verifyPassword",
+			82: "verifyPassword",
+			83: "verifyPassword",
+		},
+		"TrainTrack/app/controllers.Map.SaveSettings": { 
+			38: "verifyPassword",
+			40: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
-			40: "user.Email",
-			49: "user.FirstName",
-			54: "user.LastName",
+			43: "user.Email",
+			51: "user.StreetAddress",
+			54: "user.City",
+			57: "user.State",
+			60: "user.Country",
+			66: "user.FirstName",
+			71: "user.SecurityQuestion",
+			76: "user.SecureAnswer",
+			82: "user.LastName",
 		},
 		"TrainTrack/app/models.ValidatePassword": { 
-			63: "password",
+			93: "password",
 		},
 	}
 	testing.TestSuites = []interface{}{ 

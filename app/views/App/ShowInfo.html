@@ -1,0 +1,10 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+<link rel="stylesheet" type = "text/css" href ="/public/css/login-register.css">
+<div class="form">
+
+<h1>Email: {{.email}}</h1>
+<h1>New Password: {{.temp}}</h1>
+</div>
+
+{{template "footer.html" .}}

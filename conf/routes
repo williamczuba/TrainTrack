@@ -11,6 +11,12 @@ GET     /logout         App.Logout
 GET     /map            Map.Index
 GET     /admin          Admin.Index
 POST    /admin-login    Admin.Login
+GET     /recoverPassword App.RecoverPassword
+POST    /recoverPassword App.ShowRecoveryQuestion
+POST    /recoverInfo    App.RecoverInfo
+GET     /recoverInfo       App.ShowInfo
+GET     /settings                               Map.Settings
+POST    /settings                               Map.SaveSettings
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

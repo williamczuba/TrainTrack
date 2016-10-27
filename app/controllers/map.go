@@ -3,6 +3,8 @@ package controllers
 import (
 	"github.com/revel/revel"
 	"TrainTrack/app/routes"
+	"TrainTrack/app/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //Map structure, needs to extend App (which extends gorp and revel controller) to be a controller
@@ -22,4 +24,32 @@ func (c Map) checkUser() revel.Result {
 		return c.Redirect(routes.App.Index())
 	}
 	return nil
+}
+
+func (c Map) Settings() revel.Result {
+	if c.connected() == nil {
+		c.Redirect(routes.App.Index())
+	}
+	return c.Render()
+}
+
+func (c Map) SaveSettings(password, verifyPassword string) revel.Result {
+	models.ValidatePassword(c.Validation, password)
+	c.Validation.Required(verifyPassword).
+		Message("Please verify your password")
+	c.Validation.Required(verifyPassword == password).
+		Message("Your password doesn't match")
+	if c.Validation.HasErrors() {
+		c.Validation.Keep()
+		return c.Redirect(routes.Map.Settings())
+	}
+
+	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	_, err := c.Txn.Exec("update User set HashedPassword = ? where UserId = ?",
+		bcryptPassword, c.connected().UserId)
+	if err != nil {
+		panic(err)
+	}
+	c.Flash.Success("Password updated")
+	return c.Redirect(routes.Map.Index())
 }

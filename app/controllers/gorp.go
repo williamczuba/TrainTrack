@@ -52,14 +52,16 @@ func InitDB() {
 	Admin		   bool
 	 */
 	setColumnSizes(t, map[string]int{
-		"FirstName":     50,		//changed from Username:20
-		"LastName":      50,
-		"StreetAddress": 75,
-		"City":           75,
+		"FirstName":     100,		//changed from Username:20
+		"LastName":      100,
+		"StreetAddress": 100,
+		"City":           100,
 		"State":	  50,
-		"Country":        75,
+		"Country":        100,
 		"Email":	  50,
 		"Admin":	  20,
+		"SecurityQuestion": 100,
+		"HashedSecureAnswer":100,
 	})
 
 
@@ -73,11 +75,14 @@ func InitDB() {
 	// Hash/encrypt the temp user password
 	bcryptPassword, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
-
-	demoUser := &models.User{0, "Demo", "User", "Demo", "Demo", "Demo", "Demo", "demo", "demo", bcryptPassword, false}
+	bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
+		[]byte("demo"), bcrypt.DefaultCost)
+	demoUser := &models.User{0, "FirstName", "Last", "St. Address", "City", "State", "Country", "demo", "demo", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
 	if err := Dbm.Insert(demoUser); err != nil {
 		panic(err)
 	}
+
+	println("DEMO Question: ", demoUser.SecurityQuestion)
 }
 
 //Gorp Controller that extends the revel controller and allows us to use gorp transactions with the DB

@@ -5,6 +5,8 @@ import (
 	"TrainTrack/app/routes"
 	"TrainTrack/app/models"
 	"golang.org/x/crypto/bcrypt"
+	"time"
+	"math/rand"
 )
 
 //Purpose: Base type of our application; extends the Gorp Controller (for access to the DB)
@@ -60,6 +62,7 @@ func (c App) getUser(email string) *models.User {
 	}
 	//Check to see if we got any results
 	if len(users) == 0 {
+		println("NO user with that name: ", email)
 		return nil // if none, then they don't exist
 	}
 	//otherwise return the result
@@ -134,6 +137,7 @@ func (c App) Login(email, password string, remember bool) revel.Result {
 				// Assign a cookie that will terminate when browser closes
 				c.Session.SetNoExpiration()
 			}
+			println("SUCCESS")
 			//Redirect to the Map - can implement first name on login later, avoiding problems due to extra param. for now
 			c.Flash.Success("Welcome back")
 			return c.Redirect(routes.Map.Index())
@@ -142,6 +146,8 @@ func (c App) Login(email, password string, remember bool) revel.Result {
 	// Otherwise the log in failed, have them try again.
 	c.Flash.Out["email"] = email
 	c.Flash.Error("Login failed")
+	println("Failed")
+
 	return c.Redirect(routes.App.Index())
 }
 
@@ -175,3 +181,82 @@ func (c App) AddUser() revel.Result {
 	return nil
 }
 
+func (c App) RecoverPassword() revel.Result {
+	//make sure they aren't signed in first.
+	if c.connected() != nil {
+		return c.Redirect(routes.Map.Index()) //redirect to the map.
+	}
+	//render the page
+	return c.Render()
+}
+
+func (c App) ShowRecoveryQuestion(email string) revel.Result {
+	println("Email:", email)
+	//Get the user
+	user := c.getUser(email)
+	println("Demo user: ", user.Email)
+	println("Question from model: ", user.SecurityQuestion)
+	if user == nil {
+		println("ERROR user is nil...")
+		return nil
+	}
+	// Get their recovery question
+	question := user.SecurityQuestion
+
+	return c.Render(email, question)
+}
+
+func (c App) RecoverInfo(email string, recoveryAnswer string) revel.Result {
+	//Look up the username
+	user := c.getUser(email)
+	println("Demo user: ", user.Email)
+	println("Question from model: ", user.SecurityQuestion)
+	if user == nil {
+		println("ERROR user is nil...")
+		return nil
+	}
+	//If it exists
+	if user != nil {
+		//Check the given answer is correct
+		err := bcrypt.CompareHashAndPassword(user.HashedSecureAnswer, []byte(recoveryAnswer))
+		if err == nil {
+			println("Password recovered! Generating new password...")
+			//Assign and Show temporary password
+			temp := RandStringRunes(10)
+			user.HashedPassword, _ = bcrypt.GenerateFromPassword(
+				[]byte(temp), bcrypt.DefaultCost)
+			_, err := c.Txn.Exec("update User set HashedPassword = ? where UserId = ?",
+				user.HashedPassword, user.UserId)
+			if err != nil {
+				panic(err)
+			}
+			return c.Redirect(routes.App.ShowInfo(email, temp))
+		}
+	}
+	println("Answer failed.  Answer given: ", recoveryAnswer)
+	println("Correct Answer: ", user.SecureAnswer)
+	// Otherwise the log in failed, have them try again.
+	c.Flash.Out["username"] = email
+	c.Flash.Error("Recovery failed")
+	return c.Redirect(routes.App.RecoverPassword())
+}
+
+func (c App) ShowInfo(email string, temp string) revel.Result {
+	println("SHOWING INFO: Email:", email, "PW: ", temp)
+	return c.Render(email, temp)
+}
+
+// PASSWORD GENERATION UTILITIES
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func RandStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
