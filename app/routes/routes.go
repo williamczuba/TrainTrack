@@ -217,6 +217,15 @@ func (_ tAdmin) Login(
 	return revel.MainRouter.Reverse("Admin.Login", args).Url
 }
 
+func (_ tAdmin) Approve(
+		UserId int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "UserId", UserId)
+	return revel.MainRouter.Reverse("Admin.Approve", args).Url
+}
+
 
 type tMap struct {}
 var Map tMap

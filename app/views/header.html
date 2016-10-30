@@ -20,19 +20,24 @@
     {{range .moreScripts}}
     <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
+    <link rel="stylesheet" type="text/css" href="/public/css/custom.css">
+
 
 </head>
 <body>
 <!-- Navigation -->
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-    <div class="container">
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <a class="navbar-brand" href="/">TrainTrack</a>
+        <a class="navbar-brand"  href="/">TrainTrack</a>
 
         {{if .user}}
-        <a class="navbar-brand" href="/logout">Logout</a>
+        <ul class="nav navbar-nav">
 
-        <a class="navbar-brand" href="{{url "Map.Settings"}}">Settings</a>
+            <li><a href="/logout">Logout</a></li>
+
+            <li> <a href="{{url "Map.Settings"}}">Settings</a></li>
+            </ul>
         {{end}}
     </div>
 

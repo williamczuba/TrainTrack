@@ -5,6 +5,7 @@ import (
 	"TrainTrack/app/routes"
 	"TrainTrack/app/models"
 	"golang.org/x/crypto/bcrypt"
+	"fmt"
 )
 
 type Admin struct {
@@ -13,7 +14,21 @@ type Admin struct {
 
 //Serves the Admin Dashboard to the admin
 func (c Admin) Dash() revel.Result {
-	return c.Render()
+	//Get all applicants who aren't approved
+	users, err := c.Txn.Select(models.User{}, `select * from User where Approved = ?`, false)
+	//Check for error
+	if err != nil {
+		panic(err)
+	}
+	//Check to see if we got any results
+	//if len(users) == 0 {
+	//	return c.Render() // if none, then they don't exist
+	//}
+	fmt.Println("Users: ", users)
+	for i:= 0; i < len(users); i++ {
+		fmt.Println("Approved: ", ((users[i])).(*models.User).Approved)
+	}
+ 	return c.Render(users)
 }
 
 //Serve the Index page for the admin login page
@@ -59,7 +74,7 @@ func (c Admin) Login(email, password string, remember bool) revel.Result {
 		err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
 		//Check if the password was correct
 		if err == nil {
-			if user.Admin == true {
+			// TODO: Check to make sure they are an admin!
 				//Assign the session to the username
 				c.Session["admin"] = email
 				// If they check remember
@@ -74,11 +89,53 @@ func (c Admin) Login(email, password string, remember bool) revel.Result {
 				welcome:="Welcome back " + user.FirstName + "!"
 				c.Flash.Success(welcome)
 				return c.Redirect(routes.Admin.Dash())
-			}
 		}
 	}
 	// Otherwise the log in failed, have them try again.
 	c.Flash.Out["email"] = email
 	c.Flash.Error("Login failed")
 	return c.Redirect(routes.App.Index())
+}
+
+func (c Admin) Approve(UserId int) revel.Result {
+	if c.Params.Get("approve") == "Approve"  {
+		_, err := c.Txn.Exec("update User set Approved = ? where UserId = ?",
+			true, UserId)
+		if err != nil {
+			panic(err)
+		}
+	} else if c.Params.Get("reject") == "Reject" {
+		// delete their user
+		_, err := c.Txn.Exec("DELETE FROM User WHERE UserId = ?;",
+			UserId)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		fmt.Println("Accept: ", c.Params.Get("Accept"), "Reject: ", c.Params.Get("Reject"), " approve: ", c.Params.Get("approve"))
+	}
+	// TODO. Use Ajax instead of rerouting.
+	return c.Redirect(routes.Admin.Dash())
+}
+
+//Purpose: Utility method to get the user as a model based on the username
+//Params: Email as a string
+//Returns:
+//	The user type defined in the model
+//Prints:
+//	Nothing
+func (c App) getUserById(UserId int) *models.User {
+	//Select from our database
+	users, err := c.Txn.Select(models.User{}, `select * from User where UserId = ?`, UserId)
+	//Check for error
+	if err != nil {
+		panic(err)
+	}
+	//Check to see if we got any results
+	if len(users) == 0 {
+		println("NO user with that UID: ", UserId)
+		return nil // if none, then they don't exist
+	}
+	//otherwise return the result
+	return users[0].(*models.User)
 }

@@ -18,7 +18,7 @@ type User struct {
 	Email		   string
 	Password           string
 	HashedPassword     []byte
-	Admin		   bool // TODO, lets do a separate table instead for admins (admins will be separate from users)
+	Approved	   bool
 	SecurityQuestion   string
 	SecureAnswer	   string
 	HashedSecureAnswer []byte

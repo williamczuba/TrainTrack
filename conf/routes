@@ -18,6 +18,7 @@ GET     /recoverInfo       App.ShowInfo
 GET     /settings                               Map.Settings
 POST    /settings                               Map.SaveSettings
 GET     /admin-dash     Admin.Dash
+POST    /adminApprove   Admin.Approve
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

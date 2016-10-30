@@ -14,6 +14,7 @@ type Map struct {
 
 //Serve the Index page for the map
 func (c Map) Index() revel.Result {
+	// TODO: Check to make sure a user is approved.  Otherwise re-route them to the progress page
 	return c.Render()
 }
 

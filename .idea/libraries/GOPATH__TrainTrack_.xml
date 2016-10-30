@@ -1,15 +1,35 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;TrainTrack&gt;">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../golang.org" />
-      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../goNoScribe" />
+      <root url="file://$PROJECT_DIR$/../rpi" />
+      <root url="file://$PROJECT_DIR$/../math201" />
+      <root url="file://$PROJECT_DIR$/../ProbStats" />
+      <root url="file://$PROJECT_DIR$/../test" />
       <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../MySqlTesting" />
+      <root url="file://$PROJECT_DIR$/../ServeImageTesting" />
+      <root url="file://$PROJECT_DIR$/../nos1" />
+      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../nos2" />
+      <root url="file://$PROJECT_DIR$/../.idea" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../golang.org" />
-      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../goNoScribe" />
+      <root url="file://$PROJECT_DIR$/../rpi" />
+      <root url="file://$PROJECT_DIR$/../math201" />
+      <root url="file://$PROJECT_DIR$/../ProbStats" />
+      <root url="file://$PROJECT_DIR$/../test" />
       <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../MySqlTesting" />
+      <root url="file://$PROJECT_DIR$/../ServeImageTesting" />
+      <root url="file://$PROJECT_DIR$/../nos1" />
+      <root url="file://$PROJECT_DIR$/../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../nos2" />
+      <root url="file://$PROJECT_DIR$/../.idea" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />

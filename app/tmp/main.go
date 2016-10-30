@@ -171,7 +171,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					190: []string{ 
+					195: []string{ 
 					},
 				},
 			},
@@ -181,7 +181,7 @@ func main() {
 					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					206: []string{ 
+					211: []string{ 
 						"email",
 						"question",
 					},
@@ -203,7 +203,7 @@ func main() {
 					&revel.MethodArg{Name: "temp", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					246: []string{ 
+					251: []string{ 
 						"email",
 						"temp",
 					},
@@ -215,17 +215,38 @@ func main() {
 	revel.RegisterController((*controllers.Admin)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
+				Name: "Dash",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					31: []string{ 
+						"users",
+					},
+				},
+			},
+			&revel.MethodType{
 				Name: "Index",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					17: []string{ 
+					42: []string{ 
 					},
 				},
 			},
 			&revel.MethodType{
 				Name: "Login",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "remember", Type: reflect.TypeOf((*bool)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Approve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -240,7 +261,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					17: []string{ 
+					18: []string{ 
 					},
 				},
 			},
@@ -249,7 +270,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					33: []string{ 
+					34: []string{ 
 					},
 				},
 			},
@@ -271,22 +292,22 @@ func main() {
 			83: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
-			38: "verifyPassword",
-			40: "verifyPassword",
+			39: "verifyPassword",
+			41: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
-			43: "user.Email",
-			51: "user.StreetAddress",
-			54: "user.City",
-			57: "user.State",
-			60: "user.Country",
-			66: "user.FirstName",
-			71: "user.SecurityQuestion",
-			76: "user.SecureAnswer",
-			82: "user.LastName",
+			42: "user.Email",
+			50: "user.StreetAddress",
+			53: "user.City",
+			56: "user.State",
+			59: "user.Country",
+			65: "user.FirstName",
+			70: "user.SecurityQuestion",
+			75: "user.SecureAnswer",
+			81: "user.LastName",
 		},
 		"TrainTrack/app/models.ValidatePassword": { 
-			93: "password",
+			92: "password",
 		},
 	}
 	testing.TestSuites = []interface{}{ 

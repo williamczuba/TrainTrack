@@ -59,10 +59,11 @@ func InitDB() {
 		"State":	  50,
 		"Country":        100,
 		"Email":	  50,
-		"Admin":	  20,
+		"Approved":	  20,
 		"SecurityQuestion": 100,
 		"HashedSecureAnswer":100,
 	})
+
 
 
 	// Set up database tracing for errors
@@ -77,11 +78,15 @@ func InitDB() {
 		[]byte("demo"), bcrypt.DefaultCost)
 	bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
-	demoUser := &models.User{0, "FirstName", "Last", "St. Address", "City", "State", "Country", "demo", "demo", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
+	demoUser := &models.User{0, "demoF", "demoL", "St. Address", "City", "State", "Country", "demo", "demo", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
 	if err := Dbm.Insert(demoUser); err != nil {
 		panic(err)
 	}
 
+	trustMe := &models.User{0, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
+	if err := Dbm.Insert(trustMe); err != nil {
+		panic(err)
+	}
 	println("DEMO Question: ", demoUser.SecurityQuestion)
 }
 

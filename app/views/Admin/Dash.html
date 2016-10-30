@@ -1,21 +1,37 @@
 {{set . "title" "Home"}}
 {{template "header.html" .}}
+<!-- Approve User Applications -->
 
-<header class="jumbotron" style="background-color:#A9F16C">
-    <div class="container">
-        <div class="row">
-            <h1>Admin works!</h1>
-            <p></p>
-        </div>
-    </div>
-</header>
-
-<div class="container">
-    <div class="row">
-        <div class="span6">
-            {{template "flash.html" .}}
-        </div>
-    </div>
-</div>
+{{if not .users}}
+<p>
+    No Applications Found
+</p>
+{{else}}
+<table>
+    <thead>
+    <tr>
+        <th>Approve</th>
+        <th>Reject</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>City, State</th>
+        <th>Country</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .users}}
+    <tr>
+        <td> <form method="POST" action="{{url "Admin.Approve" .UserId}}"><input type="submit" value="Approve" name="approve"> </td>
+        <td> <form method="POST" action="{{url "Admin.Approve" .UserId}}"><input type="submit" value="Reject" name="reject"> </td>
+        <td>{{.LastName}}</td>
+        <td>{{.FirstName}}</td>
+        <td>{{.City}}, {{.State}}</td>
+        <td>{{.Country}}</td>
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+{{end}}
 
 {{template "footer.html" .}}

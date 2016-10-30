@@ -96,6 +96,10 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	//Hash the password
 	user.HashedPassword, _ = bcrypt.GenerateFromPassword(
 		[]byte(user.Password), bcrypt.DefaultCost)
+
+	// They are NOT approved. GEt outa here
+	user.Approved = false
+
 	////Sets admin privilege to false by default (unsure if necessary here)
 	//user.Admin = false
 	// Insert the user into the DB
