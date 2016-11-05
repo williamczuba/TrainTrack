@@ -18,7 +18,7 @@ type Layer2 struct {
 	size int
 	//Destination type
 	destType int
-	// Number of 0's to pad out the fram
+	// Number of 0's to pad out the frame
 	padZeros int
 	// Number of blocks (of 60 bits) per frame
 	numBlocks int
@@ -214,27 +214,115 @@ func GenLayer3(hex string) Layer3{
 	}
 	l3.rx = int(l3p64)
 
-	// length of soruce and destination
+	// length of source and destination
 	str = hex[38:40]
+	fmt.Println(str)
+	fmt.Println(string(str[0]))
 	dec := HexToDec(string(str[0]))
+	fmt.Println(dec)
 	l3.lenSrc = dec // nibbles = 4 bits * the decimal number
 	dec = HexToDec(string(str[1]))
+	fmt.Println(dec)
 	l3.lenDest = dec // nibbles = 4 bits * the decimal number
 
 	// destination address
-	dEnd := 41+l3.lenDest+((l3.lenDest/2)-1) // must account for spaces.
-	fmt.Printf("DEND: %d, len Dest: %d \n", dEnd, l3.lenDest)
-	str = hex[41:dEnd]
-	l3.sourceAddr = str
-	sStart := (dEnd + 1)
-	sEnd := sStart + l3.lenSrc + ((l3.lenSrc/2)-1)
-	str = hex[sStart:sEnd]
-	l3.destAddr = str
+	//dEnd := 41+l3.lenDest+((l3.lenDest/2)-1) // must account for spaces.
+	//fmt.Printf("DEND: %d, len Dest: %d len src: %d \n", dEnd, l3.lenDest, l3.lenSrc)
+	//str = hex[41:dEnd]
+	//l3.destAddr = str
+	//fmt.Println("Dest Address: " + str)
+	//sStart := (dEnd + 1)
 
-	// Fil3
-	str = hex[sEnd + 1: sEnd+3]
+	//i:=sStart + 3
+
+	//begin with a blank string where we will build the destination address
+	str=""
+	//know that the starting index is 41
+	i:=41
+
+	//have two strings representing the current character to look at and the previous character,
+	//to ensure that no extra spaces get input
+	currChar:=""
+	prevChar:=""
+	//loop is entered on the condition that the address is no more than the length it should be plus the
+	//spaces in between
+	for ; len(str) < l3.lenDest+ ((l3.lenDest / 2) - 1); {
+		currChar = string(hex[i])
+		prevChar = string(hex[i-1])
+
+		//if both characters are spaces just move on to the next character
+		if prevChar == " " && currChar == " "{
+			i++
+
+		//if the character at i is not equal to | then append it to the string (| is the start of unintelligible
+			//code that is irrelevant to our deciphering
+		}else if string(hex[i]) != "|" {
+			str += string(hex[i])
+			i++
+
+			//else is entered when | is encountered
+		}else{
+			//i is incremented, and then the loop skips over all characters inside the | |
+			i++
+			for ; string(hex[i]) != "|" ; {
+				i++
+			}
+			//skips i ahead past the line denotation in the dump
+			i += 12
+
+		}
+	}
+	//the destination address becomes the string that we built
+	l3.destAddr = str
+	fmt.Println("Dest Address: " + str)
+	//str is reset to now build the source address
+	str = ""
+
+	//sourceStartStr := hex[sStart:sStart + 2]
+	//str = sourceStartStr
+	//currChar=""
+	//prevChar=""
+	//fmt.Println("Previous: " + prevChar)
+	//fmt.Println("Current: " + currChar)
+	i++
+	//loop works exactly the same as the destination address loop
+	for ; len(str) < l3.lenSrc + ((l3.lenSrc / 2) - 1); {
+		currChar = string(hex[i])
+		prevChar = string(hex[i-1])
+
+		if prevChar == " " && currChar == " "{
+			i++
+		}else if string(hex[i]) != "|" {
+			str += string(hex[i])
+			i++
+		}else{
+			i++
+			for ; string(hex[i]) != "|" ; {
+				i++
+			}
+			i += 12
+			//fmt.Println("hex at i: " + string(hex[i]))
+		}
+	}
+
+	//sEnd := sStart + l3.lenSrc + ((l3.lenSrc/2)-1)
+	//end of the source address in the hex dump is now at index i
+	sEnd := i
+	fmt.Println("sEnd: ", sEnd)
+
+	//str = hex[sStart:sEnd]
+	//sets the source address to our current string
+	l3.sourceAddr = str
+	fmt.Println("Source address: ", str)
+
+	//Fil3
+	str = hex[sEnd + 1: sEnd+2]
 	fmt.Println("FIL3:", str)
 	l3.fil3 = HexToDec(str)
+	//facility length
+	str = hex[sEnd + 2 : sEnd + 3]
+	fmt.Println("FacLen:", str)
+	l3.lenFacility = HexToDec(str)
 	return l3
 }
 
@@ -400,7 +488,7 @@ func HexToBinary(s string) string{
 	if len(s) != 2 {
 		return ""
 	}
-//	Convert from hex to int
+	//	Convert from hex to int
 	dec, err := hex.DecodeString(s)
 	if err != nil {
 		panic(err)
@@ -414,8 +502,8 @@ func HexToBinary(s string) string{
 Input: Only pass in strings of size 2 ( 1 Hex at a time!)
  */
 func HexToDec(s string) int {
-	if len(s) != 2 {
-		return 0
+	if len(s) == 1 {
+		s = "0" + s
 	}
 	//	Convert from hex to int
 	dec, err := hex.DecodeString(s)
@@ -425,47 +513,9 @@ func HexToDec(s string) int {
 
 	return int(dec[0])
 
-	//if len(hex) != 2 {
-	//	return 0
-	//}
-	//fs := hex[:1]
-	//f,err:=strconv.Atoi(fs)
-	////print(f, err)
-	//
-	//var first int
-	//if f <10 && err == nil {
-	//	first = f
-	//} else if fs == "a" {
-	//	first = 10
-	//} else if fs == "b" {
-	//	first = 11
-	//} else if fs == "c" {
-	//	first = 12
-	//} else if fs == "d" {
-	//	first = 13
-	//} else if fs == "e" {
-	//	first = 14
-	//} else if fs == "f" {
-	//	first = 15
-	//}
-	//ss := hex[1:2]
-	//s,err := strconv.Atoi(ss)
-	//var second int
-	//if s < 10&& err == nil {
-	//	second = s
-	//} else if ss == "a" {
-	//	second = 10
-	//} else if ss == "b" {
-	//	second = 11
-	//} else if ss == "c" {
-	//	second = 12
-	//} else if ss == "d" {
-	//	second = 13
-	//} else if ss == "e" {
-	//	second = 14
-	//} else if ss == "f" {
-	//	second = 15
-	//}
-	//first *= 16
-	//return first+second
 }
+
+/*
+func trimJunk(s string, startIndex int) int {
+	for i := startIndex; i < len(s); s[i] != "|" i++;
+}*/
