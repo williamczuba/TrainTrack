@@ -1,31 +1,7 @@
-{{set . "title" "Home"}}
+{{set . "title" "Map"}}
 {{template "header.html" .}}
-
-<header class="jumbotron" style="background-color:#A9F16C">
-    <div class="container">
-        <div class="row">
-            <h1>It works!</h1>
-            <p></p>
-        </div>
-    </div>
-</header>
-
-<div class="container">
-    <div class="row">
-        <div class="span6">
-            {{template "flash.html" .}}
-        </div>
-    </div>
-</div>
-
-
-<style>
-    body {
-        background-image: url("/public/img/favicon.png");
-    }
-</style>
-<script>
-
-</script>
-
+<!-- Creates Canvas -->
+<canvas id="mapCanvas"></canvas>
+<!-- Loads Script - this is where almost all the drawing is done! -->
+<script type="text/javascript" src="/public/js/map.js"></script>
 {{template "footer.html" .}}
