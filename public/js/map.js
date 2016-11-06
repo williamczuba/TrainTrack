@@ -7,6 +7,8 @@ var drawLurganToShip = {
 		// Orange, size 12
 		ctx.font = ("12px Arial");
 		ctx.fillStyle = "#ffa500";
+		// TODO: Don't hardcode size values as px (ie 40, 380). Always use either em (for font), or %
+		//			Otherwise it'll be very difficult to resize to the screen.  If you use %, it will auto resize to fit on any screen.
 		ctx.fillText("CSX", 40, 380);	
 		ctx.fillText("Lurgan Sub", 40, 400);
 		ctx.fillText("NS H-Line", 40, 430);

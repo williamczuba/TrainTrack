@@ -212,38 +212,6 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Map)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					23: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Settings",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					39: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "SaveSettings",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.Admin)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -279,6 +247,38 @@ func main() {
 				Name: "Approve",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Map)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					23: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Settings",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					39: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "SaveSettings",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
