@@ -63,6 +63,9 @@ type Layer3 struct {
 	// Fil3 and facility length (usually 0)
 	fil3 int
 	lenFacility int
+
+	//end index of the layer
+	LayerEndIndex int
 }
 
 //Struct to store the data from Layer4
@@ -144,14 +147,14 @@ func GenLayer2(hex string) Layer2{
 
 func GenLayer3(hex string) Layer3{
 	l3 := Layer3{}
-	println("Hex Dump: ", hex)
+	//println("Hex Dump: ", hex)
 
 	//TODO start of layer 3 header (should be 64, or can it change?)
 	str := hex[25:27]  // Maybe convert this to bit array, similar to how he does in his notes.
 	bin := []byte(HexToBinary(str))
-	println("Hex: ", str)
-	println("Dec: ", string(bin))
-	println("Length : ", len(bin))
+	//println("Hex: ", str)
+	//println("Dec: ", string(bin))
+	//println("Length : ", len(bin))
 	//Q is always 0 and is cut off from the string...
 	l3.Q = 0
 	//d
@@ -182,8 +185,8 @@ func GenLayer3(hex string) Layer3{
 
 	// Channel - should be constant 00
 	str = hex[28:30]
-	println("Hex: ", str)
-	println("Dec: ", HexToDec(str))
+	//println("Hex: ", str)
+	//println("Dec: ", HexToDec(str))
 	if str != "00" {
 		fmt.Println("ERROR, channel should be 00!")
 	}
@@ -201,10 +204,10 @@ func GenLayer3(hex string) Layer3{
 		l3p64, _ = strconv.ParseInt(string(bin), 2, 32)
 	}
 	l3.tx = int(l3p64)
-	println(hex[31:])
+	//println(hex[31:])
 	//RX or Rseq number
 	str = hex[35:37]
-	println(str)
+	//println(str)
 	bin = []byte(HexToBinary(str))
 	//last bit is always 0, only use the first 7 bits for number
 	if len(bin) == 8 { //go cuts out any leading 0's, so we need to check the size
@@ -216,13 +219,13 @@ func GenLayer3(hex string) Layer3{
 
 	// length of source and destination
 	str = hex[38:40]
-	fmt.Println(str)
-	fmt.Println(string(str[0]))
+	//fmt.Println(str)
+	//fmt.Println(string(str[0]))
 	dec := HexToDec(string(str[0]))
-	fmt.Println(dec)
+	//fmt.Println(dec)
 	l3.lenSrc = dec // nibbles = 4 bits * the decimal number
 	dec = HexToDec(string(str[1]))
-	fmt.Println(dec)
+	//fmt.Println(dec)
 	l3.lenDest = dec // nibbles = 4 bits * the decimal number
 
 	// destination address
@@ -274,7 +277,7 @@ func GenLayer3(hex string) Layer3{
 	}
 	//the destination address becomes the string that we built
 	l3.destAddr = str
-	fmt.Println("Dest Address: " + str)
+	//fmt.Println("Dest Address: " + str)
 	//str is reset to now build the source address
 	str = ""
 
@@ -308,38 +311,41 @@ func GenLayer3(hex string) Layer3{
 	//sEnd := sStart + l3.lenSrc + ((l3.lenSrc/2)-1)
 	//end of the source address in the hex dump is now at index i
 	sEnd := i
-	fmt.Println("sEnd: ", sEnd)
+	//fmt.Println("sEnd: ", sEnd)
 
 	//str = hex[sStart:sEnd]
 	//sets the source address to our current string
 	l3.sourceAddr = str
-	fmt.Println("Source address: ", str)
+	//fmt.Println("Source address: ", str)
 
 	//Fil3
 	str = hex[sEnd + 1: sEnd+2]
-	fmt.Println("FIL3:", str)
+	//fmt.Println("FIL3:", str)
 	l3.fil3 = HexToDec(str)
 	//facility length
 	str = hex[sEnd + 2 : sEnd + 3]
-	fmt.Println("FacLen:", str)
+	l3.LayerEndIndex = sEnd+ 4
+	//fmt.Println("FacLen:", str)
 	l3.lenFacility = HexToDec(str)
 	return l3
 }
 
-func GenLayer4to7(hex string) Layer4to7{
+func GenLayer4to7(hex string, start int) Layer4to7{
 	l4p := Layer4to7{}
 	println("Hex Dump: ", hex)
 
 	//Declare the variables we know already
-	l4p.start = 46// 46 - notice that 46 was only for the example, in reality, we want to pick up from the end of layer 3.
-	l4p.end = 81
-	l4p.size = 36
-
+	l4p.start = start// 46 - notice that 46 was only for the example, in reality, we want to pick up from the end of layer 3.
+	//l4p.end = 81
+	//l4p.size = 36
+	currIndex:=start
+	endIndex:=start+2
 	//Make the first slice -- Message number and whether or not there are more parts
-	str := hex[46:48]
-	fmt.Println("Hex1: ", str)
+	str := hex[currIndex:endIndex]
+	//fmt.Println("Hex1: ", str)
 	//convert those digits into binary string
 	binary := HexToBinary(str)
+	fmt.Println("Binary Length: ",  len(binary))
 	//slice the resulting binary string into the message number and more parts section
 	msgNumBinStr := binary[0:7]
 	morePartsBinStr := binary[7:]
@@ -360,10 +366,13 @@ func GenLayer4to7(hex string) Layer4to7{
 	fmt.Println("More parts: ", morePartsBinStr)
 
 
+	currIndex=endIndex+2
+	endIndex+=4
 	//make second slice -- Part number and END-TO-END ACK
-	str = hex[48:50]
-	fmt.Println("Hex2: ", str)
+	str = hex[currIndex:endIndex]
+	//fmt.Println("Hex2: ", str)
 	binary = HexToBinary(str)
+	//fmt.Println("Hex2 Bin: ", binary )
 	//slice the resulting binary string into the part number and END-TO-END ACK
 	partNumBinStr := binary[0:7]
 	e2eAckBinStr := binary[7:]
@@ -384,9 +393,11 @@ func GenLayer4to7(hex string) Layer4to7{
 	fmt.Println("Ack e2e: ", e2eAckBinStr)
 
 
+	currIndex=endIndex+1
+	endIndex+=3
 	//make third slice -- Number of parts and message vitality
-	str = hex [50:52]
-	fmt.Println("Hex3: ", str)
+	str = hex[currIndex:endIndex]
+	//fmt.Println("Hex3: ", str)
 	binary = HexToBinary(str)
 	//slice the resulting binary string into the number of parts and whether or not it is vitaL
 	numPartsBinStr := binary[0:7]
@@ -408,13 +419,18 @@ func GenLayer4to7(hex string) Layer4to7{
 	fmt.Println("Vital: ", vitalBinStr)
 
 
+	currIndex=endIndex+1
+	endIndex+=3
 	//make fourth slice -- Label
 	//First convert the hex to decimal, then follow this formula:
 	//Divide the decimal by 512 to get the first part of the label
 	//Divide the remainder of the first divison by 64 to get the second part
 	//Take whatever remainder is left (this is the third part) i.e. 128B = 4747, 4747 = 9 * 512 + 2 * 64 + 11(remainder from those operations), so the label is: "9.2.11"
-	str = hex[52:56]
-	fmt.Println("Hex4: ", str)
+	str = string(hex[currIndex:endIndex])
+	currIndex+=3
+	endIndex+=3
+	str+=string(hex[currIndex:endIndex])
+	//fmt.Println("Hex4: ", str)
 	//convert from hex to decimal
 	labelDecInt, err := strconv.ParseInt(str, 16, 16)
 	if err != nil{
@@ -433,47 +449,87 @@ func GenLayer4to7(hex string) Layer4to7{
 	fmt.Println("Label: ", label)
 
 
+	currIndex=endIndex+1
+	endIndex+=3
 	//make fifth slice -- rev level
-	str = hex[56:58]
-	fmt.Println("Hex5: ", str)
+	str = hex[currIndex:endIndex]
+	//fmt.Println("Hex5: ", str)
 	revLvl := HexToDec(str)
 	//set the value and print it
 	l4p.revLvl = revLvl
 	fmt.Println("revLvl: ", revLvl)
 
 	//Bits 58 and 59 are skipped
-
+	currIndex=endIndex+4
+	endIndex+=6
 	//make sixth slice -- number of octets in the data
-	str = hex[60:62]
-	fmt.Println("Hex6: ", str)
+	str = hex[currIndex:endIndex]
+	//fmt.Println("Hex6: ", str)
 	numOctets := HexToDec(str)
 	//set the value and print it
 	l4p.numBytes = numOctets
 	fmt.Println("numBytes: ", numOctets)
 
 
+	currIndex=endIndex+1
+	endIndex+=3
 	//make seventh slice -- number of data bits in the last octet
-	str = hex[62:64]
-	fmt.Println("Hex7: ", str)
+	str = hex[currIndex:endIndex]
+	//fmt.Println("Hex7: ", str)
 	numLastBits := HexToDec(str)
 	//set the value and print it
 	l4p.numLastBits = numLastBits
 	fmt.Println("numLastBytes: ", numLastBits)
 
+	currChar:=""
+	prevChar:=""
+	str=""
+	for ; len(str) < 20; {
+		currChar = string(hex[currIndex])
+		prevChar = string(hex[currIndex-1])
 
+		if prevChar == " " && currChar == " "{
+			currIndex++
+		}else if string(hex[currIndex]) != "|" {
+			str += string(hex[currIndex])
+			currIndex++
+		}else{
+			currIndex++
+			for ; string(hex[currIndex]) != "|" ; {
+				currIndex++
+			}
+			currIndex += 12
+			//fmt.Println("hex at i: " + string(hex[i]))
+		}
+	}
+
+	//currIndex=endIndex+1
+	//endIndex+=20
 	//make the eighth slice -- code line data
-	str = hex[64:78]
-	fmt.Println("Hex8: ", str)
+	//str = hex[currIndex:endIndex]
+	//fmt.Println("Hex8: ", str)
 	//convert from hex to binary
-	codeLine := HexToBinary(str)
+	codeLine := str
 	//set the value and print it
 	l4p.codeLineData = codeLine
 	fmt.Println("codeLine: ", codeLine)
 
 
 	//make the last slice -- CRC 16 check. Just need to store string version of the hex
-	str = hex[78:82]
-	fmt.Println("Hex9: ", str)
+	currIndex=currIndex+1
+	str=""
+
+	for ; len(str) < 4; {
+		currChar = string(hex[currIndex])
+
+		if currChar == " "{
+			currIndex++
+		}else {
+			str += string(hex[currIndex])
+			currIndex++
+		}
+	}
+	//fmt.Println("Hex9: ", str)
 	//set and print the value
 	l4p.crc = str
 	fmt.Println("crc: ", str)
@@ -495,6 +551,18 @@ func HexToBinary(s string) string{
 	}
 
 	bitArray := fmt.Sprintf("%b", dec[0])
+	fmt.Println("bit array: ", bitArray)
+	//fmt.Println("bit array: ", bits)
+	if len(bitArray) < 8 {
+		fmt.Println("Length: ",len(bitArray))
+		x:=8-len(bitArray)
+		for i := 0; i < x; i++ {
+			bitArray = "0" + bitArray
+		}
+
+	}
+	fmt.Println("bit array after: ", bitArray)
+	fmt.Println()
 	return bitArray
 }
 
