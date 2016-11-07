@@ -186,6 +186,36 @@ func (_ tApp) ShowInfo(
 }
 
 
+type tMap struct {}
+var Map tMap
+
+
+func (_ tMap) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Map.Index", args).Url
+}
+
+func (_ tMap) Settings(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Map.Settings", args).Url
+}
+
+func (_ tMap) SaveSettings(
+		password string,
+		verifyPassword string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "password", password)
+	revel.Unbind(args, "verifyPassword", verifyPassword)
+	return revel.MainRouter.Reverse("Map.SaveSettings", args).Url
+}
+
+
 type tAdmin struct {}
 var Admin tAdmin
 
@@ -224,36 +254,6 @@ func (_ tAdmin) Approve(
 	
 	revel.Unbind(args, "UserId", UserId)
 	return revel.MainRouter.Reverse("Admin.Approve", args).Url
-}
-
-
-type tMap struct {}
-var Map tMap
-
-
-func (_ tMap) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Map.Index", args).Url
-}
-
-func (_ tMap) Settings(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Map.Settings", args).Url
-}
-
-func (_ tMap) SaveSettings(
-		password string,
-		verifyPassword string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "password", password)
-	revel.Unbind(args, "verifyPassword", verifyPassword)
-	return revel.MainRouter.Reverse("Map.SaveSettings", args).Url
 }
 
 
