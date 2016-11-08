@@ -112,28 +112,12 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		ctx.lineTo(.820*canvas.width, .440*canvas.height);
 		ctx.stroke();
 
-        //Aiden's section
-		//Burke and Ruth
-		ctx.moveTo(.04 *canvas.width, .575*canvas.height);
-		ctx.lineTo(.560 *canvas.width, .575*canvas.height);
-		ctx.stroke();
-	    ctx.moveTo(.04 *canvas.width, .595*canvas.height);
-		ctx.lineTo(.560 *canvas.width, .595*canvas.height);
-		ctx.stroke();
-		//Quarry section
-		ctx.moveTo(.11 * canvas.width, .550 * canvas.height);
-		ctx.lineTo(.17 * canvas.width, .550 * canvas.height);
-		ctx.stroke();
-		ctx.moveTo(.17 * canvas.width, .550 * canvas.height);
-		ctx.lineTo(.21 * canvas.width , .575 * canvas.height)
-		ctx.stroke();
-
 		return this;
 };
 
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	return this;
-}
+};
 	
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
@@ -142,7 +126,45 @@ drawLurganToShip.prototype.draw = function(canvas, ctx){
 		return this;
 };
 
+// Draws Burke to Wyomissing Segment
+var drawBurkeToWyomissing = function(){
+};
 
+drawBurkeToWyomissing.prototype.drawBTWText = function(canvas, ctx){
+	return this;
+};
+
+drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
+	ctx.lineWidth = 4;
+	ctx.strokeStyle = "white";
+	ctx.beginPath();
+	 //Aiden's section
+	//Burke and Ruth
+	ctx.moveTo(.04 *canvas.width, .575*canvas.height);
+	ctx.lineTo(.560 *canvas.width, .575*canvas.height);
+	ctx.stroke();
+    ctx.moveTo(.04 *canvas.width, .595*canvas.height);
+	ctx.lineTo(.560 *canvas.width, .595*canvas.height);
+	ctx.stroke();
+	//Quarry section
+	ctx.moveTo(.11 * canvas.width, .550 * canvas.height);
+	ctx.lineTo(.17 * canvas.width, .550 * canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.17 * canvas.width, .550 * canvas.height);
+	ctx.lineTo(.21 * canvas.width , .575 * canvas.height)
+	ctx.stroke();
+	return this;
+};
+
+drawBurkeToWyomissing.prototype.drawBTWControlPoints = function(canvas, ctx){
+	return this;
+};
+
+drawBurkeToWyomissing.prototype.draw = function(canvas, ctx){
+	this.drawBTWTrack(canvas, ctx);
+	this.drawBTWText(canvas, ctx);
+	this.drawBTWControlPoints(canvas, ctx);
+};
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
@@ -171,7 +193,10 @@ $(document).ready(function(){
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, 20);
 	ctx.fillText("Harrisburg Division", 0, 40);
-	var dlts = new drawLurganToShip(canvas, ctx);
+	var dlts = new drawLurganToShip();
+	var dbtw = new drawBurkeToWyomissing();
 	dlts.draw(canvas, ctx);
+	dbtw.draw(canvas, ctx);
+	
 })
 	
