@@ -12,10 +12,24 @@ type Map struct {
 	App
 }
 
+//TODO
+//Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table), then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
+func getTrainData() string{
+	return nil
+}
 
 //Serve the Index page for the map
 func (c Map) Index() revel.Result {
 	// TODO: Check to make sure a user is approved.  Otherwise re-route them to the progress page
+	// if not signed in, go to login
+	if c.connected() == nil {
+		return c.Redirect(routes.App.Index())
+	}
+	// if not approved, go to pending
+	if !c.connected().Approved {
+		return c.Redirect(routes.App.AppPending())
+	}
+	//otherwise we're good to go.
 	/*
 	To render the map:
 	1) mnemonics - Start, Location, Destination

@@ -21,13 +21,27 @@ type App struct {
 func (c App) Index() revel.Result {
 	//Check if the person accessing the index is already connected (logged in)
 	if c.connected() != nil {
-		return c.Redirect(routes.Map.Index()) //redirect to the map.
+		// if they're verified
+		if c.connected().Approved {
+			return c.Redirect(routes.Map.Index()) //redirect to the map.
+		}
+		return c.Redirect(routes.App.AppPending)
 	}
 	// Otherwise server the register login page
 	c.Flash.Error("Please log in first")
 	return c.Render()
 }
 
+func (c App) AppPending() revel.Result{
+	if c.connected() == nil {
+		return c.Redirect(routes.App.Index())
+	}
+	// if approved, send them to the map
+	if c.connected().Approved {
+		return c.Redirect(routes.Map.Index())
+	}
+	return c.Render()
+}
 //Purpose: Utility method to determine if the client is signed in as a User
 //Params: None
 //Returns:
@@ -78,6 +92,13 @@ func (c App) getUser(email string) *models.User {
 //Prints:
 //	Nothing
 func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
+	//first check to make sure the email isn't taken
+	if c.getUser(user.Email) != nil {
+		//email is taken.  Let them fix it.
+		c.Flash.Error("Email is already in use.  Please sign-in, or register with a different email.")
+		return c.Redirect(routes.App.Index())
+	}
+
 	//Set the required fields for Revel Validation
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
@@ -100,8 +121,9 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	// They are NOT approved. GEt outa here
 	user.Approved = false
 
-	////Sets admin privilege to false by default (unsure if necessary here)
-	//user.Admin = false
+	////Sets admin privilege to false by default
+	user.Admin = false
+
 	// Insert the user into the DB
 	err := c.Txn.Insert(&user)
 	// check for error
@@ -146,7 +168,11 @@ func (c App) Login(email, password string, remember bool) revel.Result {
 			welcome:="Welcome back " + user.FirstName + "!"
 			c.Flash.Success(welcome)
 			return c.Redirect(routes.Map.Index())
+		} else {
+			println("Incorrect Password!")
 		}
+	} else {
+		println("Incorrect User!")
 	}
 	// Otherwise the log in failed, have them try again.
 	c.Flash.Out["email"] = email

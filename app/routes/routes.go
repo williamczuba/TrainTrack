@@ -30,6 +30,35 @@ func (_ tGorpController) Rollback(
 }
 
 
+type tStatic struct {}
+var Static tStatic
+
+
+func (_ tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (_ tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
+}
+
+
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -69,35 +98,6 @@ func (_ tTestRunner) List(
 }
 
 
-type tStatic struct {}
-var Static tStatic
-
-
-func (_ tStatic) Serve(
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (_ tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
-}
-
-
 type tApp struct {}
 var App tApp
 
@@ -107,6 +107,13 @@ func (_ tApp) Index(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+func (_ tApp) AppPending(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.AppPending", args).Url
 }
 
 func (_ tApp) SaveUser(
@@ -186,6 +193,27 @@ func (_ tApp) ShowInfo(
 }
 
 
+type tAdmin struct {}
+var Admin tAdmin
+
+
+func (_ tAdmin) Dash(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Admin.Dash", args).Url
+}
+
+func (_ tAdmin) Approve(
+		UserId int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "UserId", UserId)
+	return revel.MainRouter.Reverse("Admin.Approve", args).Url
+}
+
+
 type tMap struct {}
 var Map tMap
 
@@ -213,47 +241,6 @@ func (_ tMap) SaveSettings(
 	revel.Unbind(args, "password", password)
 	revel.Unbind(args, "verifyPassword", verifyPassword)
 	return revel.MainRouter.Reverse("Map.SaveSettings", args).Url
-}
-
-
-type tAdmin struct {}
-var Admin tAdmin
-
-
-func (_ tAdmin) Dash(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Admin.Dash", args).Url
-}
-
-func (_ tAdmin) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Admin.Index", args).Url
-}
-
-func (_ tAdmin) Login(
-		email string,
-		password string,
-		remember bool,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "email", email)
-	revel.Unbind(args, "password", password)
-	revel.Unbind(args, "remember", remember)
-	return revel.MainRouter.Reverse("Admin.Login", args).Url
-}
-
-func (_ tAdmin) Approve(
-		UserId int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "UserId", UserId)
-	return revel.MainRouter.Reverse("Admin.Approve", args).Url
 }
 
 

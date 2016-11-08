@@ -1,4 +1,18 @@
 
+.fError, .fSuccess {
+    font-size: 125%;
+    text-align: center;
+    position: relative;
+    top: -10px;
+}
+
+.fError {
+    color: #c00;
+}
+
+.fSuccess {
+    color: #0c0;
+}
 
 .navbar-header {
     float: center;

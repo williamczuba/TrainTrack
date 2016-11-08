@@ -14,6 +14,7 @@ var (
 	Dbm *gorp.DbMap
 )
 
+
 //Purpose: Initialize the Database Table
 //Params: None
 //Returns: Nothing
@@ -59,7 +60,7 @@ func InitDB() {
 		"State":	  50,
 		"Country":        100,
 		"Email":	  50,
-		"Approved":	  20,
+		//"Approved":	  20,
 		"SecurityQuestion": 100,
 		"HashedSecureAnswer":100,
 	})
@@ -78,15 +79,33 @@ func InitDB() {
 		[]byte("demo"), bcrypt.DefaultCost)
 	bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
-	demoUser := &models.User{0, "demoF", "demoL", "St. Address", "City", "State", "Country", "demo", "demo", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
+	demoUser := &models.User{
+		UserId: 0,
+		FirstName:  "demoF",
+		LastName: "demoL",
+		StreetAddress:  "St. Address",
+		City: "City",
+		State: "State",
+		Country: "Country",
+		Email: "demo",
+		Password: "demo",
+		HashedPassword: bcryptPassword,
+		Approved: true,
+		SecurityQuestion: "What is this?",
+		SecureAnswer: "demo",
+		HashedSecureAnswer: bcryptSecureAnswer,
+		Admin: true,
+	}
 	if err := Dbm.Insert(demoUser); err != nil {
 		panic(err)
 	}
-
-	trustMe := &models.User{0, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer}
+	bcryptPassword, _ = bcrypt.GenerateFromPassword(
+		[]byte("trust"), bcrypt.DefaultCost)
+	trustMe := &models.User{1, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer, false}
 	if err := Dbm.Insert(trustMe); err != nil {
 		panic(err)
 	}
+	println("Trustme: username:", trustMe.Email, " password:", trustMe.Password)
 	println("DEMO Question: ", demoUser.SecurityQuestion)
 }
 

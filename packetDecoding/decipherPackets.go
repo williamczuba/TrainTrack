@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 const BLOCKBITS  = 60
@@ -275,6 +276,13 @@ func GenLayer3(hex string) Layer3{
 
 		}
 	}
+	str = strings.Replace(str, " ", "", -1)
+	str = strings.Replace(str, "A", "0", -1)
+	str = strings.Replace(str, "B", "1", -1)
+	str = strings.Replace(str, "C", "2", -1)
+	str = strings.Replace(str, "D", "3", -1)
+	str = strings.Replace(str, "E", "4", -1)
+	str = strings.Replace(str, "F", "5", -1)
 	//the destination address becomes the string that we built
 	l3.destAddr = str
 	//fmt.Println("Dest Address: " + str)
@@ -312,7 +320,13 @@ func GenLayer3(hex string) Layer3{
 	//end of the source address in the hex dump is now at index i
 	sEnd := i
 	//fmt.Println("sEnd: ", sEnd)
-
+	str = strings.Replace(str, " ", "", -1)
+	str = strings.Replace(str, "A", "0", -1)
+	str = strings.Replace(str, "B", "1", -1)
+	str = strings.Replace(str, "C", "2", -1)
+	str = strings.Replace(str, "D", "3", -1)
+	str = strings.Replace(str, "E", "4", -1)
+	str = strings.Replace(str, "F", "5", -1)
 	//str = hex[sStart:sEnd]
 	//sets the source address to our current string
 	l3.sourceAddr = str

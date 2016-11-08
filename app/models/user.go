@@ -8,20 +8,21 @@ import (
 
 //Struct for the user
 type User struct {
-	UserId             int
-	FirstName          string
-	LastName	   string
-	StreetAddress	   string
-	City		   string
-	State	           string
-	Country		   string
-	Email		   string
-	Password           string
-	HashedPassword     []byte
-	Approved	   bool
-	SecurityQuestion   string
-	SecureAnswer	   string
-	HashedSecureAnswer []byte
+	UserId             	int
+	FirstName          	string
+	LastName	   	string
+	StreetAddress	   	string
+	City		   	string
+	State	           	string
+	Country		   	string
+	Email		   	string
+	Password           	string
+	HashedPassword     	[]byte
+	Approved	   	bool
+	SecurityQuestion   	string
+	SecureAnswer	   	string
+	HashedSecureAnswer	[]byte
+	Admin			bool
 }
 
 //Return the username as a string
@@ -77,17 +78,19 @@ func (user *User) Validate(v *revel.Validation) {
 	v.Check(user.LastName,
 		revel.Required{},
 		revel.MinSize{2},
-		revel.MaxSize{100},
-	)
+		revel.MaxSize{100})
 
+	v.Check(user.Admin,
+		revel.MaxSize{0})
 
 }
+
+
 
 //Validate the user password (since we don't store plain text passwords, we need to verify it separately)
 func ValidatePassword(v *revel.Validation, password string) *revel.ValidationResult {
 	return v.Check(password,
 		revel.Required{},
 		revel.MaxSize{15},
-		revel.MinSize{4},
-	)
+		revel.MinSize{4})
 }

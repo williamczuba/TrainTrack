@@ -28,19 +28,31 @@
 <!-- Navigation -->
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <a class="navbar-brand"  href="/">TrainTrack</a>
-
         {{if .user}}
-        <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
 
             <li><a href="/logout">Logout</a></li>
 
             <li> <a href="{{url "Map.Settings"}}">Settings</a></li>
-            </ul>
+            {{if .user.Admin}}
+                <li><a href="/admin-dash">Dash</a></li>
+            {{end}}
+        </ul>
         {{end}}
     </div>
 
 
     <!-- /.container-fluid -->
 </nav>
+
+{{if .flash.error}}
+<p class="fError">
+    <strong>{{.flash.error}}</strong>
+</p>
+{{end}}
+{{if .flash.success}}
+<p class="fSuccess">
+    <strong>{{.flash.success}}</strong>
+</p>
+{{end}}
