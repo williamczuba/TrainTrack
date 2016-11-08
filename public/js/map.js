@@ -17,6 +17,9 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.45*canvas.height);
 		ctx.fillText("Lurgan Branch", .795*canvas.width, 0.38*canvas.height);
 		ctx.fillText("to Ship", .795*canvas.width, 0.4*canvas.height);
+		ctx.fillText("Harrisburg Line", .02 * canvas.width, .525 * canvas.height);
+        ctx.fillText("to RUTH", .02 * canvas.width, .545 * canvas.height);
+
 		// Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.19*canvas.width, 0.47*canvas.height);
@@ -37,6 +40,9 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
+		//concept for storage of track segments - needed for recoloring?
+		//var trackseg = ["mnemonic", x, y, x2, y2]
+
 		// Draw Track - Nearby text on original layout listed in comments
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = "white";
@@ -44,6 +50,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		// CSX
 		ctx.moveTo(.115*canvas.width, .370*canvas.height);
 		ctx.lineTo(.185*canvas.width, .370*canvas.height);
+		var trackseg1 = ["", .115, .370, .185, .370]
 		ctx.stroke();
 		ctx.lineTo(.205*canvas.width, .385*canvas.height);
 		ctx.stroke();
@@ -104,6 +111,23 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		ctx.stroke();
 		ctx.lineTo(.820*canvas.width, .440*canvas.height);
 		ctx.stroke();
+
+        //Aiden's section
+		//Burke and Ruth
+		ctx.moveTo(.04 *canvas.width, .575*canvas.height);
+		ctx.lineTo(.560 *canvas.width, .575*canvas.height);
+		ctx.stroke();
+	    ctx.moveTo(.04 *canvas.width, .595*canvas.height);
+		ctx.lineTo(.560 *canvas.width, .595*canvas.height);
+		ctx.stroke();
+		//Quarry section
+		ctx.moveTo(.11 * canvas.width, .550 * canvas.height);
+		ctx.lineTo(.17 * canvas.width, .550 * canvas.height);
+		ctx.stroke();
+		ctx.moveTo(.17 * canvas.width, .550 * canvas.height);
+		ctx.lineTo(.21 * canvas.width , .575 * canvas.height)
+		ctx.stroke();
+
 		return this;
 };
 
