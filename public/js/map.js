@@ -11,31 +11,31 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillStyle = "#ffa500";
 		// TODO: Don't hardcode size values as px (ie 40, 380). Always use either em (for font), or %
 		//			Otherwise it'll be very difficult to resize to the screen.  If you use %, it will auto resize to fit on any screen.
-		ctx.fillText("CSX", 0.04*canvas.width, 0.38*canvas.height);	
-		ctx.fillText("Lurgan Sub", 0.04*canvas.width, 0.4*canvas.height);
-		ctx.fillText("NS H-Line", 0.04*canvas.width, 0.43*canvas.height);
-		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.45*canvas.height);
-		ctx.fillText("Lurgan Branch", .795*canvas.width, 0.38*canvas.height);
-		ctx.fillText("to Ship", .795*canvas.width, 0.4*canvas.height);
-		ctx.fillText("Harrisburg Line", .02 * canvas.width, .525 * canvas.height);
-        ctx.fillText("to RUTH", .02 * canvas.width, .545 * canvas.height);
+		ctx.fillText("CSX", 0.02*canvas.width, 0.38*canvas.height);	
+		ctx.fillText("Lurgan Sub", 0.02*canvas.width, 0.4*canvas.height);
+		ctx.fillText("NS H-Line", 0.02*canvas.width, 0.43*canvas.height);
+		ctx.fillText("to Roanoke", 0.02*canvas.width, 0.45*canvas.height);
+		ctx.fillText("Lurgan Branch", .398*canvas.width, 0.38*canvas.height);
+		ctx.fillText("to Ship", .398*canvas.width, 0.4*canvas.height);
+		ctx.fillText("Harrisburg Line", .01 * canvas.width, .525 * canvas.height);
+        ctx.fillText("to RUTH", .01 * canvas.width, .545 * canvas.height);
 
 		// Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
-		ctx.fillText("TOWN", 0.19*canvas.width, 0.47*canvas.height);
-		ctx.fillText("CP-67", 0.44*canvas.width, 0.4*canvas.height);
-		ctx.fillText("CP-65", 0.52*canvas.width, 0.4*canvas.height);
-		ctx.fillText("CP-64", 0.575*canvas.width, 0.47*canvas.height);
-		ctx.fillText("CP-62", 0.62*canvas.width, 0.47*canvas.height);
-		ctx.fillText("CP-53", 0.72*canvas.width, 0.47*canvas.height);
-		ctx.fillText("CP-50", 0.8*canvas.width, 0.47*canvas.height);
+		ctx.fillText("TOWN", 0.095*canvas.width, 0.47*canvas.height);
+		ctx.fillText("CP-67", 0.22*canvas.width, 0.4*canvas.height);
+		ctx.fillText("CP-65", 0.26*canvas.width, 0.4*canvas.height);
+		ctx.fillText("CP-64", 0.288*canvas.width, 0.47*canvas.height);
+		ctx.fillText("CP-62", 0.31*canvas.width, 0.47*canvas.height);
+		ctx.fillText("CP-53", 0.36*canvas.width, 0.47*canvas.height);
+		ctx.fillText("CP-50", 0.4*canvas.width, 0.47*canvas.height);
 		// Orange, size 10
 		ctx.font = ("0.8em Arial");
 		ctx.fillStyle = "#ffa500";
-		ctx.fillText("NS Industrial Lead", 0.402*canvas.width, 0.505*canvas.height);
-		ctx.fillText("CSX Lurgan Sub", 0.402*canvas.width, 0.465*canvas.height);
-		ctx.fillText("CSX Hanover Sub", 0.402*canvas.width, 0.485*canvas.height);
-		ctx.fillText("Greencastle Yard", 0.49*canvas.width, 0.475*canvas.height);
+		ctx.fillText("NS Industrial Lead", 0.201*canvas.width, 0.510*canvas.height);
+		ctx.fillText("CSX Lurgan Sub", 0.201*canvas.width, 0.47*canvas.height);
+		ctx.fillText("CSX Hanover Sub", 0.201*canvas.width, 0.49*canvas.height);
+		ctx.fillText("Greencastle Yard", 0.245*canvas.width, 0.475*canvas.height);
 		return this;
 };
 
@@ -48,68 +48,68 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		ctx.strokeStyle = "white";
 		ctx.beginPath();
 		// CSX
-		ctx.moveTo(.115*canvas.width, .370*canvas.height);
-		ctx.lineTo(.185*canvas.width, .370*canvas.height);
-		var trackseg1 = ["", .115, .370, .185, .370]
+		ctx.moveTo(.058*canvas.width, .370*canvas.height);
+		ctx.lineTo(.093*canvas.width, .370*canvas.height);
+		var trackseg1 = ["", .058, .370, .093, .370]
 		ctx.stroke();
-		ctx.lineTo(.205*canvas.width, .385*canvas.height);
+		ctx.lineTo(.103*canvas.width, .385*canvas.height);
 		ctx.stroke();
 		// Lurgan Sub
-		ctx.moveTo(.115*canvas.width, .395*canvas.height);
-		ctx.lineTo(.235*canvas.width, .395*canvas.height);
+		ctx.moveTo(.058*canvas.width, .395*canvas.height);
+		ctx.lineTo(.118*canvas.width, .395*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.285*canvas.width, .435*canvas.height);
+		ctx.lineTo(.143*canvas.width, .435*canvas.height);
 		// NS H-Line
-		ctx.moveTo(.115*canvas.width, .420*canvas.height);
-		ctx.lineTo(.195*canvas.width, .420*canvas.height);
+		ctx.moveTo(.058*canvas.width, .420*canvas.height);
+		ctx.lineTo(.098*canvas.width, .420*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.215*canvas.width, .435*canvas.height);
+		ctx.lineTo(.108*canvas.width, .435*canvas.height);
 		ctx.stroke();
 		// to Roanoke
-		ctx.moveTo(.115*canvas.width, .440*canvas.height);
-		ctx.lineTo(.860*canvas.width, .440*canvas.height);
+		ctx.moveTo(.058*canvas.width, .440*canvas.height);
+		ctx.lineTo(.430*canvas.width, .440*canvas.height);
 		ctx.stroke();
 		// NS Industrial Lead
-		ctx.moveTo(.265*canvas.width, .440*canvas.height);
-		ctx.lineTo(.335*canvas.width, .500*canvas.height);
+		ctx.moveTo(.133*canvas.width, .440*canvas.height);
+		ctx.lineTo(.168*canvas.width, .500*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.400*canvas.width, .500*canvas.height);
+		ctx.lineTo(.200*canvas.width, .500*canvas.height);
 		ctx.stroke();
 		// CSX Lurgan Sub
-		ctx.moveTo(.310*canvas.width, .440*canvas.height);
-		ctx.lineTo(.335*canvas.width, .460*canvas.height);
+		ctx.moveTo(.155*canvas.width, .440*canvas.height);
+		ctx.lineTo(.168*canvas.width, .460*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.400*canvas.width, .460*canvas.height);
+		ctx.lineTo(.200*canvas.width, .460*canvas.height);
 		ctx.stroke();
 		// CSX Hanover Sub
-		ctx.moveTo(.360*canvas.width, .460*canvas.height);
-		ctx.lineTo(.385*canvas.width, .480*canvas.height);
+		ctx.moveTo(.180*canvas.width, .460*canvas.height);
+		ctx.lineTo(.193*canvas.width, .480*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.400*canvas.width, .480*canvas.height);
+		ctx.lineTo(.200*canvas.width, .480*canvas.height);
 		ctx.stroke();
 		// Greencastle Yard
-		ctx.moveTo(.440*canvas.width, .440*canvas.height);
-		ctx.lineTo(.465*canvas.width, .460*canvas.height);
+		ctx.moveTo(.220*canvas.width, .440*canvas.height);
+		ctx.lineTo(.233*canvas.width, .460*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.560*canvas.width, .460*canvas.height);
+		ctx.lineTo(.280*canvas.width, .460*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.585*canvas.width, .440*canvas.height);
+		ctx.lineTo(.293*canvas.width, .440*canvas.height);
 		ctx.stroke();
 		// CP-65 to CP-62
-		ctx.moveTo(.510*canvas.width, .440*canvas.height);
-		ctx.lineTo(.535*canvas.width, .420*canvas.height);
+		ctx.moveTo(.255*canvas.width, .440*canvas.height);
+		ctx.lineTo(.268*canvas.width, .420*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.630*canvas.width, .420*canvas.height);
+		ctx.lineTo(.315*canvas.width, .420*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.655*canvas.width, .440*canvas.height);
+		ctx.lineTo(.328*canvas.width, .440*canvas.height);
 		ctx.stroke();
 		// Near CP-53 and CP-50
-		ctx.moveTo(.740*canvas.width, .440*canvas.height);
-		ctx.lineTo(.765*canvas.width, .420*canvas.height);
+		ctx.moveTo(.370*canvas.width, .440*canvas.height);
+		ctx.lineTo(.383*canvas.width, .420*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.795*canvas.width, .420*canvas.height);
+		ctx.lineTo(.398*canvas.width, .420*canvas.height);
 		ctx.stroke();
-		ctx.lineTo(.820*canvas.width, .440*canvas.height);
+		ctx.lineTo(.41*canvas.width, .440*canvas.height);
 		ctx.stroke();
 
 		return this;
