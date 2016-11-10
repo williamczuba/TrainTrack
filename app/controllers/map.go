@@ -12,11 +12,11 @@ type Map struct {
 	App
 }
 
-//TODO
-//Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table), then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
-func getTrainData() string{
-	return nil
-}
+////TODO
+////Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table), then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
+//func getTrainData() string{
+//	return nil
+//}
 
 //Serve the Index page for the map
 func (c Map) Index() revel.Result {
