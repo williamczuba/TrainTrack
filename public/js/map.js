@@ -44,7 +44,6 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		// Draw Track - Nearby text on original layout listed in comments
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = "white";
-		ctx.beginPath();
 		// CSX
 		ctx.moveTo(.058*canvas.width, .370*canvas.height);
 		ctx.lineTo(.093*canvas.width, .370*canvas.height);
@@ -151,8 +150,6 @@ drawBurkeToWyomissing.prototype.drawBTWText = function(canvas, ctx){
 drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
 	ctx.lineWidth = 4;
 	ctx.strokeStyle = "white";
-	ctx.beginPath();
-
 	//Burke and Ruth
 	ctx.moveTo(.04 *canvas.width, .575*canvas.height);
 	ctx.lineTo(.595 *canvas.width, .575*canvas.height);
@@ -226,35 +223,102 @@ drawBurkeToWyomissing.prototype.draw = function(canvas, ctx){
 
 // Draw Cannon to Beaver Segment
 var drawCannonToBeaver = function() {
-}
+};
 
 drawCannonToBeaver.prototype.drawCTBText = function(canvas, ctx){
+	// Gray, size 12
+	ctx.fillStyle = "#d3d3d3";
+	ctx.fillText("CANNON", 0.016*canvas.width, 0.136*canvas.height);
 	return this;
-}
+};
 
 drawCannonToBeaver.prototype.drawCTBTrack = function(canvas, ctx){
 	ctx.lineWidth = 4;
 	ctx.strokeStyle = "white";
-	ctx.beginPath();
 	// Cannon to Banks
-	ctx.moveTo(.005*canvas.width, .1*canvas.height);
-	ctx.moveTo(.113*canvas.width, .1*canvas.height);
+	ctx.moveTo(.005*canvas.width, .1*canvas.height); // Straight rails
+	ctx.lineTo(.113*canvas.width, .1*canvas.height);
 	ctx.stroke();
 	ctx.moveTo(.005*canvas.width, .12*canvas.height);
-	ctx.moveTo(.113*canvas.width, .1*canvas.height);
+	ctx.lineTo(.125*canvas.width, .12*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.035*canvas.width, .105*canvas.height); // Diagonals connecting straight rails
+	ctx.lineTo(.04*canvas.width, .115*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.055*canvas.width, .105*canvas.height);
+	ctx.lineTo(.05*canvas.width, .115*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.06*canvas.width, .125*canvas.height); // Underlying bracket
+	ctx.lineTo(.065*canvas.width, .135*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.065*canvas.width, .135*canvas.height); 
+	ctx.lineTo(.1*canvas.width, .135*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.1*canvas.width, .135*canvas.height); 
+	ctx.lineTo(.105*canvas.width, .125*canvas.height);
+	ctx.stroke();
+	// Banks to Stoney
+	ctx.moveTo(.113*canvas.width, .1*canvas.height); // Ramp to top rail
+	ctx.lineTo(.121*canvas.width, .09*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.121*canvas.width, .09*canvas.height); 
+	ctx.lineTo(.19*canvas.width, .09*canvas.height); // Top rail
+	ctx.stroke();
+	ctx.moveTo(.19*canvas.width, .09*canvas.height); 
+	ctx.lineTo(.205*canvas.width, .12*canvas.height); // Ramp down from top rail
+	ctx.stroke();
+	ctx.moveTo(.12*canvas.width, .12*canvas.height); // Left mid rail 
+	ctx.lineTo(.125*canvas.width, .11*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.125*canvas.width, .11*canvas.height); 
+	ctx.lineTo(.135*canvas.width, .11*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.135*canvas.width, .11*canvas.height); 
+	ctx.lineTo(.14*canvas.width, .09*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.15*canvas.width, .09*canvas.height); // Right mid rail
+	ctx.lineTo(.155*canvas.width, .1*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.155*canvas.width, .1*canvas.height); 
+	ctx.lineTo(.185*canvas.width, .1*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.185*canvas.width, .1*canvas.height); 
+	ctx.lineTo(.185*canvas.width, .1*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.185*canvas.width, .1*canvas.height); 
+	ctx.lineTo(.199*canvas.width, .13*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.130*canvas.width, .11*canvas.height); // Lower mid rail
+	ctx.lineTo(.135*canvas.width, .12*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.135*canvas.width, .12*canvas.height); 
+	ctx.lineTo(.18*canvas.width, .12*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.18*canvas.width, .12*canvas.height); 
+	ctx.lineTo(.185*canvas.width, .13*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.135*canvas.width, .11*canvas.height); 
+	ctx.lineTo(.14*canvas.width, .09*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.125*canvas.width, .12*canvas.height); 
+	ctx.lineTo(.133*canvas.width, .135*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.133*canvas.width, .135*canvas.height); 
+	ctx.lineTo(.502*canvas.width, .135*canvas.height); 
 	ctx.stroke();
 	return this;
-}
+};
 
 drawCannonToBeaver.prototype.drawCTBControlPoints = function(canvas, ctx){
 	return this;	
-}
+};
 
 drawCannonToBeaver.prototype.draw = function(canvas, ctx){
 	this.drawCTBTrack(canvas, ctx);
 	this.drawCTBText(canvas, ctx);
 	this.drawCTBControlPoints(canvas, ctx);
-}
+	return this;
+};
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
@@ -285,8 +349,9 @@ $(document).ready(function(){
 	ctx.fillText("Harrisburg Division", 0, 40);
 	var dlts = new drawLurganToShip();
 	var dbtw = new drawBurkeToWyomissing();
+	var dctb = new drawCannonToBeaver();
 	dlts.draw(canvas, ctx);
 	dbtw.draw(canvas, ctx);
-	
+	dctb.draw(canvas, ctx);
 })
 	
