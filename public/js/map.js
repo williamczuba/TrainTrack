@@ -166,6 +166,38 @@ drawBurkeToWyomissing.prototype.draw = function(canvas, ctx){
 	this.drawBTWControlPoints(canvas, ctx);
 };
 
+// Draw Cannon to Beaver Segment
+var drawCannonToBeaver = function() {
+}
+
+drawCannonToBeaver.prototype.drawCTBText = function(canvas, ctx){
+	return this;
+}
+
+drawCannonToBeaver.prototype.drawCTBTrack = function(canvas, ctx){
+	ctx.lineWidth = 4;
+	ctx.strokeStyle = "white";
+	ctx.beginPath();
+	// Cannon to Banks
+	ctx.moveTo(.005*canvas.width, .1*canvas.height);
+	ctx.moveTo(.113*canvas.width, .1*canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.005*canvas.width, .12*canvas.height);
+	ctx.moveTo(.113*canvas.width, .1*canvas.height);
+	ctx.stroke();
+	return this;
+}
+
+drawCannonToBeaver.prototype.drawCTBControlPoints = function(canvas, ctx){
+	return this;	
+}
+
+drawCannonToBeaver.prototype.draw = function(canvas, ctx){
+	this.drawCTBTrack(canvas, ctx);
+	this.drawCTBText(canvas, ctx);
+	this.drawCTBControlPoints(canvas, ctx);
+}
+
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
 	var canvas = document.getElementById('mapCanvas');
