@@ -17,8 +17,6 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillText("to Roanoke", 0.02*canvas.width, 0.45*canvas.height);
 		ctx.fillText("Lurgan Branch", .398*canvas.width, 0.38*canvas.height);
 		ctx.fillText("to Ship", .398*canvas.width, 0.4*canvas.height);
-		ctx.fillText("Harrisburg Line", .01 * canvas.width, .525 * canvas.height);
-        ctx.fillText("to RUTH", .01 * canvas.width, .545 * canvas.height);
 
 		// Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
@@ -131,6 +129,22 @@ var drawBurkeToWyomissing = function(){
 };
 
 drawBurkeToWyomissing.prototype.drawBTWText = function(canvas, ctx){
+
+    //orange, size 12
+    ctx.font = ("1em Arial");
+	ctx.fillStyle = "#ffa500";
+    ctx.fillText("Harrisburg Line", .04 * canvas.width, .525 * canvas.height);
+    ctx.fillText("to RUTH", .04 * canvas.width, .545 * canvas.height);
+
+    ctx.fillText("Harrisburg Line", .04 * canvas.width, .655 * canvas.height);
+    ctx.fillText("to BEAVER", .04 * canvas.width, .675 * canvas.height);
+    //gray size 12
+    ctx.fillStyle = "#d3d3d3";
+    ctx.fillText("BURKE", .05 * canvas.width, .630 * canvas.height);
+
+    //orange size 10
+    ctx.font = ("0.8em Arial");
+
 	return this;
 };
 
@@ -138,21 +152,63 @@ drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
 	ctx.lineWidth = 4;
 	ctx.strokeStyle = "white";
 	ctx.beginPath();
-	 //Aiden's section
+
 	//Burke and Ruth
 	ctx.moveTo(.04 *canvas.width, .575*canvas.height);
-	ctx.lineTo(.560 *canvas.width, .575*canvas.height);
+	ctx.lineTo(.595 *canvas.width, .575*canvas.height);
 	ctx.stroke();
     ctx.moveTo(.04 *canvas.width, .595*canvas.height);
-	ctx.lineTo(.560 *canvas.width, .595*canvas.height);
+	ctx.lineTo(.595 *canvas.width, .595*canvas.height);
 	ctx.stroke();
 	//Quarry section
 	ctx.moveTo(.11 * canvas.width, .550 * canvas.height);
 	ctx.lineTo(.17 * canvas.width, .550 * canvas.height);
 	ctx.stroke();
 	ctx.moveTo(.17 * canvas.width, .550 * canvas.height);
-	ctx.lineTo(.21 * canvas.width , .575 * canvas.height)
+	ctx.lineTo(.21 * canvas.width, .575 * canvas.height)
 	ctx.stroke();
+	//Dunkle area
+	//Draws the arc above Wyomissing JCT and under Dunkle
+	ctx.moveTo(.475 * canvas.width, .575 * canvas.height); //   /
+	ctx.lineTo(.495 * canvas.width, .550 * canvas.height);
+	ctx.stroke();
+	ctx.moveTo(.495 * canvas.width, .550 * canvas.height);// ---
+	ctx.lineTo(.535 * canvas.width, .550 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.535 * canvas.width, .550 * canvas.height);// \
+    ctx.lineTo(.555 * canvas.width, .575 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.507 * canvas.width, .550 * canvas.height);// /
+    ctx.lineTo(.525 * canvas.width, .525 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.525 * canvas.width, .525 * canvas.height);// ---
+    ctx.lineTo(.540 * canvas.width, .525 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.540 * canvas.width, .525 * canvas.height); // /
+    ctx.lineTo(.555 * canvas.width, .51 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.555 * canvas.width, .51 * canvas.height); // | up part of Dunkle starting loop
+    ctx.lineTo(.555 * canvas.width, .40 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.555 * canvas.width, .40 * canvas.height); // / upper left corner of loop (outside part)
+    ctx.lineTo(.570 * canvas.width, .37 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.570 * canvas.width, .37 * canvas.height);// --- long portion of the top part of the loop
+    ctx.lineTo(.820 * canvas.width, .37 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.566 * canvas.width, .41 * canvas.height); //inner part of the top left corner loop
+    ctx.lineTo(.576 * canvas.width, .39 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.566 * canvas.width, .41 * canvas.height); // | inner part of the left side
+    ctx.lineTo(.566 * canvas.width, .64 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.555 * canvas.width, .575 * canvas.height); // | down pat of Dunkle starting loop
+    ctx.lineTo(.555 * canvas.width, .645 * canvas.height);
+    ctx.stroke();
 	return this;
 };
 
@@ -161,9 +217,11 @@ drawBurkeToWyomissing.prototype.drawBTWControlPoints = function(canvas, ctx){
 };
 
 drawBurkeToWyomissing.prototype.draw = function(canvas, ctx){
+
 	this.drawBTWTrack(canvas, ctx);
 	this.drawBTWText(canvas, ctx);
 	this.drawBTWControlPoints(canvas, ctx);
+	return this;
 };
 
 // Resizes the Canvas to the full viewport.

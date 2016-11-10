@@ -221,6 +221,38 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Map)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					37: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Settings",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					53: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "SaveSettings",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers.Admin)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -244,46 +276,14 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Map)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					32: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Settings",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					48: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "SaveSettings",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
 			103: "verifyPassword",
 			104: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
-			53: "verifyPassword",
-			55: "verifyPassword",
+			58: "verifyPassword",
+			60: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
 			43: "user.Email",
