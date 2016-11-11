@@ -306,6 +306,86 @@ drawCannonToBeaver.prototype.drawCTBTrack = function(canvas, ctx){
 	ctx.moveTo(.133*canvas.width, .135*canvas.height); 
 	ctx.lineTo(.502*canvas.width, .135*canvas.height); 
 	ctx.stroke();
+	// Mary to Hip
+	ctx.moveTo(.184*canvas.width, .140*canvas.height); // Left ramp down
+	ctx.lineTo(.189*canvas.width, .150*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.203*canvas.width, .140*canvas.height); // Right ramp down
+	ctx.lineTo(.198*canvas.width, .150*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.191*canvas.width, .140*canvas.height); // Crossing right ramp
+	ctx.lineTo(.196*canvas.width, .150*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.200*canvas.width, .155*canvas.height); // Crossing over right ramp
+	ctx.lineTo(.210*canvas.width, .178*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.189*canvas.width, .150*canvas.height); // Left line down 
+	ctx.lineTo(.189*canvas.width, .210*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.198*canvas.width, .150*canvas.height); // Right line down 
+	ctx.lineTo(.198*canvas.width, .203*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.189*canvas.width, .210*canvas.height); // Left Curve 
+	ctx.lineTo(.198*canvas.width, .230*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.198*canvas.width, .203*canvas.height); // Right Curve 
+	ctx.lineTo(.203*canvas.width, .213*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.203*canvas.width, .213*canvas.height); // Top line through CP-111L
+	ctx.lineTo(.335*canvas.width, .213*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.198*canvas.width, .230*canvas.height); // Bottom line through CP-111L
+	ctx.lineTo(.335*canvas.width, .230*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.232*canvas.width, .228*canvas.height); // Left HIP ramp 
+	ctx.lineTo(.237*canvas.width, .218*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.250*canvas.width, .228*canvas.height); // Right HIP ramp 
+	ctx.lineTo(.245*canvas.width, .218*canvas.height); 
+	ctx.stroke();
+	// Lines above HIP and CP-111L
+	ctx.moveTo(.209*canvas.width, .150*canvas.height); // Top ramp down
+	ctx.lineTo(.214*canvas.width, .160*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.214*canvas.width, .160*canvas.height); // Top line to X-crossing
+	ctx.lineTo(.253*canvas.width, .160*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.210*canvas.width, .178*canvas.height); // Bottom line to X-crossing
+	ctx.lineTo(.253*canvas.width, .178*canvas.height); 
+	ctx.stroke();	
+	ctx.moveTo(.253*canvas.width, .160*canvas.height); // X-Crossing
+	ctx.lineTo(.261*canvas.width, .178*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.253*canvas.width, .178*canvas.height);
+	ctx.lineTo(.256*canvas.width, .175*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.259*canvas.width, .165*canvas.height);
+	ctx.lineTo(.261*canvas.width, .160*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.261*canvas.width, .160*canvas.height); // Top line to CP-111L
+	ctx.lineTo(.335*canvas.width, .160*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.261*canvas.width, .178*canvas.height); // Bottom line to CP-111L
+	ctx.lineTo(.335*canvas.width, .178*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.320*canvas.width, .165*canvas.height); // Top and Bottom Bridging Ramp
+	ctx.lineTo(.325*canvas.width, .175*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.315*canvas.width, .180*canvas.height); // Second and Third Line Bridging Ramp
+	ctx.lineTo(.310*canvas.width, .190*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.283*canvas.width, .198*canvas.height); // Third and Fourth Line Bridging Ramp
+	ctx.lineTo(.278*canvas.width, .208*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.227*canvas.width, .165*canvas.height); // Left bridging ramp
+	ctx.lineTo(.232*canvas.width, .175*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.227*canvas.width, .182*canvas.height); // Ramp down to third rail
+	ctx.lineTo(.233*canvas.width, .194*canvas.height); 
+	ctx.stroke();
+	ctx.moveTo(.233*canvas.width, .194*canvas.height); // Third rail
+	ctx.lineTo(.335*canvas.width, .194*canvas.height); 
+	ctx.stroke();
 	return this;
 };
 
