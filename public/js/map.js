@@ -154,14 +154,15 @@ drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
 	ctx.moveTo(.04 *canvas.width, .575*canvas.height);
 	ctx.lineTo(.595 *canvas.width, .575*canvas.height);
 	ctx.stroke();
+	//Burke to Ruth 2
     ctx.moveTo(.04 *canvas.width, .595*canvas.height);
 	ctx.lineTo(.595 *canvas.width, .595*canvas.height);
 	ctx.stroke();
 	//Quarry section
-	ctx.moveTo(.11 * canvas.width, .550 * canvas.height);
+	ctx.moveTo(.11 * canvas.width, .550 * canvas.height); //draw the straight part
 	ctx.lineTo(.17 * canvas.width, .550 * canvas.height);
 	ctx.stroke();
-	ctx.moveTo(.17 * canvas.width, .550 * canvas.height);
+	ctx.moveTo(.17 * canvas.width, .550 * canvas.height); //draw the sloped part
 	ctx.lineTo(.21 * canvas.width, .575 * canvas.height)
 	ctx.stroke();
 	//Dunkle area
@@ -192,7 +193,7 @@ drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
     ctx.lineTo(.570 * canvas.width, .37 * canvas.height);
     ctx.stroke();
     ctx.moveTo(.570 * canvas.width, .37 * canvas.height);// --- long portion of the top part of the loop
-    ctx.lineTo(.820 * canvas.width, .37 * canvas.height);
+    ctx.lineTo(.880 * canvas.width, .37 * canvas.height);
     ctx.stroke();
 
     ctx.moveTo(.566 * canvas.width, .41 * canvas.height); //inner part of the top left corner loop
@@ -203,9 +204,89 @@ drawBurkeToWyomissing.prototype.drawBTWTrack = function(canvas, ctx){
     ctx.lineTo(.566 * canvas.width, .64 * canvas.height);
     ctx.stroke();
 
+    ctx.moveTo(.576 * canvas.width, .39 * canvas.height); // --- horizontal inner part of top left corner moving towards West Laurel
+    ctx.lineTo(.593 * canvas.width, .39 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.593 * canvas.width, .39 * canvas.height); //upward sloping part of the inner ramp near Tulp
+    ctx.lineTo(.603 * canvas.width, .37 * canvas.height);
+    ctx.stroke();
+
+
     ctx.moveTo(.555 * canvas.width, .575 * canvas.height); // | down pat of Dunkle starting loop
     ctx.lineTo(.555 * canvas.width, .645 * canvas.height);
     ctx.stroke();
+
+   //new stuff 11/12
+    ctx.moveTo(.629 * canvas.width, .37 * canvas.height); //draw the first part of the loop near Tulp
+    ctx.lineTo(.649 * canvas.width, .35 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.649 * canvas.width, .35 * canvas.height); //draw the long part of the loop near Tulp
+    ctx.lineTo(.770 * canvas.width, .35 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.770 * canvas.width, .35 * canvas.height); //draw the going down part of the loop near Tulp
+    ctx.lineTo(.790 * canvas.width, .37 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.830 * canvas.width, .37 * canvas.height); //draw the start of the ramp near West Laurel
+    ctx.lineTo(.850 * canvas.width, .35 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.850 * canvas.width, .35 * canvas.height); //draw the straight part of the ramp near West Laurel
+    ctx.lineTo(.870 * canvas.width, .35 * canvas.height);
+    ctx.stroke();
+
+
+    ctx.moveTo(.710 * canvas.width, .39 * canvas.height); //draw the downward slope from near Belt towards Reading Yard
+    ctx.lineTo(.720 * canvas.width, .37 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.710 * canvas.width, .39 * canvas.height); //draw the downward slope from near Belt towards Reading Yard
+    ctx.lineTo(.665 * canvas.width, .39 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.695 * canvas.width, .39 * canvas.height); //draw the start of the outer part of the 'S' shape naer Pottsville Branch
+    ctx.lineTo(.685 * canvas.width, .41 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.705 * canvas.width, .39 * canvas.height); //draw the start of the outer part of the 'S' shape naer Pottsville Branch
+    ctx.lineTo(.685 * canvas.width, .43 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.685 * canvas.width, .41 * canvas.height); //draw the top of the outer part of the 'S'
+    ctx.lineTo(.605 * canvas.width, .41 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.685 * canvas.width, .43 * canvas.height); //draw the top of the inner part of the 'S'
+    ctx.lineTo(.610 * canvas.width, .43 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.605 * canvas.width, .41 * canvas.height); //draw the outer edge of the top left hand corner of the 'S'
+    ctx.lineTo(.590 * canvas.width, .44 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.610 * canvas.width, .43 * canvas.height); //draw the inner edge of the top left hand corner of the 'S'
+    ctx.lineTo(.600 * canvas.width, .45 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.590 * canvas.width, .44 * canvas.height); //draw the down section of the outer part of the 'S'
+    ctx.lineTo(.590 * canvas.width, .49 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.600 * canvas.width, .45 * canvas.height); //draw the down section of the innner part of the 'S'
+    ctx.lineTo(.600 * canvas.width, .48 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.590 * canvas.width, .49 * canvas.height); //draw the downward corner of the outer part of the 'S'
+    ctx.lineTo(.605 * canvas.width, .52 * canvas.height);
+    ctx.stroke();
+
+    ctx.moveTo(.600 * canvas.width, .48 * canvas.height);
+    ctx.lineTo(.610 * canvas.width, .50 * canvas.height);
+    ctx.stroke();
+
 	return this;
 };
 
