@@ -111,19 +111,155 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 };
 
 // Draws control points for the Lurgan to Ship region - draw the "off" graphic in the proper direction by default
-drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
-	var cpr = document.getElementByID("cproff")
-	var cpl = document.getElementByID("cploff")
-	ctx.drawImage(
-	return this;
-};
+//drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
+//	var cpr = document.getElementByID("cproff")
+//	var cpl = document.getElementByID("cploff")
+//	ctx.drawImage(
+//	return this;
+//};
 	
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
-		this.drawLTSControlPoints(canvas, ctx);
+//		this.drawLTSControlPoints(canvas, ctx);
 		return this;
 };
+
+var drawShipToFront = function (){
+};
+
+
+drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
+
+        // Draw Text
+		// Orange, size 12
+		ctx.font = ("1em Arial");
+		ctx.fillStyle = "#ffa500";
+		ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .18 );
+
+		ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .07);
+		ctx.fillText("Running", canvas.width * .120, canvas.height * .09);
+		ctx.fillText("Track", canvas.width * .120, canvas.height * .11);
+
+		ctx.fillText("Gettysburg RR", canvas.width * .445, canvas.height * .194);
+
+        ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .1285);
+
+        ctx.fillText("to", canvas.width * .900, canvas.height * .10);
+        ctx.fillText("Paxton", canvas.width * .900, canvas.height * .12);
+
+        ctx.fillText("to", canvas.width * .899, canvas.height * .17);
+        ctx.fillText("Capitol", canvas.width * .899, canvas.height * .19);
+
+		// Gray, size 12
+        ctx.fillStyle = "#d3d3d3";
+        ctx.fillText("SHIP", .155 * canvas.width, .18 * canvas.height);
+        ctx.fillText("LEES CROSS ROADS", canvas.width * .245, .18 * canvas.height);
+        ctx.fillText("CARL", .550 * canvas.width, .20 * canvas.height);
+        ctx.fillText("SPRING", .596 * canvas.width, .20 * canvas.height);
+        ctx.fillText("ROSS", .755 * canvas.width, .18 * canvas.height);
+        ctx.fillText("FRONT", .860 * canvas.width, .18 * canvas.height);
+
+
+        // Orange, size 10
+        ctx.font = ("0.8em Arial");
+        ctx.fillStyle = "#ffa500";
+        ctx.fillText("PPG", .585 * canvas.width, .120 * canvas.height);
+
+        //Gray, size 10
+        ctx.fillStyle = "#d3d3d3";
+        ctx.fillText("Cleversburg Junction", .22 * canvas.width, .09 * canvas.height);
+        ctx.fillText("Viewing Platform", .23 * canvas.width, .105 * canvas.height);
+
+
+        return this;
+
+};
+
+//Draws the section from Ship to Front
+drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
+
+    ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
+    ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
+    ctx.stroke();
+
+    //Near Cleversburg Junction viewing platform
+    ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
+    ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
+    ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
+    ctx.stroke();
+
+    //Draw Gettysburg section
+    ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
+    ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
+    ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
+    ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
+    ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
+    ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
+    ctx.stroke();
+
+    //Draw the PPG section
+    ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
+    ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
+    ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
+    ctx.stroke();
+
+//    ctx.lineWidth = 4;
+    //Draw the Ross/Front secction
+    ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
+    ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
+    ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
+    ctx.stroke();
+
+    //Draw the dash in the SHIP section
+    ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
+    ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
+    ctx.stroke();
+
+    //Draw the dashes in the Front section
+    ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
+    ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
+    ctx.stroke();
+    ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
+    ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
+    ctx.stroke();
+
+    //draw the section near PPG that is thinner than the rest
+    ctx.lineWidth = .75;
+    ctx.moveTo(.583 * canvas.width, .1285 * canvas.height);
+    ctx.lineTo(.600 * canvas.width, .1285 * canvas.height);
+    ctx.stroke();
+
+};
+//drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
+//	var cpr = document.getElementByID("cproff")
+//	var cpl = document.getElementByID("cploff")
+//	ctx.drawImage(
+//	return this;
+//};
+
+drawShipToFront.prototype.draw = function(canvas, ctx){
+		this.drawSTFTrack(canvas, ctx);
+		this.drawSTFText(canvas, ctx);
+//		this.drawLTSControlPoints(canvas, ctx);
+		return this;
+};
+
+
 /* May not be needed, unless drawing full map
 // Draws Burke to Wyomissing Segment
 var drawBurkeToWyomissing = function(){
@@ -529,7 +665,9 @@ $(document).ready(function(){
 	//var dbtw = new drawBurkeToWyomissing();
 	//var dctb = new drawCannonToBeaver();
 	dlts.draw(canvas, ctx);
+
+	var dstf = new drawShipToFront();
+	dstf.draw(canvas, ctx);
 	//dbtw.draw(canvas, ctx);
 	//dctb.draw(canvas, ctx);
 })
-	

@@ -193,6 +193,27 @@ func (_ tApp) ShowInfo(
 }
 
 
+type tAdmin struct {}
+var Admin tAdmin
+
+
+func (_ tAdmin) Dash(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Admin.Dash", args).Url
+}
+
+func (_ tAdmin) Approve(
+		UserId int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "UserId", UserId)
+	return revel.MainRouter.Reverse("Admin.Approve", args).Url
+}
+
+
 type tMap struct {}
 var Map tMap
 
@@ -220,27 +241,6 @@ func (_ tMap) SaveSettings(
 	revel.Unbind(args, "password", password)
 	revel.Unbind(args, "verifyPassword", verifyPassword)
 	return revel.MainRouter.Reverse("Map.SaveSettings", args).Url
-}
-
-
-type tAdmin struct {}
-var Admin tAdmin
-
-
-func (_ tAdmin) Dash(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Admin.Dash", args).Url
-}
-
-func (_ tAdmin) Approve(
-		UserId int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "UserId", UserId)
-	return revel.MainRouter.Reverse("Admin.Approve", args).Url
 }
 
 
