@@ -1,5 +1,6 @@
 //Javascript Code for drawing the map.
-
+// The default track color.
+var standardStroke = "white";
 //Draws Lurgan to SHIP segment
 var drawLurganToShip = function() {
 };
@@ -17,7 +18,6 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.55*canvas.height);
 		ctx.fillText("Lurgan Branch", .796*canvas.width, 0.48*canvas.height);
 		ctx.fillText("to Ship", .796*canvas.width, 0.5*canvas.height);
-
 		// Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.190*canvas.width, 0.57*canvas.height);
@@ -38,12 +38,9 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
-		//concept for storage of track segments - needed for recoloring?
-		//var tinfo = ["mnemonic", x, y, x2, y2]
-
 		// Draw Track - Nearby text on original layout listed in comments
-		ctx.lineWidth = 4;
-		ctx.strokeStyle = "white";
+		ctx.lineWidth = .004*canvas.height;
+		ctx.strokeStyle = standardStroke;
 		// CSX
 		ctx.moveTo(.116*canvas.width, .470*canvas.height);
 		ctx.lineTo(.186*canvas.width, .470*canvas.height);
@@ -112,9 +109,8 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 
 // Draws control points for the Lurgan to Ship region - draw the "off" graphic in the proper direction by default
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
-	var cpr = document.getElementByID("cproff")
-	var cpl = document.getElementByID("cploff")
-	ctx.drawImage(
+	var cpr = document.getElementById("cproff")
+	var cpl = document.getElementById("cploff")
 	return this;
 };
 	
@@ -493,34 +489,28 @@ drawCannonToBeaver.prototype.draw = function(canvas, ctx){
 // ctx - the canvas' context
 function changeTrack(tinfo, canvas, ctx){
 	ctx.strokeStyle = tinfo[4];
-	ctx.moveTo(tinfo[0]*canvas.width, tinfo[1]*canvas.width);
-	ctx.lineTo(tinfo[2]*canvas.width, tinfo[3]*canvas.width);
+		ctx.clearRect(tinfo[0]*canvas.width, (tinfo[1]*canvas.height)-canvas.height*0.004, 
+					 tinfo[2]*canvas.width-tinfo[0]*canvas.width, tinfo[1]*canvas.height-tinfo[3]*canvas.height);
+	ctx.moveTo(tinfo[0]*canvas.width, tinfo[1]*canvas.height);
+	ctx.lineTo(tinfo[2]*canvas.width, tinfo[3]*canvas.height);
 	ctx.stroke();
-}
+	ctx.strokeStyle = standardStroke;
+};
+
+function test(canvas, ctx){
+	var ttest1 = [.116, .470, .186, .470, "green"];
+	changeTrack(ttest1, canvas, ctx);
+};
 
 // Resizes the Canvas to the full viewport.
-$(document).ready(function(){
+$(window).load(function(){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	console.log(canvas.width);
 	console.log(canvas.height);
-	//Testing
 	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-	//Test - Load image
-/*
-	var img = new Image();
-	img.src = 'public/img/controlpointoff.png';
-	ctx.drawImage(img, 50, 50);
-	var img2 = new Image();
-	img2.src = 'public/img/controlpointon.png';
-	ctx.drawImage(img2, 75, 50);
-	//Text - Text
-	ctx.font = ("30px Arial");
-	ctx.fillStyle = "white";
-	ctx.fillText("Hello World", 10, 100);
-*/
 	ctx.font = ("25px Times New Roman");
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, 20);
@@ -529,6 +519,8 @@ $(document).ready(function(){
 	//var dbtw = new drawBurkeToWyomissing();
 	//var dctb = new drawCannonToBeaver();
 	dlts.draw(canvas, ctx);
+	test(canvas, ctx);
+	ctx.strokeStyle=standardStroke;
 	//dbtw.draw(canvas, ctx);
 	//dctb.draw(canvas, ctx);
 })
