@@ -60,7 +60,7 @@ type Layer3 struct {
 	// destination address
 	destAddr string
 	// source address
-	sourceAddr string
+	SourceAddr string
 	// Fil3 and facility length (usually 0)
 	fil3 int
 	lenFacility int
@@ -329,7 +329,7 @@ func GenLayer3(hex string) Layer3{
 	str = strings.Replace(str, "F", "5", -1)
 	//str = hex[sStart:sEnd]
 	//sets the source address to our current string
-	l3.sourceAddr = str
+	l3.SourceAddr = str
 	//fmt.Println("Source address: ", str)
 
 	//Fil3
@@ -596,8 +596,3 @@ func HexToDec(s string) int {
 	return int(dec[0])
 
 }
-
-/*
-func trimJunk(s string, startIndex int) int {
-	for i := startIndex; i < len(s); s[i] != "|" i++;
-}*/
