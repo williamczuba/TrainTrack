@@ -38,6 +38,8 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
+
+
 		//concept for storage of track segments - needed for recoloring?
 		//var tinfo = ["mnemonic", x, y, x2, y2]
 
