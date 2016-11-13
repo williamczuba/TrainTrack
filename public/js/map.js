@@ -400,6 +400,21 @@ drawCannonToBeaver.prototype.draw = function(canvas, ctx){
 	return this;
 };
 
+
+// Takes in the given coordinates and redraws them to match data.
+// tinfo - array containing the given info on the track segment\
+//  tinfo[0-3] - starting and ending coordinates - in the form of decimal values that will be multiplied by the canvas'
+//				 width and height. t[0]=x1, t[1]=y1, t[2]=x2. t[3]=y2
+//  tinfo[4] - track color
+// canvas - the map's canvas
+// ctx - the canvas' context
+function changeTrack(tinfo, canvas, ctx){
+	ctx.strokeStyle = tinfo[4];
+	ctx.moveTo(tinfo[0]*canvas.width, tinfo[1]*canvas.width);
+	ctx.lineTo(tinfo[2]*canvas.width, tinfo[3]*canvas.width);
+	ctx.stroke();
+}
+
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
 	var canvas = document.getElementById('mapCanvas');
