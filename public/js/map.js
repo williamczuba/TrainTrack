@@ -47,15 +47,15 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = "white";
 		// CSX
-		ctx.moveTo(.116*canvas.width, .470*canvas.height);
-		ctx.lineTo(.186*canvas.width, .470*canvas.height);
-		ctx.stroke();
+//		ctx.moveTo(.116*canvas.width, .470*canvas.height);
+//		ctx.lineTo(.186*canvas.width, .470*canvas.height);
+		csx_straight = createTrack(.116, .470, .186, .470, canvas);
 		ctx.lineTo(.206*canvas.width, .485*canvas.height);
-		ctx.stroke();
+//		ctx.stroke();
 		// Lurgan Sub
 		ctx.moveTo(.116*canvas.width, .495*canvas.height);
 		ctx.lineTo(.236*canvas.width, .495*canvas.height);
-		ctx.stroke();
+//		ctx.stroke();
 		ctx.lineTo(.286*canvas.width, .535*canvas.height);
 		// NS H-Line
 		ctx.moveTo(.116*canvas.width, .520*canvas.height);
@@ -112,18 +112,18 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		return this;
 };
 
-// Draws control points for the Lurgan to Ship region - draw the "off" graphic in the proper direction by default
-//drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
-//	var cpr = document.getElementByID("cproff")
-//	var cpl = document.getElementByID("cploff")
-//	ctx.drawImage(
-//	return this;
-//};
+//Draws control points for the Lurgan to Ship region - draw the "off" graphic in the proper direction by default
+drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
+	var cpr = document.getElementById("cproff")
+	var cpl = document.getElementById("cploff")
+	//ctx.drawImage(
+	return this;
+};
 	
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
-//		this.drawLTSControlPoints(canvas, ctx);
+		this.drawLTSControlPoints(canvas, ctx);
 		return this;
 };
 
@@ -622,18 +622,32 @@ drawCannonToBeaver.prototype.draw = function(canvas, ctx){
 };
 */
 
-// Takes in the given coordinates and redraws them to match data.
-// tinfo - array containing the given info on the track segment\
-//  tinfo[0-3] - starting and ending coordinates - in the form of decimal values that will be multiplied by the canvas'
-//				 width and height. t[0]=x1, t[1]=y1, t[2]=x2. t[3]=y2
-//  tinfo[4] - track color
-// canvas - the map's canvas
-// ctx - the canvas' context
-function changeTrack(tinfo, canvas, ctx){
-	ctx.strokeStyle = tinfo[4];
-	ctx.moveTo(tinfo[0]*canvas.width, tinfo[1]*canvas.width);
-	ctx.lineTo(tinfo[2]*canvas.width, tinfo[3]*canvas.width);
-	ctx.stroke();
+// Creates a new segment of track and an accompanying canvas, and returns it.
+// track - the new segment of track
+function createTrack(x1, y1, x2, y2,canvas){
+	var newCanvas = document.createElement("CANVAS");
+	newCanvas.width = x2*canvas.width-x1*canvas.width;
+	newCanvas.height = y2*canvas.height-y1*canvas.height;
+	var newCtx = newCanvas.getContext('2d');
+	var oldCtx = canvas.getContext('2d');
+//	oldCtx.drawImage(newCtx.canvas, x1*canvas.width, y1*canvas.height);
+	newCtx.strokeStyle = "white";
+	newCtx.moveTo(0, 0);
+	newCtx.lineTo(newCanvas.width, newCanvas.height);
+	newCtx.stroke();
+	var track = {
+		canvas: newCanvas,
+		ctx: newCtx
+	};
+	return track;
+};
+
+// Redraws the given track element in the given color.s
+function changeTrack(track, color){
+	track.ctx.strokeStyle = color;
+	track.ctx.moveTo(0,0);
+	track.ctx.lineTo(track.canvas.width, track.canvas.height);
+	track.ctx.stroke();
 }
 
 // Resizes the Canvas to the full viewport.
@@ -670,6 +684,7 @@ $(document).ready(function(){
 
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
+
 	//dbtw.draw(canvas, ctx);
 	//dctb.draw(canvas, ctx);
 })

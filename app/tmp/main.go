@@ -221,29 +221,6 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Admin)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Dash",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					30: []string{ 
-						"users",
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Approve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.Map)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -269,6 +246,29 @@ func main() {
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "verifyPassword", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Admin)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Dash",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					30: []string{ 
+						"users",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Approve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
