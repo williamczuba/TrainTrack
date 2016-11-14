@@ -70,10 +70,10 @@ func InitDB() {
 	})
 	// Set the column sizes for the username and name
 	// Set up database tracing for errors
-	Dbm.TraceOn("[gorp]", r.INFO)
+	//Dbm.TraceOn("[gorp]", r.INFO)
 
 	// Create the Table
-	Dbm.CreateTables()
+	//Dbm.CreateTables()
 	/*
 		Address 		string
 	Name			string
