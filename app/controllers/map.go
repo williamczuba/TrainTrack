@@ -5,8 +5,8 @@ import (
 	"TrainTrack/app/routes"
 	"TrainTrack/app/models"
 	"golang.org/x/crypto/bcrypt"
-	"TrainTrack/app/packetDecoding"
-	"github.com/revel/samples/chat/app/chatroom"
+	//"TrainTrack/app/packetDecoding"
+	//"github.com/revel/samples/chat/app/chatroom"
 )
 
 //Map structure, needs to extend App (which extends gorp and revel controller) to be a controller
@@ -18,18 +18,19 @@ type Map struct {
 ////Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table),
 // then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
 func (c Map) getTrainData() string {
-	str := packetDecoding.GetPacket()
-	l3 := packetDecoding.GenLayer3(str)
-	address := l3.SourceAddr
-
-
-	mcp := c.getMCP(address)
-	//println(mcp)
-	//need to access the table
-	//loop? to access each value in the InitMCPDB?
-	//or easy return?
-	//9.2.11 = indication
-	return mcp.ControlMnemonics
+	//str := packetDecoding.GetPacket()
+	//l3 := packetDecoding.GenLayer3(str)
+	//address := l3.SourceAddr
+	//
+	//
+	//mcp := c.getMCP(address)
+	////println(mcp)
+	////need to access the table
+	////loop? to access each value in the InitMCPDB?
+	////or easy return?
+	////9.2.11 = indication
+	//return mcp.ControlMnemonics
+	return
 }
 
 func (c Map) getMCP(address string) *models.Mcp {
@@ -69,25 +70,26 @@ func (c Map) Join() revel.Result {
 	return
 }
 func (c Map) Listen() revel.Result {
-	subscription := chatroom.Subscribe()
-	defer subscription.Cancel()
-
-	// See if anything is new in the archive.
-	var events []chatroom.Event
-	for _, event := range subscription.Archive {
-		if event.Timestamp > lastReceived {
-			events = append(events, event)
-		}
-	}
-
-	// If we found one, grand.
-	if len(events) > 0 {
-		return c.RenderJson(events)
-	}
-
-	// Else, wait for something new.
-	event := <-subscription.New
-	return c.RenderJson([]chatroom.Event{event})
+	//subscription := chatroom.Subscribe()
+	//defer subscription.Cancel()
+	//
+	//// See if anything is new in the archive.
+	//var events []chatroom.Event
+	//for _, event := range subscription.Archive {
+	//	if event.Timestamp > lastReceived {
+	//		events = append(events, event)
+	//	}
+	//}
+	//
+	//// If we found one, grand.
+	//if len(events) > 0 {
+	//	return c.RenderJson(events)
+	//}
+	//
+	//// Else, wait for something new.
+	//event := <-subscription.New
+	//return c.RenderJson([]chatroom.Event{event})
+	return
 }
 
 func (c Map) Leave() revel.Result {
