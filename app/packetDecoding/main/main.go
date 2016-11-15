@@ -1,35 +1,52 @@
-package packetDecoding
+package main
 
 import (
-	"os"
+	"fmt"
+	"TrainTrack/app/packetDecoding"
 	"net"
-	"time"
 	"bufio"
+	"os"
+	"time"
 	"encoding/hex"
 )
 
-//Purpose: Check for an error, and panic if necessary
-//Params: error
-//Returns:
-//	Nothing
-//Prints:
-//	Nothing
+
+
+
+
+
+// This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
+func main() {
+	//str := getPacket()
+	////l2 := packetDecoding.GenLayer2(str)  //we know that it works.
+	////fmt.Println("L2: ", l2)
+	////packetDecoding.Layer2(str)
+	//l3 := packetDecoding.GenLayer3(str)
+	//
+	////fmt.Println("L3: ", l3)
+	//l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
+	//fmt.Println("L4-7: ", l4to7)
+
+	packetDec := packetDecoding.NewConnection()
+	fmt.Println("here")
+	fmt.Println("info:", packetDec.GetTrainInfo())
+
+
+}
+
 func CheckError (e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-var Connect net.Conn
-
-
-   //Purpose: To Get a single packet from the server
-   //Params: None
-   //Returns:
-   //	Nothing
-   //Prints:
-   //	Nothing
-func GetPacket() string {
+//Purpose: To Get a single packet from the server
+//Params: None
+//Returns:
+//	Nothing
+//Prints:
+//	Nothing
+func getPacket() string {
 	url := "NS-HbgDiv.dyndns.org"
 	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800)
 	// 	on the ATCSMon server, and waits for data arrival."
@@ -60,7 +77,7 @@ func GetPacket() string {
 
 	//Start the connection to the UDP server
 	//If we leave the local address nil, it will resolve itself.
-	Connect, err = net.DialUDP("udp", nil, serverAddr)
+	Connect, err := net.DialUDP("udp", nil, serverAddr)
 	CheckError(err)
 
 	//Defer is awesome in go... now we don't need to worry about closing the connection.
@@ -97,6 +114,7 @@ func GetPacket() string {
 	//TODO "5. Every 2 minutes, if no traffic has been sent by the server, it sends the message "*KEEPALIVE" instead.
 	// 	This permits the client to assume the server has disappeared if nothing has been received for
 	// 	over 2 minutes, and then gracefully conclude the session."
+
 
 	//"6. The client sends the string "DISCONNECT" before terminating to keep the server happiest."
 	// Again, we defer this until the program is done.

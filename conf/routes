@@ -4,20 +4,32 @@
 
 module:testrunner
 
+# Register, Login & Logout
 GET     /                   App.Index
 POST    /register           App.SaveUser
 POST    /login              App.Login
 GET     /logout             App.Logout
-GET     /map                Map.Index
-GET     /app-pending        App.AppPending
+
+# User Settings
+GET     /settings           Map.Settings
+POST    /settings           Map.SaveSettings
+
+# Admin Dash Board
+GET     /admin-dash         Admin.Dash
+POST    /adminApprove       Admin.Approve
+
+# Password Recovery
 GET     /recoverPassword    App.RecoverPassword
 POST    /recoverPassword    App.ShowRecoveryQuestion
 POST    /recoverInfo        App.RecoverInfo
 GET     /recoverInfo        App.ShowInfo
-GET     /settings           Map.Settings
-POST    /settings           Map.SaveSettings
-GET     /admin-dash         Admin.Dash
-POST    /adminApprove       Admin.Approve
+
+# Map
+GET     /map                Map.Index
+GET     /app-pending        App.AppPending
+GET     /map/listen         Map.Listen
+GET     /map/join           Map.Join
+GET     /map/leave          Map.Leave
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

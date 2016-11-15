@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-const BLOCKBITS  = 60
-
 //Struct to store the data from Layer2
 type Layer2 struct {
 	//Starting byte index of the layer from the hex dump
@@ -109,12 +107,27 @@ type TrainInfo struct {
 	l2 Layer2
 	l3 Layer3
 	l4p Layer4to7
-	l3End int
-	l4End int
+}
+
+func NewTrainInfo(hex string) *TrainInfo {
+	t := new(TrainInfo)
+	t.hexDump = hex
+	t.l2 = GenLayer2(hex)
+	t.l3 = GenLayer3(hex)
+	t.l4p = GenLayer4to7(hex, t.l3.end)
+	return t
+}
+
+func (t *TrainInfo) String() string {
+	//w := new(tabwriter.Writer)
+	//w.Init(os.Stdout, 4, 0, 1, ' ', 0)
+	//defer w.Flush()
+	return fmt.Sprintf("HexDump: %s \t Layer2: %s \t Layer3: %s \t Layer4to7: %s \n", t.hexDump, t.l2, t.l3, t.l4p)
 }
 
 //Function to generate Layer2 information
-func GenLayer2(hex string) Layer2{
+// size is always 10 bytes!
+func  GenLayer2(hex string) Layer2{
 	l2 := Layer2{}
 	println("Hex Dump: ", hex)
 	l2.start = 10
@@ -146,7 +159,7 @@ func GenLayer2(hex string) Layer2{
 }
 
 
-func GenLayer3(hex string) Layer3{
+func  GenLayer3(hex string) Layer3{
 	l3 := Layer3{}
 	//println("Hex Dump: ", hex)
 
@@ -285,7 +298,7 @@ func GenLayer3(hex string) Layer3{
 	str = strings.Replace(str, "F", "5", -1)
 	//the destination address becomes the string that we built
 	l3.destAddr = str
-	//fmt.Println("Dest Address: " + str)
+	fmt.Println("Dest Address: " + str)
 	//str is reset to now build the source address
 	str = ""
 
@@ -295,7 +308,9 @@ func GenLayer3(hex string) Layer3{
 	//prevChar=""
 	//fmt.Println("Previous: " + prevChar)
 	//fmt.Println("Current: " + currChar)
+
 	i++
+	fmt.Println("Hex DUmp pre Loop: ", hex[i:])
 	//loop works exactly the same as the destination address loop
 	for ; len(str) < l3.lenSrc + ((l3.lenSrc / 2) - 1); {
 		currChar = string(hex[i])
@@ -330,14 +345,20 @@ func GenLayer3(hex string) Layer3{
 	//str = hex[sStart:sEnd]
 	//sets the source address to our current string
 	l3.SourceAddr = str
-	//fmt.Println("Source address: ", str)
+
+	fmt.Println("Source address: ", str)
 
 	//Fil3
 	str = hex[sEnd + 1: sEnd+2]
 	//fmt.Println("FIL3:", str)
 	l3.fil3 = HexToDec(str)
+	fmt.Println("HEX DUMP:", hex)
+	fmt.Println("Layer 3 INDEX: ", hex[sEnd:])
+	fmt.Println("Str:", str, "indices:", sEnd+1, ", ", sEnd+2)
+
 	//facility length
 	str = hex[sEnd + 2 : sEnd + 3]
+	fmt.Println("Str:", str, "indices:", sEnd+2, ", ", sEnd+3)
 	l3.LayerEndIndex = sEnd+ 4
 	//fmt.Println("FacLen:", str)
 	l3.lenFacility = HexToDec(str)
