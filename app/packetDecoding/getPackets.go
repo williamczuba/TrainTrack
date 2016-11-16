@@ -6,7 +6,7 @@ import (
 	"time"
 	"bufio"
 	"encoding/hex"
-	"fmt"
+	//"fmt"
 )
 
 //Purpose: Check for an error, and panic if necessary

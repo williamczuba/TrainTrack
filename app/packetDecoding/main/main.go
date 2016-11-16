@@ -10,6 +10,9 @@ import (
 	"encoding/hex"
 	//"bytes"
 	//"TrainTrack/app/packetDecoding"
+	//"TrainTrack/app/packetDecoding"
+	"io"
+	"bytes"
 )
 
 
@@ -20,20 +23,23 @@ import (
 // This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
 func main() {
 	str := getPacket()
-	println(str)
-	////l2 := packetDecoding.GenLayer2(str)  //we know that it works.
-	////fmt.Println("L2: ", l2)
-	////packetDecoding.Layer2(str)
-	//l3 := packetDecoding.GenLayer3(str)
+	fmt.Println(str)
+	//fmt.Println("HERE")
+	//l2 := packetDecoding.GenLayer2(str)  //we know that it works.
+	//fmt.Println("L2: ", l2)
 	//
-	////fmt.Println("L3: ", l3)
+	////packetDecoding.Layer2(str)
+	//l3 := packetDecoding.GenLayer3(str, l2.End)
+	////
+	//
+	//fmt.Println("L3: ", l3)
 	//l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
 	//fmt.Println("L4-7: ", l4to7)
 
 	//packetDec := packetDecoding.NewConnection()
-	////fmt.Println("here")
-	//
-	//
+	//fmt.Println("here")
+
+
 	//fmt.Println("info:", packetDec.GetTrainInfo())
 
 
@@ -135,14 +141,20 @@ func getPacket() string {
 	//	time.Sleep(time.Second * 1)
 	//}
 	//n := make([]byte, 48)
-	p := make([]byte, 46)
-	_, err = bufio.NewReader(Connect).Read(p)
+	//p := make([]byte, 45)
+	fmt.Println("here")
+	reader := bufio.NewReader(Connect)
+	fmt.Println("here2")
+	p := StreamToByte(reader)
+	//_, err = reader.Read(p)
+	fmt.Println("here3")
 	CheckError(err)
+	println(hex.Dump(p))
 	//count, err :=hex.Decode(n,p)
 	//CheckError(err)
-	for i := 0; i < 46; i++ {
-
-	}
+	//for i := 0; i < 46; i++ {
+	//
+	//}
 	//str := hex.EncodeToString(p)
 	//fmt.Printf("HEX: %s \n", str)
 
@@ -151,6 +163,11 @@ func getPacket() string {
 	//CheckError(err)
 	//println(hex.Dump(p2))
 
-	return hex.Dump(p)
+	return hex.EncodeToString(p)
 }
 
+func StreamToByte(stream io.Reader) []byte {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(stream)
+	return buf.Bytes()
+}
