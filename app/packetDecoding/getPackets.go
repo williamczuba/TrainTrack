@@ -6,6 +6,7 @@ import (
 	"time"
 	"bufio"
 	"encoding/hex"
+	"fmt"
 )
 
 //Purpose: Check for an error, and panic if necessary
@@ -87,7 +88,10 @@ func (c *Connection) listen() {
 			_, err := data.Read(p)
 			CheckError(err)
 			println("LISTENED")
-			c.packets <- hex.Dump(p)
+			//TODO: USE THIS NEW STR INSTEAD OFF HEX DUMP!
+			str := hex.EncodeToString(p)
+			//fmt.Printf("HEX: %s \n", str)
+			c.packets <- str//hex.Dump(p)
 		}
 
 	}

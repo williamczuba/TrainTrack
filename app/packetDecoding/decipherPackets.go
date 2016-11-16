@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+//TODO: RE-Write the GenLayers to use the new packet DECODED (all spacing was removed, so its pure hex now)
+
+
 //Struct to store the data from Layer2
 type Layer2 struct {
 	//Starting byte index of the layer from the hex dump
@@ -113,6 +116,7 @@ func NewTrainInfo(hex string) *TrainInfo {
 	t := new(TrainInfo)
 	t.hexDump = hex
 	t.l2 = GenLayer2(hex)
+
 	t.l3 = GenLayer3(hex)
 	t.l4p = GenLayer4to7(hex, t.l3.end)
 	return t
@@ -586,18 +590,18 @@ func HexToBinary(s string) string{
 	}
 
 	bitArray := fmt.Sprintf("%b", dec[0])
-	fmt.Println("bit array: ", bitArray)
+	//fmt.Println("bit array: ", bitArray)
 	//fmt.Println("bit array: ", bits)
 	if len(bitArray) < 8 {
-		fmt.Println("Length: ",len(bitArray))
+		//fmt.Println("Length: ",len(bitArray))
 		x:=8-len(bitArray)
 		for i := 0; i < x; i++ {
 			bitArray = "0" + bitArray
 		}
 
 	}
-	fmt.Println("bit array after: ", bitArray)
-	fmt.Println()
+	//fmt.Println("bit array after: ", bitArray)
+	//fmt.Println()
 	return bitArray
 }
 
