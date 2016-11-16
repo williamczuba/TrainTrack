@@ -28,6 +28,7 @@ type Layer2 struct {
 	crc       string
 }
 
+
 //Struct to store the data from Layer3
 type Layer3 struct {
 	//Starting byte index of the layer from the hex dump
@@ -123,7 +124,7 @@ func NewTrainInfo(hex string) *TrainInfo {
 }
 
 func (t *TrainInfo) String() string {
-	return fmt.Sprintf("HexDump: %s \t Layer2: %s \t Layer3: %s \t Layer4to7: %s \n", t.hexDump, t.l2, t.l3, t.l4p)
+	return fmt.Sprintf("Layer2: %v | Layer3: %v | Layer4to7: %v\n", t.l2, t.l3, t.l4p)
 }
 
 //Function to generate Layer2 information
@@ -156,7 +157,6 @@ func  GenLayer2(hex string) Layer2{
 	l2.size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
 	return l2
 }
-
 
 //Function to generate Layer2 information
 // size is always 10 bytes!

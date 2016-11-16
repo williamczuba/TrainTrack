@@ -23,26 +23,26 @@ import (
 
 // This was easy thanks to: http://atcswiki.greatlakesnetworking.net/bin/view/Main/NetworkConsiderations
 func main() {
-	str := getPacket()
-	fmt.Println(str)
+	//str := getPacket()
+	//fmt.Println(str)
 	//fmt.Println("HERE")
-	l2 := packetDecoding.GenLayer2(str)  //we know that it works.
-	fmt.Println("L2: ", l2)
-	//
-	//packetDecoding.Layer2(str)
-	l3 := packetDecoding.GenLayer3(str, l2.End)
+	//l2 := packetDecoding.GenLayer2(str)  //we know that it works.
+	//fmt.Println("L2: ", l2)
 	////
-	//
-	fmt.Println("L3: ", l3)
-	l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
-	fmt.Println("L4-7: ", l4to7)
+	////packetDecoding.Layer2(str)
+	//l3 := packetDecoding.GenLayer3(str, l2.End)
+	//////
+	////
+	//fmt.Println("L3: ", l3)
+	//l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
+	//fmt.Println("L4-7: ", l4to7)
 
-	//packetDec := packetDecoding.NewConnection()
+	packetDec := packetDecoding.NewConnection()
 	//fmt.Println("here")
 
 
-	//fmt.Println("info:", packetDec.GetTrainInfo())
-
+	fmt.Println("info:", packetDec.GetTrainInfo())
+	packetDec.Stop()
 
 }
 

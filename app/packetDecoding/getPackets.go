@@ -31,7 +31,8 @@ type Connection struct {
 	packets chan string
 }
 
-func (c Connection) CloseListen() {
+//DON'T forget to call stop to close the connection!
+func (c Connection) Stop() {
 	close(c.quit)
 	dis := []byte( "DISCONNECT")
 	c.connect.Write(dis)
@@ -45,11 +46,9 @@ func (c Connection) CloseListen() {
 
 // Get the latest and greatest Train Information
 func (c *Connection) GetTrainInfo() *TrainInfo{
-	println("ALMOST HERE")
 	for {
 		select {
 		case data := <- c.packets:
-			println("HERHERE")
 			return NewTrainInfo(data)
 		}
 	}
@@ -87,8 +86,6 @@ func (c *Connection) listen() {
 			p := make([]byte, 60)
 			_, err := data.Read(p)
 			CheckError(err)
-			println("LISTENED")
-			//TODO: USE THIS NEW STR INSTEAD OFF HEX DUMP!
 			str := hex.EncodeToString(p)
 			//fmt.Printf("HEX: %s \n", str)
 			c.packets <- str//hex.Dump(p)
@@ -131,7 +128,6 @@ func  NewConnection() *Connection {
 
 	//Close the TCP connection
 	conn.Close()
-	println("here1")
 
 	//Prepare for UDP traffic
 	serverAddr,err := net.ResolveUDPAddr("udp", url + ":" + port)
@@ -141,7 +137,6 @@ func  NewConnection() *Connection {
 	//If we leave the local address nil, it will resolve itself.
 	c.connect, err = net.DialUDP("udp", nil, serverAddr)
 	CheckError(err)
-	println("here2")
 
 	buf := []byte("Thanks")
 	_,err = c.connect.Write(buf)
@@ -149,7 +144,6 @@ func  NewConnection() *Connection {
 	c.quit = make(chan struct{}) //thread safe data channel
 	go c.keepAlive() // keep the connection alive
 	go c.listen() // listen for packets
-	println("here3")
 	return c
 }
 
