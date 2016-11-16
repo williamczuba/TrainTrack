@@ -13,6 +13,7 @@ import (
 	//"TrainTrack/app/packetDecoding"
 	"io"
 	"bytes"
+	"TrainTrack/app/packetDecoding"
 )
 
 
@@ -25,16 +26,16 @@ func main() {
 	str := getPacket()
 	fmt.Println(str)
 	//fmt.Println("HERE")
-	//l2 := packetDecoding.GenLayer2(str)  //we know that it works.
-	//fmt.Println("L2: ", l2)
+	l2 := packetDecoding.GenLayer2(str)  //we know that it works.
+	fmt.Println("L2: ", l2)
 	//
-	////packetDecoding.Layer2(str)
-	//l3 := packetDecoding.GenLayer3(str, l2.End)
+	//packetDecoding.Layer2(str)
+	l3 := packetDecoding.GenLayer3(str, l2.End)
 	////
 	//
-	//fmt.Println("L3: ", l3)
-	//l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
-	//fmt.Println("L4-7: ", l4to7)
+	fmt.Println("L3: ", l3)
+	l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
+	fmt.Println("L4-7: ", l4to7)
 
 	//packetDec := packetDecoding.NewConnection()
 	//fmt.Println("here")
@@ -141,12 +142,13 @@ func getPacket() string {
 	//	time.Sleep(time.Second * 1)
 	//}
 	//n := make([]byte, 48)
-	//p := make([]byte, 45)
+	p := make([]byte, 45)
 	fmt.Println("here")
 	reader := bufio.NewReader(Connect)
 	fmt.Println("here2")
-	p := StreamToByte(reader)
-	//_, err = reader.Read(p)
+
+	//p2 := StreamToByte(reader)
+	_, err = reader.Read(p)
 	fmt.Println("here3")
 	CheckError(err)
 	println(hex.Dump(p))

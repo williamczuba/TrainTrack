@@ -150,9 +150,9 @@ func  GenLayer2(hex string) Layer2{
 	l2.numBlocks = dec
 
 	// CRC
-	l2.crc = hex[6:11]
+	l2.crc = hex[6:10]
 
-	l2.End = 11
+	l2.End = 10
 	l2.size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
 	return l2
 }
@@ -299,15 +299,18 @@ func  GenLayer3(hex string, start int) Layer3{
 
 	//Fil3
 	i = e
-	e = i+2
+	e = i+1
 	str = hex[i:e]
 	l3.fil3 = HexToDec(str)
 
 	i = e
-	e = i+2
+	e = i+1
 	str = hex[i:e]
 	l3.LayerEndIndex = e
 	l3.lenFacility = HexToDec(str)
+	if str != "0" {
+		fmt.Println("ERROR WITH FACILITY LEN")
+	}
 	return l3
 }
 
@@ -383,68 +386,51 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	//Set the number of parts and print both values
 	l4p.numParts = int(numPartsDecInt)
 
+	// label: int 64 of 4 hex.
 	currIndex=endIndex
-	endIndex = currIndex+2
-	//make fourth slice -- Label
-	//First convert the hex to decimal, then follow this formula:
-	//Divide the decimal by 512 to get the first part of the label
-	//Divide the remainder of the first divison by 64 to get the second part
-	//Take whatever remainder is left (this is the third part) i.e. 128B = 4747, 4747 = 9 * 512 + 2 * 64 + 11(remainder from those operations), so the label is: "9.2.11"
+	endIndex = currIndex+4
 	str = string(hex[currIndex:endIndex])
-	currIndex=endIndex
-	endIndex = currIndex+2
-	str+=string(hex[currIndex:endIndex])
-	//convert from hex to decimal
-	labelDecInt, err := strconv.ParseInt(str, 16, 16)
-	if err != nil{
-		panic(err)
-	}
-	//Divide the decimal by 512 and save the remainder
-	labelPt1 := labelDecInt / 512
-	firstRem := labelDecInt % 512
-	//Divide the remainder by 64 and save the remainder
-	labelPt2 := firstRem / 64
-	finalRem:= firstRem % 64
-	//Format the label
-	label := fmt.Sprintf("%d.%d.%d", labelPt1, labelPt2, finalRem)
-	//Print and set the value
-	l4p.label = label
+	i64, err := strconv.ParseInt(str, 16, 32)
+	label64 := "9."
+	i32 := int(i64) - 9*512
+	t := i32/64
+	label64 += strconv.Itoa(t) + "."
+	t = i32 % 64
+	label64 += strconv.Itoa(t)
+	l4p.label = label64
 
 	currIndex=endIndex
 	endIndex = currIndex+2
 	//make fifth slice -- rev level
 	str = hex[currIndex:endIndex]
-	//fmt.Println("Hex5: ", str)
-	revLvl := HexToDec(str)
-	//set the value and print it
-	l4p.revLvl = revLvl
+	l4p.revLvl = HexToDec(str)
 
 	//Bits 58 and 59 are skipped
-	currIndex=endIndex
+	//NOTE: We skip 2 zero's here!
+	currIndex=endIndex +2
 	endIndex = currIndex+2
+
 	//make sixth slice -- number of octets in the data
 	str = hex[currIndex:endIndex]
-	//fmt.Println("Hex6: ", str)
-	numOctets := HexToDec(str)
-	//set the value and print it
-	l4p.numBytes = numOctets
+	l4p.numBytes = HexToDec(str)
 
 	currIndex=endIndex
 	endIndex = currIndex+2
 	//make seventh slice -- number of data bits in the last octet
 	str = hex[currIndex:endIndex]
-	//fmt.Println("Hex7: ", str)
-	numLastBits := HexToDec(str)
-	//set the value and print it
-	l4p.numLastBits = numLastBits
+	l4p.numLastBits = HexToDec(str)
 
-	codeLine := str
+	currIndex=endIndex
+	endIndex = currIndex+l4p.numBytes*2 // 2 octets per hex
+
+	//make sixth slice -- number of octets in the data
+	str = hex[currIndex:endIndex]
 	//set the value and print it
-	l4p.codeLineData = codeLine
+	l4p.codeLineData = str
 
 	//make the last slice -- CRC 16 check. Just need to store string version of the hex
 	currIndex=endIndex
-	endIndex = currIndex+2
+	endIndex = currIndex+4
 	//make seventh slice -- number of data bits in the last octet
 	str = hex[currIndex:endIndex]
 
