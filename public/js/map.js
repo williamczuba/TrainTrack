@@ -51,62 +51,43 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 //		ctx.lineTo(.186*canvas.width, .470*canvas.height);
 		csx_straight = createTrack(.116, .470, .186, .470, canvas);
 		ctx.lineTo(.206*canvas.width, .485*canvas.height);
-//		ctx.stroke();
 		// Lurgan Sub
 		ctx.moveTo(.116*canvas.width, .495*canvas.height);
 		ctx.lineTo(.236*canvas.width, .495*canvas.height);
-//		ctx.stroke();
 		ctx.lineTo(.286*canvas.width, .535*canvas.height);
 		// NS H-Line
 		ctx.moveTo(.116*canvas.width, .520*canvas.height);
 		ctx.lineTo(.196*canvas.width, .520*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.216*canvas.width, .535*canvas.height);
-		ctx.stroke();
 		// to Roanoke
 		ctx.moveTo(.116*canvas.width, .540*canvas.height);
 		ctx.lineTo(.86*canvas.width, .540*canvas.height);
-		ctx.stroke();
 		// NS Industrial Lead
 		ctx.moveTo(.266*canvas.width, .540*canvas.height);
 		ctx.lineTo(.336*canvas.width, .600*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.400*canvas.width, .600*canvas.height);
-		ctx.stroke();
 		// CSX Lurgan Sub
 		ctx.moveTo(.310*canvas.width, .540*canvas.height);
 		ctx.lineTo(.336*canvas.width, .560*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.400*canvas.width, .560*canvas.height);
-		ctx.stroke();
 		// CSX Hanover Sub
 		ctx.moveTo(.360*canvas.width, .560*canvas.height);
 		ctx.lineTo(.386*canvas.width, .580*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.400*canvas.width, .580*canvas.height);
-		ctx.stroke();
 		// Greencastle Yard
 		ctx.moveTo(.440*canvas.width, .540*canvas.height);
 		ctx.lineTo(.466*canvas.width, .560*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.560*canvas.width, .560*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.586*canvas.width, .540*canvas.height);
-		ctx.stroke();
 		// CP-65 to CP-62
 		ctx.moveTo(.510*canvas.width, .540*canvas.height);
 		ctx.lineTo(.536*canvas.width, .520*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.630*canvas.width, .520*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.656*canvas.width, .540*canvas.height);
-		ctx.stroke();
 		// Near CP-53 and CP-50
 		ctx.moveTo(.740*canvas.width, .540*canvas.height);
 		ctx.lineTo(.766*canvas.width, .520*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.796*canvas.width, .520*canvas.height);
-		ctx.stroke();
 		ctx.lineTo(.820*canvas.width, .540*canvas.height);
 		ctx.stroke();
 		return this;
@@ -183,29 +164,22 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
     ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
     ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
-    ctx.stroke();
 
     //Near Cleversburg Junction viewing platform
     ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
     ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
     ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
-    ctx.stroke();
 
     //Draw Gettysburg section
     ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
     ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
     ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
     ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
     ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
     ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
     ctx.stroke();
@@ -213,29 +187,23 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     //Draw the PPG section
     ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
     ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
     ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
-    ctx.stroke();
 
 //    ctx.lineWidth = 4;
     //Draw the Ross/Front secction
     ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
     ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
     ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
-    ctx.stroke();
 
     //Draw the dash in the SHIP section
     ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
     ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
-    ctx.stroke();
 
     //Draw the dashes in the Front section
     ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
     ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
-    ctx.stroke();
     ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
     ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
     ctx.stroke();
@@ -625,13 +593,25 @@ drawCannonToBeaver.prototype.draw = function(canvas, ctx){
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
-	var newCanvas = document.createElement("CANVAS");
+
+	var newCanvas = document.createElement("canvas");
 	newCanvas.width = x2*canvas.width-x1*canvas.width;
 	newCanvas.height = y2*canvas.height-y1*canvas.height;
+//    window.alert(newCanvas.width + " before " + newCanvas.height)
+
+    if (newCanvas.width == 0){
+        newCanvas.width = 1;
+    }
+    else if (newCanvas.height == 0){
+        newCanvas.height = 1;
+    }
 	var newCtx = newCanvas.getContext('2d');
 	var oldCtx = canvas.getContext('2d');
-//	oldCtx.drawImage(newCtx.canvas, x1*canvas.width, y1*canvas.height);
+	document.body.appendChild(newCanvas);
+	oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	newCtx.strokeStyle = "white";
+	newCtx.lineWidth = 4;
+	newCtx.beginPath();
 	newCtx.moveTo(0, 0);
 	newCtx.lineTo(newCanvas.width, newCanvas.height);
 	newCtx.stroke();
@@ -639,6 +619,7 @@ function createTrack(x1, y1, x2, y2,canvas){
 		canvas: newCanvas,
 		ctx: newCtx
 	};
+
 	return track;
 };
 
