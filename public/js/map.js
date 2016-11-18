@@ -1,9 +1,10 @@
+
 //Javascript Code for drawing the map.
 
 //Draws Lurgan to SHIP segment
 var drawLurganToShip = function() {
 };
-// TODO - change text sizing	
+// TODO - change text sizing
 drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		// Draw Text
 		// Orange, size 12
@@ -11,7 +12,7 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillStyle = "#ffa500";
 		// TODO: Don't hardcode size values as px (ie 40, 380). Always use either em (for font), or %
 		//			Otherwise it'll be very difficult to resize to the screen.  If you use %, it will auto resize to fit on any screen.
-		ctx.fillText("CSX", 0.04*canvas.width, 0.48*canvas.height);	
+		ctx.fillText("CSX", 0.04*canvas.width, 0.48*canvas.height);
 		ctx.fillText("Lurgan Sub", 0.04*canvas.width, 0.5*canvas.height);
 		ctx.fillText("NS H-Line", 0.04*canvas.width, 0.53*canvas.height);
 		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.55*canvas.height);
@@ -86,7 +87,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	//ctx.drawImage(
 	return this;
 };
-	
+
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
@@ -148,57 +149,77 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
-    ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
-    ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
+//    ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
+//    ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
+    var lurgan_branch_straight = createTrack(.116, .15, .930, .15, canvas);
 
     //Near Cleversburg Junction viewing platform
-    ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
-    ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
-    ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
-    ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
+//    ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
+//    ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
+    var cleversburg_straight = createTrack(.1320, .12, .278, .12, canvas);
+//    ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
+//    ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
+    var cleversburg_ramp = createTrack(.278, .12, .308, .15, canvas);
 
     //Draw Gettysburg section
-    ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
-    ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
-    ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
-    ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
-    ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
-    ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
-    ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
-    ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
-    ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
-    ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
-    ctx.stroke();
+//    ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
+//    ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
+    var gettysburg_straight = createTrack(.505, .190, .540, .190, canvas);
+
+//    ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
+//    ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
+    var gettysburg_ramp_up = createTrack(.540, .190, .555, .175, canvas);
+
+//    ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
+//    ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
+    var carl_ramp_down = createTrack(.540, .150, .552, .175, canvas);
+
+//    ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
+//    ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
+    var carl_straight = createTrack(.552, .175, .605, .175, canvas);
+
+//    ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
+//    ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
+    var carl_ramp_up = createTrack(.605, .175, .617, .150, canvas);
 
     //Draw the PPG section
-    ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
-    ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
-    ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
-    ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
+//    ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
+//    ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
+    var ppg_ramp = createTrack(.558, .150, .573, .1285, canvas);
+
+//    ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
+//    ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
+    var ppg_straight = createTrack(.573, .1285, .583, .1285, canvas);
 
 //    ctx.lineWidth = 4;
-    //Draw the Ross/Front secction
-    ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
-    ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
-    ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
-    ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
+    //Draw the Ross/Front section
+//    ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
+//    ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
+    var ross_ramp = createTrack(.765, .150, .785, .1285, canvas);
+
+//    ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
+//    ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
+    var ross_straight = createTrack(.785, .1285, .930, .1285, canvas);
 
     //Draw the dash in the SHIP section
-    ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
-    ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
+//    ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
+//    ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
+    var ship_dash = createTrack(.187, .141, .197, .130, canvas);
 
     //Draw the dashes in the Front section
-    ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
-    ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
-    ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
-    ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
-    ctx.stroke();
+//    ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
+//    ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
+    var front_dash_1 = createTrack (.860, .135, .870, .143, canvas);
+
+//    ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
+//    ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
+    var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
+//    ctx.stroke();
 
     //draw the section near PPG that is thinner than the rest
-    ctx.lineWidth = .75;
-    ctx.moveTo(.583 * canvas.width, .1285 * canvas.height);
-    ctx.lineTo(.600 * canvas.width, .1285 * canvas.height);
-    ctx.stroke();
+//    ctx.moveTo(.583 * canvas.width, .1285 * canvas.height);
+//    ctx.lineTo(.600 * canvas.width, .1285 * canvas.height);
+    var ppg_thin_straight = createTrackWithWidth(.583, .1285, .600, .1285, canvas, .75);
 
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
@@ -215,78 +236,83 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 		return this;
 };
 
+
+function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
+    var newCanvas = document.createElement("canvas");
+//    	var lineWidth = 4;
+    	if (x2 >= x1){
+    		newCanvas.width = (x2*canvas.width-x1*canvas.width);
+    	}
+    	else{
+    		newCanvas.width = (x1*canvas.width-x2*canvas.width);
+    		var xflip = true;
+    	}
+    	if (y2 >= y1){
+    		newCanvas.height = (y2*canvas.height-y1*canvas.height);
+    	}
+    	else{
+    		newCanvas.height = (y1*canvas.height-y2*canvas.height);
+    		var yflip = true;
+    	}
+    //	window.alert(newCanvas.width + " before " + newCanvas.height)
+        if (x1 == x2){
+    		var vLine = true;
+    		newCanvas.width = 8;
+        }
+        else if (y1 == y2){
+            var hLine = true;
+    	    newCanvas.height = 8;
+        }
+    	var newCtx = newCanvas.getContext('2d');
+    	var oldCtx = canvas.getContext('2d');
+    	newCtx.strokeStyle = "white";
+    	newCtx.lineWidth = lineWidth;
+    	if (vLine == true){
+    		newCtx.moveTo(lineWidth, 0);
+    		newCtx.lineTo(lineWidth, newCanvas.height);
+    		newCtx.stroke();
+    		document.body.appendChild(newCanvas);
+    		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    	}
+    	else if (hLine == true){
+    		newCtx.moveTo(0, lineWidth);
+    		newCtx.lineTo(newCanvas.width, lineWidth);
+    		newCtx.stroke();
+    		document.body.appendChild(newCanvas);
+    		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
+    	}
+    	else if (yflip == true){
+    		newCtx.moveTo(0, newCanvas.height);
+    		newCtx.lineTo(newCanvas.width, 0);
+    		newCtx.stroke();
+    		document.body.appendChild(newCanvas);
+    		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
+    	}
+    	else if (xflip == true){
+    		newCtx.moveTo(newCanvas.width, 0);
+    		newCtx.lineTo(0, newCanvas.height);
+    		newCtx.stroke();
+    		document.body.appendChild(newCanvas);
+    		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
+    	}
+    	else{
+    		newCtx.moveTo(0, 0);
+    		newCtx.lineTo(newCanvas.width, newCanvas.height);
+    		newCtx.stroke();
+    		document.body.appendChild(newCanvas);
+    		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+    	}
+    	var track = {
+    		canvas: newCanvas,
+    		ctx: newCtx
+    	};
+    	return track;
+};
+
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
-	var newCanvas = document.createElement("canvas");
-	var lineWidth = 4;
-	if (x2 >= x1){
-		newCanvas.width = (x2*canvas.width-x1*canvas.width);
-	}
-	else{
-		newCanvas.width = (x1*canvas.width-x2*canvas.width);
-		var xflip = true;
-	}
-	if (y2 >= y1){
-		newCanvas.height = (y2*canvas.height-y1*canvas.height);
-	}
-	else{
-		newCanvas.height = (y1*canvas.height-y2*canvas.height);
-		var yflip = true;
-	}
-//	window.alert(newCanvas.width + " before " + newCanvas.height)
-    if (x1 == x2){
-		var vLine = true;
-		newCanvas.width = 8;
-    }
-    else if (y1 == y2){
-        var hLine = true;
-	    newCanvas.height = 8;
-    }
-	var newCtx = newCanvas.getContext('2d');
-	var oldCtx = canvas.getContext('2d');
-	newCtx.strokeStyle = "white";
-	newCtx.lineWidth = lineWidth;
-	if (vLine == true){	
-		newCtx.moveTo(lineWidth, 0);
-		newCtx.lineTo(lineWidth, newCanvas.height);
-		newCtx.stroke();
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
-	}
-	else if (hLine == true){
-		newCtx.moveTo(0, lineWidth);
-		newCtx.lineTo(newCanvas.width, lineWidth);
-		newCtx.stroke();
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
-	}
-	else if (yflip == true){
-		newCtx.moveTo(0, newCanvas.height);
-		newCtx.lineTo(newCanvas.width, 0);
-		newCtx.stroke();
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
-	}
-	else if (xflip == true){
-		newCtx.moveTo(newCanvas.width, 0);
-		newCtx.lineTo(0, newCanvas.height);
-		newCtx.stroke();
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
-	}
-	else{
-		newCtx.moveTo(0, 0);
-		newCtx.lineTo(newCanvas.width, newCanvas.height);
-		newCtx.stroke();
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
-	}
-	var track = {
-		canvas: newCanvas,
-		ctx: newCtx
-	};
-	return track;
+    createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
 
 // Redraws the given track element in the given color.s
