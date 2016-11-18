@@ -3,7 +3,7 @@
 //Draws Lurgan to SHIP segment
 var drawLurganToShip = function() {
 };
-	
+// TODO - change text sizing	
 drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		// Draw Text
 		// Orange, size 12
@@ -38,55 +38,43 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
-
-
 		//concept for storage of track segments - needed for recoloring?
 		//var tinfo = ["mnemonic", x, y, x2, y2]
-
 		// Draw Track - Nearby text on original layout listed in comments
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = "white";
 		// CSX
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
-		var csx_ramp = createTrack(.187, .470, .206, .485, canvas);
+		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
 		// Lurgan Sub
-		ctx.moveTo(.116*canvas.width, .495*canvas.height);
-		ctx.lineTo(.236*canvas.width, .495*canvas.height);
-		ctx.lineTo(.286*canvas.width, .535*canvas.height);
+		var lurgan_straight = createTrack(.116, .495, .236, .495, canvas);
+		var lurgan_ramp = createTrack(.2361, .495, .286, .535, canvas);
 		// NS H-Line
-		ctx.moveTo(.116*canvas.width, .520*canvas.height);
-		ctx.lineTo(.196*canvas.width, .520*canvas.height);
-		ctx.lineTo(.216*canvas.width, .535*canvas.height);
+		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
+		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
 		// to Roanoke
-		ctx.moveTo(.116*canvas.width, .540*canvas.height);
-		ctx.lineTo(.86*canvas.width, .540*canvas.height);
+		var roanoke_line = createTrack(.116, .540, .86, .540, canvas);
 		// NS Industrial Lead
-		ctx.moveTo(.266*canvas.width, .540*canvas.height);
-		ctx.lineTo(.336*canvas.width, .600*canvas.height);
-		ctx.lineTo(.400*canvas.width, .600*canvas.height);
+		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
+		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
 		// CSX Lurgan Sub
-		ctx.moveTo(.310*canvas.width, .540*canvas.height);
-		ctx.lineTo(.336*canvas.width, .560*canvas.height);
-		ctx.lineTo(.400*canvas.width, .560*canvas.height);
+		var csxl_ramp = createTrack(.310, .540, .336, .560, canvas);
+		var csxl_straight = createTrack(.3361, .560, .400, .560, canvas);
 		// CSX Hanover Sub
-		ctx.moveTo(.360*canvas.width, .560*canvas.height);
-		ctx.lineTo(.386*canvas.width, .580*canvas.height);
-		ctx.lineTo(.400*canvas.width, .580*canvas.height);
+		var csxh_ramp = createTrack(.360, .560, .386, .580, canvas);
+		var csxh_straight = createTrack(.3861, .580, .400, .580, canvas);
 		// Greencastle Yard
-		ctx.moveTo(.440*canvas.width, .540*canvas.height);
-		ctx.lineTo(.466*canvas.width, .560*canvas.height);
-		ctx.lineTo(.560*canvas.width, .560*canvas.height);
-		ctx.lineTo(.586*canvas.width, .540*canvas.height);
+		var gc_ramp_l = createTrack(.440, .540, .466, .560, canvas);
+		var gc_straight = createTrack(.4661, .560, .560, .560, canvas);
+     	var gc_ramp_r = createTrack(.5601, .560, .586, .540, canvas);
 		// CP-65 to CP-62
-		ctx.moveTo(.510*canvas.width, .540*canvas.height);
-		ctx.lineTo(.536*canvas.width, .520*canvas.height);
-		ctx.lineTo(.630*canvas.width, .520*canvas.height);
-		ctx.lineTo(.656*canvas.width, .540*canvas.height);
+		var cp65_ramp_r = createTrack(.510, .540, .536, .520, canvas);
+		var cp65_straight = createTrack(.5361, .520, .630, .520, canvas);
+		var cp65_ramp_l = createTrack(.6301, .520, .656, .540, canvas);
 		// Near CP-53 and CP-50
-		ctx.moveTo(.740*canvas.width, .540*canvas.height);
-		ctx.lineTo(.766*canvas.width, .520*canvas.height);
-		ctx.lineTo(.796*canvas.width, .520*canvas.height);
-		ctx.lineTo(.820*canvas.width, .540*canvas.height);
+		var cp53_ramp_r = createTrack(.740, .540, .766, .520, canvas);
+		var cp65_straight = createTrack(.7661, .520, .796, .520, canvas);
+		var cp65_ramp_l = createTrack(.7961, .520, .820, .540, canvas);
 		ctx.stroke();
 		return this;
 };
@@ -232,9 +220,21 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 function createTrack(x1, y1, x2, y2,canvas){
 	var newCanvas = document.createElement("canvas");
 	var lineWidth = 4;
-	newCanvas.width = (x2*canvas.width-x1*canvas.width);
-	newCanvas.height = (y2*canvas.height-y1*canvas.height);
-    window.alert(newCanvas.width + " before " + newCanvas.height)
+	if (x2 >= x1){
+		newCanvas.width = (x2*canvas.width-x1*canvas.width);
+	}
+	else{
+		newCanvas.width = (x1*canvas.width-x2*canvas.width);
+		var xflip = true;
+	}
+	if (y2 >= y1){
+		newCanvas.height = (y2*canvas.height-y1*canvas.height);
+	}
+	else{
+		newCanvas.height = (y1*canvas.height-y2*canvas.height);
+		var yflip = true;
+	}
+//	window.alert(newCanvas.width + " before " + newCanvas.height)
     if (x1 == x2){
 		var vLine = true;
 		newCanvas.width = 8;
@@ -261,6 +261,20 @@ function createTrack(x1, y1, x2, y2,canvas){
 		document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
 	}
+	else if (yflip == true){
+		newCtx.moveTo(0, newCanvas.height);
+		newCtx.lineTo(newCanvas.width, 0);
+		newCtx.stroke();
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
+	}
+	else if (xflip == true){
+		newCtx.moveTo(newCanvas.width, 0);
+		newCtx.lineTo(0, newCanvas.height);
+		newCtx.stroke();
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
+	}
 	else{
 		newCtx.moveTo(0, 0);
 		newCtx.lineTo(newCanvas.width, newCanvas.height);
@@ -272,7 +286,6 @@ function createTrack(x1, y1, x2, y2,canvas){
 		canvas: newCanvas,
 		ctx: newCtx
 	};
-
 	return track;
 };
 
