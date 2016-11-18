@@ -11,7 +11,8 @@ import (
 	"io/ioutil"
 	"strings"
 	"strconv"
-	"reflect"
+	//"reflect"
+	"fmt"
 )
 
 var (
@@ -184,25 +185,30 @@ func InitDB() {
 		fileAsString := string(fileBytes)
 		lines := strings.Split(fileAsString, "\n")
 		println("length of lines: ", strconv.Itoa(len(lines)))
+
+
 		//[MCPInformation]
 		//Count=180
 		offset := 1 //MCP info starts at line 2.
-		for mcp := 0; mcp < 179; mcp++{
-			newMCP := models.Mcp{}
-			s := reflect.ValueOf(&newMCP).Elem()
-			for i:=0; i < s.NumField(); i++ {
-				s.Field(i).SetString(strings.Split(lines[mcp*s.NumField()+offset+i], "=")[1])
-			}
-			err := Dbm.Insert(&newMCP)
+		fmt.Println("Start: ", lines[offset])
+	newMCP := new(models.Mcp)
+		for i:=1; i +offset +20 <= len(lines); i+=19{
+			newMCP= models.NewMCP(lines[i+offset:i+20+offset])
+			err := Dbm.Insert(newMCP)
 			if err != nil{
-				println("ERROR: ",err)
 				panic(err)
-
 			}
-
 		}
-		println("Last MCP info: ", lines[180*19 +offset -1]) // should be: MCPActivityC180=
 
+	println("Last MCP info: ", newMCP.String()) // should be: MCPActivityC180=
+	//Attempt to get the last MCP
+	//mcp, err := Dbm.Select(models.Mcp{}, `select * from MCP`)
+	//var posts []models.Mcp
+	//_, err = Dbm.Select(&posts, "select * from mcp")
+	//fmt.Println("All rows:")
+	//for x, p := range posts {
+	//	fmt.Printf("    %d: %v\n", x, p)
+	//}
 	//}
 }
 

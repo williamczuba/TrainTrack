@@ -27,9 +27,7 @@ GET     /recoverInfo        App.ShowInfo
 # Map
 GET     /map                Map.Index
 GET     /app-pending        App.AppPending
-GET     /map/listen         Map.Listen
-GET     /map/join           Map.Join
-GET     /map/leave          Map.Leave
+GET     /map/listen         Map.GetTrainData
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

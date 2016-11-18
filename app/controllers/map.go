@@ -7,6 +7,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	//"TrainTrack/app/packetDecoding"
 	//"github.com/revel/samples/chat/app/chatroom"
+	"TrainTrack/app/packetDecoding"
+	"fmt"
 )
 
 //Map structure, needs to extend App (which extends gorp and revel controller) to be a controller
@@ -34,14 +36,8 @@ func (c Map) Index() revel.Result {
 	return c.Render()
 }
 
-func (c Map) Join() revel.Result {
-	return nil
-}
-
-
-
-func (c Map) getMCP(address string) *models.Mcp {
-	mcp, err := c.Txn.Select(models.Mcp{}, `select * from MCP where Address = ?`, address)
+func (c Map) GetMCP(address string) *models.Mcp {
+	mcp, err := c.Txn.Select(models.Mcp{}, `select * from MCP where Address = ?`, ""+address)
 	if(err != nil){
 		panic(err)
 	}
@@ -54,49 +50,48 @@ func (c Map) getMCP(address string) *models.Mcp {
 	return mcp[0].(*models.Mcp)
 }
 
-func (c Map) Listen() revel.Result {
-	//subscription := chatroom.Subscribe()
-	//defer subscription.Cancel()
-	//
-	//// See if anything is new in the archive.
-	//var events []chatroom.Event
-	//for _, event := range subscription.Archive {
-	//	if event.Timestamp > lastReceived {
-	//		events = append(events, event)
-	//	}
-	//}
-	//
-	//// If we found one, grand.
-	//if len(events) > 0 {
-	//	return c.RenderJson(events)
-	//}
-	//
-	//// Else, wait for something new.
-	//event := <-subscription.New
-	//return c.RenderJson([]chatroom.Event{event})
-	return nil
+
+type ClientTrainData struct {
+	Name 			string	`json:name`
+	MilePost		string	`json:"mile_post"`
+	MessageType		string `json:"message_type"`
+	Mnemonics 		string `json:"mnemonics"`
+	Bits 			string `json:"bits"`
+	Subdivision		string	`json:"subdivision"`
+	StateCounty		string	`json:"state_county"`
+	CodeLineData		string	`json:"code_line_data"`
 }
 
-////TODO
+//AJAX for a client to begin to listen for updates (they will GET the train info from this function)
 ////Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table),
 // then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
-func (c Map) getTrainData() string {
-	//str := packetDecoding.GetPacket()
-	//l3 := packetDecoding.GenLayer3(str)
-	//address := l3.SourceAddr
-	//
-	//
-	//mcp := c.getMCP(address)
-	////println(mcp)
-	////need to access the table
-	////loop? to access each value in the InitMCPDB?
-	////or easy return?
-	////9.2.11 = indication
-	//return mcp.ControlMnemonics
-	return ""
-}
-func (c Map) Leave() revel.Result {
-	return nil
+func (c Map) GetTrainData() revel.Result {
+	//TEST GET MCP
+	tMCP := c.GetMCP("75505510190203")
+	fmt.Println(tMCP)
+
+
+	trainInfo := packetDecoding.GetTrainInfo()
+	mcp := c.GetMCP(trainInfo.L3.SourceAddr)
+	label := trainInfo.L4P.Label
+	var CTD ClientTrainData
+	CTD.Name = mcp.Name
+	CTD.StateCounty = mcp.StateCounty
+	CTD.CodeLineData = trainInfo.L4P.CodeLineData
+	CTD.MilePost = mcp.Milepost
+	CTD.Subdivision = mcp.Subdivision
+	if label == "9.2.11" { //Indication Packet
+		CTD.MessageType = "Indication"
+		CTD.Bits = mcp.IndicationBits
+		CTD.Mnemonics = mcp.IndicationMnemonics
+
+	} else if label == "9.0.1" { //Control Packet
+		CTD.MessageType = "Control"
+		CTD.Bits = mcp.ControlBits
+		CTD.Mnemonics = mcp.ControlMnemonics
+	}
+	fmt.Println("HERE")
+	return c.RenderJson(CTD)
 }
 
 //Utility function to check if the user is connected, and if not to return revel redirect, if they are, return nil

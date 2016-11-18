@@ -9,190 +9,171 @@ import (
 
 //TODO: RE-Write the GenLayers to use the new packet DECODED (all spacing was removed, so its pure hex now)
 
+type LayerInfo struct {
+	Start int 	`json:"Start"`
+	End int 	`json:"End"`
+	Size int	`json:"Size"`
+}
 
 //Struct to store the data from Layer2
 type Layer2 struct {
-	//Starting byte index of the layer from the hex dump
-	start     int
-	//Ending byte index of the layer from the hex dump
-	End       int
-	//size (# of HEX) of the layer
-	size      int
+	Info      *LayerInfo	`json:Info`
+	////Starting byte index of the layer from the hex dump
+	//start     int 	`json:"start"`
+	////Ending byte index of the layer from the hex dump
+	//End       int	`json:"End"`
+	////size (# of HEX) of the layer
+	//size      int	`json:"size"`
 	//Destination type
-	destType  int
+	DestType  int	`json:"DestType"`
 	// Number of 0's to pad out the frame
-	padZeros  int
+	PadZeros  int	`json:"PadZeros"`
 	// Number of blocks (of 60 bits) per frame
-	numBlocks int
+	NumBlocks int	`json:"NumBlocks"`
 	// CRC check for layer 2 (we don't use this...), store the hex w/o processing
-	crc       string
+	Crc       string	`json:"Crc"`
 }
 
 
 //Struct to store the data from Layer3
 type Layer3 struct {
-	//Starting byte index of the layer from the hex dump
-	start int
-	//Ending byte index of the layer from the hex dump
-	end int
-	//size (# of bytes) of the layer
-	size int
+	Info       *LayerInfo	`json:Info`
+	//
+	////Starting byte index of the layer from the hex dump
+	//start int	`json:"start"`
+	////Ending byte index of the layer from the hex dump
+	//end int		`json:"end"`
+	////size (# of bytes) of the layer
+	//size int	`json:"size"`
 
 	//header
 	//vale of Q - should always be 0...
-	Q int
+	Q             int	`json:"Q"`
 	//value of D - conf packet required
-	d bool
+	D             bool	`json:"D"`
 	// packet type
-	packetType string
+	PacketType    string	`json:"PacketType"`
 	// priority of the packet
-	priority int
+	Priority      int	`json:"Priority"`
 	//RF ack disabled or enabled
-	rfAck bool
+	RfAck         bool	`json:"RfAck"`
 	// channel - should always be 0
-	channel int
+	Channel       int `json:"Channel"`
 	// Tx or SSeq number
-	tx int
+	Tx            int	`json:"Tx"`
 	// RX or Rseq
-	rx int
+	Rx            int	`json:"Rx"`
 	// length of source address
-	lenSrc int
+	LenSrc        int	`json:"LenSrc"`
 	// length of the destination address
-	lenDest int
+	LenDest       int	`json:"LenDest"`
 	// destination address
-	destAddr string
+	DestAddr      string	`json:"DestAddr"`
 	// source address
-	SourceAddr string
+	SourceAddr    string	`json:"SourceAddr"`
 	// Fil3 and facility length (usually 0)
-	fil3 int
-	lenFacility int
+	Fil3          int	`json:"Fil3"`
+	LenFacility   int	`json:"LenFacility"`
 
 	//end index of the layer
-	LayerEndIndex int
+	LayerEndIndex int	`json:"LayerEndIndex"`
 }
 
 //Struct to store the data from Layer4
 type Layer4to7 struct {
-	//Starting byte index of the layer from the hex dump
-	start int
-	//Ending byte index of the layer from the hex dump
-	end int
-	//size (# of bytes) of the layer
-	size int
+	Info         *LayerInfo	`json:Info`
+
+	////Starting byte index of the layer from the hex dump
+	//start int	`json:"Q"`
+	////Ending byte index of the layer from the hex dump
+	//end int
+	////size (# of bytes) of the layer
+	//size int
 	// message number
-	messNum int
+	MessNum      int	`json:MessNum`
 	// more parts?
-	more bool
+	More         bool	`json:More`
 	// part number
-	partNum int
+	PartNum      int	`json:PartNum`
 	// End to End ACK required?
-	e2eAck bool
+	E2eAck       bool	`json:E2EAck`
 	// number of parts of message
-	numParts int
+	NumParts     int	`json:NumParts`
 	// message vital?
-	vital bool
+	Vital        bool	`json:Vital`
 	// message label
-	label string
+	Label        string	`json:Label`
 	// revision level (3 is current)
-	revLvl int
+	RevLvl       int	`json:RevLvl`
 	// number of bytes of data
-	numBytes int
+	NumBytes     int	`json:NumBytes`
 	//number of data bits in the last octet
-	numLastBits int
+	NumLastBits  int	`json:NumLastBits`
 	// Code line data as a string of bytes, for later processing.
-	codeLineData string
+	CodeLineData string	`json:CodeLineData`
 	// CRC 16 check (we don't use this) store as a string of hex.
-	crc string
+	Crc          string	`json:Crc`
 }
 
 //Struct to store all of the Layer information
 type TrainInfo struct {
-	hexDump string
-	l2 Layer2
-	l3 Layer3
-	l4p Layer4to7
+	//hexDump string
+	L2  Layer2
+	L3  Layer3
+	L4P Layer4to7
 }
 
 func NewTrainInfo(hex string) *TrainInfo {
 	t := new(TrainInfo)
-	t.hexDump = hex
-	t.l2 = GenLayer2(hex)
+	//t.hexDump = hex
+	t.L2 = GenLayer2(hex)
 
-	t.l3 = GenLayer3(hex, t.l2.End)
-	t.l4p = GenLayer4to7(hex, t.l3.LayerEndIndex)
+	t.L3 = GenLayer3(hex, t.L2.Info.End)
+	t.L4P = GenLayer4to7(hex, t.L3.LayerEndIndex)
 	return t
 }
 
 func (t *TrainInfo) String() string {
-	return fmt.Sprintf("Layer2: %v | Layer3: %v | Layer4to7: %v\n", t.l2, t.l3, t.l4p)
+	return fmt.Sprintf("Layer2: %v | Layer3: %v | Layer4to7: %v\n", t.L2, t.L3, t.L4P)
 }
 
 //Function to generate Layer2 information
 // size is always 10 bytes!
 func  GenLayer2(hex string) Layer2{
 	l2 := Layer2{}
+	info := new(LayerInfo)
 	//println("Hex Dump: ", hex)
-	l2.start = 0
+	info.Start = 0
 
 	//Destination Address
 	//first 9 chars are just line numbers and spacing, so skip them.
 	str := hex[0:2]
 	dec := HexToDec(str)
-	l2.destType = dec
+	l2.DestType = dec
 
 	// # 0's
 	str = hex[2:4]
 	dec = HexToDec(str)
-	l2.padZeros = dec
+	l2.PadZeros = dec
 
 	// # Blocks
 	str = hex[4:6]
 	dec = HexToDec(str)
-	l2.numBlocks = dec
+	l2.NumBlocks = dec
 
 	// CRC
-	l2.crc = hex[6:10]
+	l2.Crc = hex[6:10]
 
-	l2.End = 10
-	l2.size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
+	info.End = 10
+	info.Size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
+	l2.Info = info
 	return l2
 }
 
-//Function to generate Layer2 information
-// size is always 10 bytes!
-//func  GenLayer2(hex string) Layer2{
-//	l2 := Layer2{}
-//	println("Hex Dump: ", hex)
-//	l2.start = 10
-//
-//	//Destination Address
-//	//first 9 chars are just line numbers and spacing, so skip them.
-//	str := hex[10:12]
-//	dec := HexToDec(str)
-//	l2.destType = dec
-//
-//	//1 spaces in between hex's
-//
-//	// # 0's
-//	str = hex[13:15]
-//	dec = HexToDec(str)
-//	l2.padZeros = dec
-//
-//	// # Blocks
-//	str = hex[16:18]
-//	dec = HexToDec(str)
-//	l2.numBlocks = dec
-//
-//	// CRC
-//	l2.crc = hex[19:24]
-//
-//	l2.end = 24
-//	l2.size = 10 // 10 bytes = 2 bytes + 2 + 2 + 4
-//	return l2
-//}
 func  GenLayer3(hex string, start int) Layer3{
 	l3 := Layer3{}
-	l3.start = start
+	info := new(LayerInfo)
+	info.Start = start
 	i := start
 	e := start+2
 	str := hex[i:e]
@@ -202,16 +183,16 @@ func  GenLayer3(hex string, start int) Layer3{
 	//d
 	// array indexing is backwards compared to bit[] indexing...
 	if string(string(bin[0])) == "1" {
-		l3.d = true
+		l3.D = true
 	} // false by default...
 	//Type
 	tip := string(bin[1:3])
 	if  tip == "10" {
-		l3.packetType = "Info"
+		l3.PacketType = "Info"
 	} else if tip == "00" {
-		l3.packetType = "Nack"
+		l3.PacketType = "Nack"
 	} else if tip == "11" {
-		l3.packetType = "Ack"
+		l3.PacketType = "Ack"
 	} else {
 		fmt.Println("ERROR: Packet type = ", tip)
 	}
@@ -219,10 +200,10 @@ func  GenLayer3(hex string, start int) Layer3{
 	// priority
 	pS := string(bin[3:6])
 	l3p64, _ := strconv.ParseInt(pS, 2, 32)
-	l3.priority = int(l3p64)
+	l3.Priority = int(l3p64)
 	//RF ack disabled?
 	if string(bin[6]) == "0" {
-		l3.rfAck = true // not disabled = enabled
+		l3.RfAck = true // not disabled = enabled
 	}
 
 	// Channel - should be constant 00
@@ -232,7 +213,7 @@ func  GenLayer3(hex string, start int) Layer3{
 	if str != "00" {
 		fmt.Println("ERROR, channel should be 00!")
 	}
-	l3.channel = 0
+	l3.Channel = 0
 
 	// TX or SSeq Number
 	i = e
@@ -245,7 +226,7 @@ func  GenLayer3(hex string, start int) Layer3{
 	} else {
 		l3p64, _ = strconv.ParseInt(string(bin), 2, 32)
 	}
-	l3.tx = int(l3p64)
+	l3.Tx = int(l3p64)
 
 	//RX or Rseq number
 	i = e
@@ -258,42 +239,41 @@ func  GenLayer3(hex string, start int) Layer3{
 	} else {
 		l3p64, _ = strconv.ParseInt(string(bin), 2, 32)
 	}
-	l3.rx = int(l3p64)
+	l3.Rx = int(l3p64)
 
 	// length of source and destination
 	i = e
 	e = i+2
 	str = hex[i:e]
 	dec := HexToDec(string(str[0]))
-	l3.lenSrc = dec // nibbles = 4 bits * the decimal number
+	l3.LenSrc = dec // nibbles = 4 bits * the decimal number
 	dec = HexToDec(string(str[1]))
-	l3.lenDest = dec // nibbles = 4 bits * the decimal number
+	l3.LenDest = dec // nibbles = 4 bits * the decimal number
+
+	replace := func(str string) string{
+		str = strings.Replace(str, " ", "", -1)
+		str = strings.Replace(str, "a", "0", -1)
+		str = strings.Replace(str, "b", "1", -1)
+		str = strings.Replace(str, "c", "2", -1)
+		str = strings.Replace(str, "d", "3", -1)
+		str = strings.Replace(str, "e", "4", -1)
+		str = strings.Replace(str, "f", "5", -1)
+		return str
+	}
 
 	// destination address
 	i = e
-	e = i+l3.lenDest
+	e = i+l3.LenDest
 	str = hex[i:e]
-	str = strings.Replace(str, " ", "", -1)
-	str = strings.Replace(str, "A", "0", -1)
-	str = strings.Replace(str, "B", "1", -1)
-	str = strings.Replace(str, "C", "2", -1)
-	str = strings.Replace(str, "D", "3", -1)
-	str = strings.Replace(str, "E", "4", -1)
-	str = strings.Replace(str, "F", "5", -1)
-	l3.destAddr = str
+	str = replace(str)
+	l3.DestAddr = str
 	fmt.Println("Dest Address: " + str)
 
 	//Source address
 	i = e
-	e = i+l3.lenSrc
+	e = i+l3.LenSrc
 	str = hex[i:e]
-	str = strings.Replace(str, " ", "", -1)
-	str = strings.Replace(str, "A", "0", -1)
-	str = strings.Replace(str, "B", "1", -1)
-	str = strings.Replace(str, "C", "2", -1)
-	str = strings.Replace(str, "D", "3", -1)
-	str = strings.Replace(str, "E", "4", -1)
-	str = strings.Replace(str, "F", "5", -1)
+	str = replace(str)
 	l3.SourceAddr = str
 	fmt.Println("Source address: ", str)
 
@@ -301,23 +281,28 @@ func  GenLayer3(hex string, start int) Layer3{
 	i = e
 	e = i+1
 	str = hex[i:e]
-	l3.fil3 = HexToDec(str)
+	l3.Fil3 = HexToDec(str)
 
 	i = e
 	e = i+1
 	str = hex[i:e]
 	l3.LayerEndIndex = e
-	l3.lenFacility = HexToDec(str)
+	l3.LenFacility = HexToDec(str)
 	if str != "0" {
 		fmt.Println("ERROR WITH FACILITY LEN")
 	}
+	info.End = e
+	info.Size = info.End - info.Start
+	l3.Info = info
+
 	return l3
 }
 
 func GenLayer4to7(hex string, start int) Layer4to7{
 	l4p := Layer4to7{}
-
-	l4p.start = start
+	info := new(LayerInfo)
+	info.Start = start
+	//l4p.start = start
 	currIndex:=start
 	endIndex:=start+2
 	//Make the first slice -- Message number and whether or not there are more parts
@@ -329,9 +314,9 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	morePartsBinStr := binary[7:]
 	//check whether more parts binary bit is true or false and set it
 	if morePartsBinStr == "1"{
-		l4p.more = true
+		l4p.More = true
 	}else {
-		l4p.more = false
+		l4p.More = false
 	}
 	//Convert the message number from binary string to decimal int
 	msgNumDecInt, err := strconv.ParseInt(msgNumBinStr, 2, 16)
@@ -339,7 +324,7 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 		panic(err)
 	}
 	//set the message number value and print both values
-	l4p.messNum = int(msgNumDecInt)
+	l4p.MessNum = int(msgNumDecInt)
 
 	currIndex=endIndex
 	endIndex = currIndex+2
@@ -351,9 +336,9 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	e2eAckBinStr := binary[7:]
 	//Check whether the END-TO-END ACK bit is true or false and set it
 	if e2eAckBinStr == "1"{
-		l4p.e2eAck = true
+		l4p.E2eAck = true
 	}else {
-		l4p.e2eAck = false
+		l4p.E2eAck = false
 	}
 	//Convert the part number from binary string to decimal int
 	partNumDecInt, err := strconv.ParseInt(partNumBinStr, 2, 16)
@@ -361,7 +346,7 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 		panic(err)
 	}
 	//Set the part number and print both values
-	l4p.partNum = int(partNumDecInt)
+	l4p.PartNum = int(partNumDecInt)
 
 	currIndex=endIndex
 	endIndex = currIndex+2
@@ -374,9 +359,9 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	vitalBinStr := binary[7:]
 	//Check the last bit to see if message is vital and set it
 	if vitalBinStr == "1"{
-		l4p.vital = true
+		l4p.Vital = true
 	}else {
-		l4p.vital = false
+		l4p.Vital = false
 	}
 	//Convert the number of parts from binary string to decimal int
 	numPartsDecInt, err := strconv.ParseInt(numPartsBinStr, 2, 16)
@@ -384,7 +369,7 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 		panic(err)
 	}
 	//Set the number of parts and print both values
-	l4p.numParts = int(numPartsDecInt)
+	l4p.NumParts = int(numPartsDecInt)
 
 	// label: int 64 of 4 hex.
 	currIndex=endIndex
@@ -397,13 +382,13 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	label64 += strconv.Itoa(t) + "."
 	t = i32 % 64
 	label64 += strconv.Itoa(t)
-	l4p.label = label64
+	l4p.Label = label64
 
 	currIndex=endIndex
 	endIndex = currIndex+2
 	//make fifth slice -- rev level
 	str = hex[currIndex:endIndex]
-	l4p.revLvl = HexToDec(str)
+	l4p.RevLvl = HexToDec(str)
 
 	//Bits 58 and 59 are skipped
 	//NOTE: We skip 2 zero's here!
@@ -412,21 +397,21 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 
 	//make sixth slice -- number of octets in the data
 	str = hex[currIndex:endIndex]
-	l4p.numBytes = HexToDec(str)
+	l4p.NumBytes = HexToDec(str)
 
 	currIndex=endIndex
 	endIndex = currIndex+2
 	//make seventh slice -- number of data bits in the last octet
 	str = hex[currIndex:endIndex]
-	l4p.numLastBits = HexToDec(str)
+	l4p.NumLastBits = HexToDec(str)
 
 	currIndex=endIndex
-	endIndex = currIndex+l4p.numBytes*2 // 2 octets per hex
+	endIndex = currIndex+l4p.NumBytes *2 // 2 octets per hex
 
 	//make sixth slice -- number of octets in the data
 	str = hex[currIndex:endIndex]
 	//set the value and print it
-	l4p.codeLineData = str
+	l4p.CodeLineData = str
 
 	//make the last slice -- CRC 16 check. Just need to store string version of the hex
 	currIndex=endIndex
@@ -434,8 +419,10 @@ func GenLayer4to7(hex string, start int) Layer4to7{
 	//make seventh slice -- number of data bits in the last octet
 	str = hex[currIndex:endIndex]
 
-	l4p.crc = str
-	l4p.end = endIndex
+	l4p.Crc = str
+	info.End = endIndex
+
+	l4p.Info = info
 	return l4p
 }
 

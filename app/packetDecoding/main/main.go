@@ -37,12 +37,12 @@ func main() {
 	//l4to7 := packetDecoding.GenLayer4to7(str,l3.LayerEndIndex)
 	//fmt.Println("L4-7: ", l4to7)
 
-	packetDec := packetDecoding.NewConnection()
+	packetDecoding.InitConnection()
 	//fmt.Println("here")
 
 
-	fmt.Println("info:", packetDec.GetTrainInfo())
-	packetDec.Stop()
+	fmt.Println("info:", packetDecoding.GetTrainInfo())
+	packetDecoding.Stop()
 
 }
 

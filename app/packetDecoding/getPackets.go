@@ -21,22 +21,31 @@ func CheckError (e error) {
 	}
 }
 
-//var Connect net.Conn
+func init() {
+	InitConnection()
+}
 
 //Only 1 connection for the entire server!
-type Connection struct {
+//type Connection struct {
+//	connect net.Conn
+//	quit    chan struct{}
+//	ticker  *time.Ticker
+//	packets chan string
+//}
+
+var (
 	connect net.Conn
 	quit    chan struct{}
 	ticker  *time.Ticker
 	packets chan string
-}
+)
 
 //DON'T forget to call stop to close the connection!
-func (c Connection) Stop() {
-	close(c.quit)
+func Stop() {
+	close(quit)
 	dis := []byte( "DISCONNECT")
-	c.connect.Write(dis)
-	c.connect.Close()
+	connect.Write(dis)
+	connect.Close()
 }
 
 //TODO "5. Every 2 minutes, if no traffic has been sent by the server, it sends the message "*KEEPALIVE" instead.
@@ -44,11 +53,12 @@ func (c Connection) Stop() {
 //	// 	over 2 minutes, and then gracefully conclude the session."
 
 
-// Get the latest and greatest Train Information
-func (c *Connection) GetTrainInfo() *TrainInfo{
+// Get the latest and greatest Train Information.
+// Will wait for the server to get a packet, before returning that packet.
+func GetTrainInfo() *TrainInfo{
 	for {
 		select {
-		case data := <- c.packets:
+		case data := <- packets:
 			return NewTrainInfo(data)
 		}
 	}
@@ -57,45 +67,45 @@ func (c *Connection) GetTrainInfo() *TrainInfo{
 	//return NewTrainInfo(data)
 }
 
-func (c *Connection) keepAlive() {
+func keepAlive() {
 	for { //infinite loop polling (not very efficient, but works)
 		select {
-		case <- c.ticker.C: // every tick,
+		case <- ticker.C: // every tick,
 			buf := []byte("Thanks")
-			_,err := c.connect.Write(buf) //send a thanks message
+			_,err := connect.Write(buf) //send a thanks message
 
 			CheckError(err)
-		case <- c.quit: // if we cancel
-			c.ticker.Stop()	//stop
+		case <- quit: // if we cancel
+			ticker.Stop()	//stop
 			return
 		}
 	}
 }
 
-func (c *Connection) listen() {
+func listen() {
 	for {
 		select {
-		case <-c.quit:
+		case <-quit:
 		// if we cancel
-			c.ticker.Stop()        //stop
+			ticker.Stop()        //stop
 			println("STOP")
 			return
 		default:
-			data := bufio.NewReader(c.connect)
+			data := bufio.NewReader(connect)
 		// Assume the message is giant - 8 Blocks of 60 bit frames
 			p := make([]byte, 60)
 			_, err := data.Read(p)
 			CheckError(err)
 			str := hex.EncodeToString(p)
 			//fmt.Printf("HEX: %s \n", str)
-			c.packets <- str//hex.Dump(p)
+			packets <- str//hex.Dump(p)
 		}
 
 	}
 }
 //initialize the connection
-func  NewConnection() *Connection {
-	c := new(Connection)
+func InitConnection() {
+	//c := new(Connection)
 	url := "NS-HbgDiv.dyndns.org"
 	//"1. The ATCSMon client opens a TCP connection to the published server IP address and listener port (usually 4800)
 	// 	on the ATCSMon server, and waits for data arrival."
@@ -103,7 +113,7 @@ func  NewConnection() *Connection {
 	var port string
 
 	// connect to this socket
-	var connect = func() {
+	var sockConnect = func() {
 		conn,_ = net.Dial("tcp", url + ":4800")
 		//CheckError(err)
 		port, _ = bufio.NewReader(conn).ReadString('\n')
@@ -111,18 +121,18 @@ func  NewConnection() *Connection {
 		println("Message from server (Port Number): "+port)
 	}
 
-	connect()
-	c.ticker = time.NewTicker(1 * time.Minute) //create a new ticker to go off every minute
+	sockConnect()
+	ticker = time.NewTicker(1 * time.Minute) //create a new ticker to go off every minute
 
 	//If we were rejected, try again every minute.
 	for port == "Rejected" {
 		select {
-		case <- c.ticker.C: // every tick,
-			connect()
+		case <- ticker.C: // every tick,
+			sockConnect()
 		//CheckError(err)
-		case <- c.quit: // if we cancel
-			c.ticker.Stop()	//stop
-			return nil
+		case <- quit: // if we cancel
+			ticker.Stop()	//stop
+			return
 		}
 	}
 
@@ -135,16 +145,16 @@ func  NewConnection() *Connection {
 
 	//Start the connection to the UDP server
 	//If we leave the local address nil, it will resolve itself.
-	c.connect, err = net.DialUDP("udp", nil, serverAddr)
+	connect, err = net.DialUDP("udp", nil, serverAddr)
 	CheckError(err)
 
 	buf := []byte("Thanks")
-	_,err = c.connect.Write(buf)
-	c.packets = make(chan string)
-	c.quit = make(chan struct{}) //thread safe data channel
-	go c.keepAlive() // keep the connection alive
-	go c.listen() // listen for packets
-	return c
+	_,err = connect.Write(buf)
+	packets = make(chan string)
+	quit = make(chan struct{}) //thread safe data channel
+	go keepAlive() // keep the connection alive
+	go listen() // listen for packets
+	//return *c
 }
 
 
