@@ -149,77 +149,75 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
-//    ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
-//    ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
-    var lurgan_branch_straight = createTrack(.116, .15, .930, .15, canvas);
+
+    var lurgan_branch_straight = createTrack(.100, .15, .930, .15, canvas);
 
     //Near Cleversburg Junction viewing platform
-//    ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
-//    ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
-    var cleversburg_straight = createTrack(.1320, .12, .278, .12, canvas);
-//    ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
-//    ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
-    var cleversburg_ramp = createTrack(.278, .12, .308, .15, canvas);
+    var cleversburg_straight = createTrack(.1320, .12, .220, .12, canvas);
+    var cleversburg_ramp = createTrack(.220, .12, .235, .15, canvas);
 
     //Draw Gettysburg section
-//    ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
-//    ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
-    var gettysburg_straight = createTrack(.505, .190, .540, .190, canvas);
+    var gettysburg_straight = createTrack(.502, .190, .530, .190, canvas);
+    var gettysburg_ramp_up = createTrack(.530, .190, .540, .175, canvas);
 
-//    ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
-//    ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
-    var gettysburg_ramp_up = createTrack(.540, .190, .555, .175, canvas);
-
-//    ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
-    var carl_ramp_down = createTrack(.540, .150, .552, .175, canvas);
-
-//    ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
-//    ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
-    var carl_straight = createTrack(.552, .175, .605, .175, canvas);
-
-//    ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
-//    ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
-    var carl_ramp_up = createTrack(.605, .175, .617, .150, canvas);
+    //Draw Carl section
+    var carl_ramp_down = createTrack(.520, .150, .532, .175, canvas);
+    var carl_straight = createTrack(.532, .175, .585, .175, canvas);
+    var carl_ramp_up = createTrack(.585, .175, .597, .150, canvas);
 
     //Draw the PPG section
-//    ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
-    var ppg_ramp = createTrack(.558, .150, .573, .1285, canvas);
+    var ppg_ramp = createTrack(.548, .150, .563, .1285, canvas);
+    var ppg_straight = createTrack(.563, .1285, .573, .1285, canvas);
 
-//    ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
-    var ppg_straight = createTrack(.573, .1285, .583, .1285, canvas);
-
-//    ctx.lineWidth = 4;
     //Draw the Ross/Front section
-//    ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
     var ross_ramp = createTrack(.765, .150, .785, .1285, canvas);
-
-//    ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
     var ross_straight = createTrack(.785, .1285, .930, .1285, canvas);
 
     //Draw the dash in the SHIP section
-//    ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
-//    ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
     var ship_dash = createTrack(.187, .141, .197, .130, canvas);
 
     //Draw the dashes in the Front section
-//    ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
-//    ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
     var front_dash_1 = createTrack (.860, .135, .870, .143, canvas);
-
-//    ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
-//    ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
     var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
-//    ctx.stroke();
 
     //draw the section near PPG that is thinner than the rest
-//    ctx.moveTo(.583 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.600 * canvas.width, .1285 * canvas.height);
-    var ppg_thin_straight = createTrackWithWidth(.583, .1285, .600, .1285, canvas, .75);
+    var ppg_thin_straight = createTrackWithWidth(.573, .1285, .590, .1285, canvas, .75);
+
+    //draw mile markers. intervals of 16 pixels
+    var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
+    var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
+    var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
+    var marker_39_upper = drawMileMarker(.148, .11, .148, .13, canvas);
+    var marker_36 = drawMileMarker(.180, .14, .180, .16, canvas);
+    var marker_36_upper = drawMileMarker(.180, .11, .180, .13, canvas);
+    var marker_381 = drawMileMarker(.196, .14, .196, .16, canvas);
+    var marker_382 = drawMileMarker(.196, .11, .196, .13, canvas);
+    var marker_last_on_ramp = drawMileMarker(.212, .14, .212, .16, canvas);
+    var marker_last_on_ramp_up = drawMileMarker(.212, .11, .212, .13, canvas);
+    var marker_after_ramp = drawMileMarker(.244, .14, .236, .16, canvas);
+    var marker_36 = drawMileMarker(.260, .14, .254, .16, canvas);
+    var marker_33 = drawMileMarker(.276, .14, .276, .16, canvas);
+    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
+    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
+    var marker_27 = drawMileMarker(.308, .14, .308, .16, canvas);
+    var marker_26 = drawMileMarker(.324, .14, .308, .16, canvas);
+    var marker_25 = drawMileMarker(.340, .14, .340, .16, canvas);
+
+    //extra based on the ratios
+    var ext_marker1 = drawMileMarker(.356, .14, .356, .16, canvas);
+    var ext_marker2 = drawMileMarker(.372, .14, .372, .16, canvas);
+    var ext_marker3 = drawMileMarker(.388, .14, .388, .16, canvas);
+    var ext_marker4 = drawMileMarker(.404, .14, .404, .16, canvas);
+    var ext_marker5 = drawMileMarker(.420, .14, .420, .16, canvas);
+    var ext_marker6 = drawMileMarker(.436, .14, .436, .16, canvas);
+    var ext_marker7 = drawMileMarker(.452, .14, .452, .16, canvas);
+    var ext_marker8 = drawMileMarker(.468, .14, .468, .16, canvas);
+    var ext_marker9 = drawMileMarker(.484, .14, .484, .16, canvas);
+    var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
+    var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
+    var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
+
+
 
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
@@ -228,6 +226,34 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 //	ctx.drawImage(
 //	return this;
 //};
+
+function drawMileMarker(x1, y1, x2, y2, canvas){
+    lineWidth = 2;
+    var newCanvas = document.createElement("canvas");
+
+    newCanvas.width = 8;
+    newCanvas.height = (y2*canvas.height-y1*canvas.height);
+
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = "White";
+    newCtx.lineWidth = lineWidth;
+
+    newCtx.moveTo(lineWidth, 0);
+    newCtx.lineTo(lineWidth, newCanvas.height);
+    newCtx.stroke();
+
+    oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    document.body.appendChild(newCanvas);
+
+
+    var marker = {
+        canvas: newCanvas,
+        ctx: newCtx
+    };
+    return marker;
+};
+
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
@@ -239,7 +265,6 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 
 function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     var newCanvas = document.createElement("canvas");
-//    	var lineWidth = 4;
     	if (x2 >= x1){
     		newCanvas.width = (x2*canvas.width-x1*canvas.width);
     	}
