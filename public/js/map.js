@@ -80,11 +80,12 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		return this;
 };
 
-//Draws control points for the Lurgan to Ship region - draw the "off" graphic in the proper direction by default
+//Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
+//track mnemonics they control.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cpr = document.getElementById("cproff")
 	var cpl = document.getElementById("cploff")
-	//ctx.drawImage(
+	var 
 	return this;
 };
 
@@ -148,79 +149,29 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
-
-//    ctx.moveTo(.116 * canvas.width, .15 * canvas.height); //draws the long, straight line that goes all the way across
-//    ctx.lineTo(.930 * canvas.width, .15 * canvas.height);
     var lurgan_branch_straight = createTrack(.116, .15, .930, .15, canvas);
-
     //Near Cleversburg Junction viewing platform
-//    ctx.moveTo(.1320 * canvas.width, .12 * canvas.height); //draw the section above the straight line (another straight line)
-//    ctx.lineTo(.278 * canvas.width, .12 * canvas.height);
     var cleversburg_straight = createTrack(.1320, .12, .278, .12, canvas);
-//    ctx.moveTo(.278 * canvas.width, .12 * canvas.height); //draw the sloping downward section from that line
-//    ctx.lineTo(.308 * canvas.width, .15 * canvas.height);
     var cleversburg_ramp = createTrack(.278, .12, .308, .15, canvas);
-
     //Draw Gettysburg section
-//    ctx.moveTo(.505 * canvas.width, .190 * canvas.height);
-//    ctx.lineTo(.540 * canvas.width, .190 * canvas.height);
     var gettysburg_straight = createTrack(.505, .190, .540, .190, canvas);
-
-//    ctx.moveTo(.540 * canvas.width, .190 * canvas.height);
-//    ctx.lineTo(.555 * canvas.width, .175 * canvas.height);
     var gettysburg_ramp_up = createTrack(.540, .190, .555, .175, canvas);
-
-//    ctx.moveTo(.540 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.552 * canvas.width, .175 * canvas.height);
     var carl_ramp_down = createTrack(.540, .150, .552, .175, canvas);
-
-//    ctx.moveTo(.552 * canvas.width, .175 * canvas.height);
-//    ctx.lineTo(.605 * canvas.width, .175 * canvas.height);
     var carl_straight = createTrack(.552, .175, .605, .175, canvas);
-
-//    ctx.moveTo(.605 * canvas.width, .175 * canvas.height);
-//    ctx.lineTo(.617 * canvas.width, .150 * canvas.height);
     var carl_ramp_up = createTrack(.605, .175, .617, .150, canvas);
-
     //Draw the PPG section
-//    ctx.moveTo(.558 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.573 * canvas.width, .1285 * canvas.height);
     var ppg_ramp = createTrack(.558, .150, .573, .1285, canvas);
-
-//    ctx.moveTo(.573 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.583 * canvas.width, .1285 * canvas.height);
     var ppg_straight = createTrack(.573, .1285, .583, .1285, canvas);
-
-//    ctx.lineWidth = 4;
     //Draw the Ross/Front section
-//    ctx.moveTo(.765 * canvas.width, .150 * canvas.height);
-//    ctx.lineTo(.785 * canvas.width, .1285 * canvas.height);
     var ross_ramp = createTrack(.765, .150, .785, .1285, canvas);
-
-//    ctx.moveTo(.785 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.930 * canvas.width, .1285 * canvas.height);
     var ross_straight = createTrack(.785, .1285, .930, .1285, canvas);
-
     //Draw the dash in the SHIP section
-//    ctx.moveTo(.187 * canvas.width, .141 * canvas.height);
-//    ctx.lineTo(.197 * canvas.width, .130 * canvas.height);
     var ship_dash = createTrack(.187, .141, .197, .130, canvas);
-
     //Draw the dashes in the Front section
-//    ctx.moveTo(.860 * canvas.width, .135 * canvas.height);
-//    ctx.lineTo(.870 * canvas.width, .143 * canvas.height);
     var front_dash_1 = createTrack (.860, .135, .870, .143, canvas);
-
-//    ctx.moveTo(.890 * canvas.width, .143 * canvas.height);
-//    ctx.lineTo(.900 * canvas.width, .135 * canvas.height);
     var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
-//    ctx.stroke();
-
     //draw the section near PPG that is thinner than the rest
-//    ctx.moveTo(.583 * canvas.width, .1285 * canvas.height);
-//    ctx.lineTo(.600 * canvas.width, .1285 * canvas.height);
     var ppg_thin_straight = createTrackWithWidth(.583, .1285, .600, .1285, canvas, .75);
-
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
 //	var cpr = document.getElementByID("cproff")
@@ -304,7 +255,11 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     	}
     	var track = {
     		canvas: newCanvas,
-    		ctx: newCtx
+    		ctx: newCtx,
+			x1: x1,
+			x2: x2,
+			y1: y1,
+			y2: y2
     	};
     	return track;
 };
@@ -313,6 +268,27 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
     createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
+};
+
+// Creates a new control point using the given coordinates, image, and mnemonics.
+function createControlPoint(x, y, tMnemonics, canvas, img){
+	var newCanvas = document.createElement("canvas");
+	var oldCtx = canvas.getContext('2d');
+	img.onload = function(){
+		newCanvas.width = img.width;
+		newCanvas.height = img.height;
+		newCtx.drawImage(img, 0, 0);
+	};
+	document.body.appendChild(newCanvas);
+	oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
+	var cp = {
+		canvas: newCanvas,
+		ctx: newCtx,
+		mnemonics: tMnemonics,
+		x: x,
+		y: y,
+		img: img
+	}
 };
 
 // Redraws the given track element in the given color.s
