@@ -25,8 +25,8 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillText("CP-65", 0.52*canvas.width, 0.5*canvas.height);
 		ctx.fillText("CP-64", 0.576*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-62", 0.62*canvas.width, 0.57*canvas.height);
-		ctx.fillText("CP-53", 0.72*canvas.width, 0.57*canvas.height);
-		ctx.fillText("CP-50", 0.8*canvas.width, 0.57*canvas.height);
+		ctx.fillText("CP-53", 0.76*canvas.width, 0.57*canvas.height);
+		ctx.fillText("CP-50", 0.84*canvas.width, 0.57*canvas.height);
 		// Orange, size 10
 		ctx.font = ("0.8em Arial");
 		ctx.fillStyle = "#ffa500";
@@ -53,7 +53,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
 		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
 		// to Roanoke
-		var roanoke_line = createTrack(.116, .540, .86, .540, canvas);
+		var roanoke_line = createTrack(.116, .540, .94, .540, canvas);
 		// NS Industrial Lead
 		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
 		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
@@ -72,15 +72,17 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp65_straight = createTrack(.5361, .520, .630, .520, canvas);
 		var cp65_ramp_l = createTrack(.6301, .520, .656, .540, canvas);
 		// Near CP-53 and CP-50
-		var cp53_ramp_r = createTrack(.740, .540, .766, .520, canvas);
-		var cp65_straight = createTrack(.7661, .520, .796, .520, canvas);
-		var cp65_ramp_l = createTrack(.7961, .520, .820, .540, canvas);
+		var cp53_ramp_r = createTrack(.770, .540, .796, .520, canvas);
+		var cp65_straight = createTrack(.7961, .520, .826, .520, canvas);
+		var cp65_ramp_l = createTrack(.8261, .520, .850, .540, canvas);
 		ctx.stroke();
 		return this;
 };
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
 //track mnemonics they control.
+//TODO - starting to think control points having nothing to do with the tracks... probably need some sort of MCP structure
+//to hold track and CP mnemonics.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	// Load images
 	var cproff = new Image();
@@ -91,10 +93,36 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	cpron.src = "/public/img/cpron.png";
 	var cplon = new Image();
 	cplon.src = "/public/img/cplon.png";
+	// TOWN control points
 	var ng6rw9 = createControlPoint(.17, .475, "1:6NG/9RW", [], canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .502, "1:6NG/9NW", [], canvas, cproff);
-	var ng2rw7 = createControlPoint(.17, .525, "1:2NG/7RW", [], canvas, cproff);
+	var ng2rw7 = createControlPoint(.17, .525, "1:2NG7RW", [], canvas, cproff);
 	var ng2nw7 = createControlPoint(.17, .547, "1:2NG/7NW", [], canvas, cproff);
+	var sg2 = createControlPoint(.383, .525, "1:2SG", [], canvas, cploff);
+	var sg6nw2 = createControlPoint(.383, .545, "1:6SG/2NW", [], canvas, cploff);
+	var sg6rw2 = createControlPoint(.383, .565, "1:6SG/2RW", [], canvas, cploff);
+	var sg4 = createControlPoint(.383, .585, "1:4SG", [], canvas, cploff);
+	// CP-67 - CP-62 Control Points
+	var eg22 = createControlPoint(.423, .545, "2:2EG", [], canvas, cproff);
+	var wg2nw12 = createControlPoint(.470, .525, "2:2WG/1NW", [], canvas, cploff);
+	var wg2rw12 = createControlPoint(.470, .545, "2:2WG/1RW", [], canvas, cploff);
+	var eg20 = createControlPoint(.500, .545, "0:2EG", [], canvas, cproff);
+	var wg2nw10 = createControlPoint(.540, .502, "0:2WG/1NW", [], canvas, cploff);
+	var wg2rw10 = createControlPoint(.540, .525, "0:2WG/1RW", [], canvas, cploff);
+	var eg2nw13 = createControlPoint(.550, .545, "0:2WG/1NW", [], canvas, cproff);
+	var eg2rw13 = createControlPoint(.550, .565, "0:2WG/1NW", [], canvas, cproff);
+	var wg23 = createControlPoint(.590, .525, "3:2WG", [], canvas, cploff);
+	var eg2rw14 = createControlPoint(.620, .525, "4:2EG/1RW", [], canvas, cproff);
+	var eg2nw14 = createControlPoint(.620, .545, "4:2EG/1NW", [], canvas, cproff);
+	var wg24 = createControlPoint(.655, .525, "4:2WG", [], canvas, cploff);	
+	// CP-53 - CP-50 Control Points
+	var ng25 = createControlPoint(.76, .545, "5:2NG", [], canvas, cproff);	
+	var sg2rw15 = createControlPoint(.8, .500, "5:2SG/1RW", [], canvas, cploff);	
+	var sg2nw15 = createControlPoint(.8, .525, "5:2SG/1NW", [], canvas, cploff);	
+	var ng2rw16 = createControlPoint(.820, .525, "6:2NG/1RW", [], canvas, cproff);	
+	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", [], canvas, cproff);	
+	var sg26 = createControlPoint(.870, .525, "6:2SG", [], canvas, cploff);	
+
 	return this;
 };
 

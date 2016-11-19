@@ -2,7 +2,12 @@
 {{template "header.html" .}}
 <!-- Creates Canvas -->
 <canvas id="mapCanvas"></canvas>
-
+<div style ="display:none;">
+	<img id = "cploff" src = "/public/img/cploff.png">
+	<img id = "cproff" src = "">
+	<img id = "cplon" src = "/public/img/cplon.png">
+	<img id = "cpron" src = "/public/img/cpron.png">
+</div>
 <!-- Loads Script - this is where almost all the drawing is done! -->
 <script type="text/javascript" src="/public/js/map.js"></script>
 <script type="text/javascript" src="/public/js/get-packets.js"></script>
