@@ -18,7 +18,6 @@ drawLurganToShip.prototype.drawLTSText = function(canvas, ctx){
 		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.55*canvas.height);
 		ctx.fillText("Lurgan Branch", .796*canvas.width, 0.48*canvas.height);
 		ctx.fillText("to Ship", .796*canvas.width, 0.5*canvas.height);
-
 		// Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.190*canvas.width, 0.57*canvas.height);
@@ -83,9 +82,19 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
 //track mnemonics they control.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
-	var cpr = document.getElementById("cproff")
-	var cpl = document.getElementById("cploff")
-	var 
+	// Load images
+	var cproff = new Image();
+	cproff.src = "/public/img/cproff.png";
+	var cploff = new Image();
+	cploff.src = "/public/img/cploff.png";
+	var cpron = new Image();
+	cpron.src = "/public/img/cpron.png";
+	var cplon = new Image();
+	cplon.src = "/public/img/cplon.png";
+	var ng6rw9 = createControlPoint(.17, .475, "1:6NG/9RW", [], canvas, cproff);
+	var ng6nw9 = createControlPoint(.17, .502, "1:6NG/9NW", [], canvas, cproff);
+	var ng2rw7 = createControlPoint(.17, .525, "1:2NG/7RW", [], canvas, cproff);
+	var ng2nw7 = createControlPoint(.17, .547, "1:2NG/7NW", [], canvas, cproff);
 	return this;
 };
 
@@ -181,6 +190,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ppg_thin_straight = createTrackWithWidth(.573, .1285, .590, .1285, canvas, .75);
 
     //draw mile markers. intervals of 16 pixels
+/*
     var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
     var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
     var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
@@ -213,8 +223,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
     var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
     var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
-
-
+*/
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
 //	var cpr = document.getElementByID("cproff")
@@ -265,35 +274,30 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(lineWidth, 0);
     		newCtx.lineTo(lineWidth, newCanvas.height);
     		newCtx.stroke();
-    		document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
     	}
     	else if (hLine == true){
     		newCtx.moveTo(0, lineWidth);
     		newCtx.lineTo(newCanvas.width, lineWidth);
     		newCtx.stroke();
-    		document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
     	}
     	else if (yflip == true){
     		newCtx.moveTo(0, newCanvas.height);
     		newCtx.lineTo(newCanvas.width, 0);
     		newCtx.stroke();
-    		document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
     	}
     	else if (xflip == true){
     		newCtx.moveTo(newCanvas.width, 0);
     		newCtx.lineTo(0, newCanvas.height);
     		newCtx.stroke();
-    		document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
     	}
     	else{
     		newCtx.moveTo(0, 0);
     		newCtx.lineTo(newCanvas.width, newCanvas.height);
     		newCtx.stroke();
-    		document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
     	}
     	var track = {
@@ -314,24 +318,24 @@ function createTrack(x1, y1, x2, y2,canvas){
 };
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
-function createControlPoint(x, y, tMnemonics, canvas, img){
+function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 	var newCanvas = document.createElement("canvas");
+	var newCtx = newCanvas.getContext('2d');
 	var oldCtx = canvas.getContext('2d');
-	img.onload = function(){
-		newCanvas.width = img.width;
-		newCanvas.height = img.height;
-		newCtx.drawImage(img, 0, 0);
-	};
-	document.body.appendChild(newCanvas);
+	newCanvas.width = img.width;
+	newCanvas.height = img.height;
+	newCtx.drawImage(img, 0, 0);
 	oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
 	var cp = {
 		canvas: newCanvas,
 		ctx: newCtx,
-		mnemonics: tMnemonics,
+		cm: cMnemonic,
+		tm: tMnemonics,
 		x: x,
 		y: y,
 		img: img
 	}
+	return cp;
 };
 
 // Redraws the given track element in the given color.s
@@ -350,22 +354,8 @@ $(document).ready(function(){
 	canvas.height = window.innerHeight;
 	console.log(canvas.width);
 	console.log(canvas.height);
-	//Testing
 	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-	//Test - Load image
-/*
-	var img = new Image();
-	img.src = 'public/img/controlpointoff.png';
-	ctx.drawImage(img, 50, 50);
-	var img2 = new Image();
-	img2.src = 'public/img/controlpointon.png';
-	ctx.drawImage(img2, 75, 50);
-	//Text - Text
-	ctx.font = ("30px Arial");
-	ctx.fillStyle = "white";
-	ctx.fillText("Hello World", 10, 100);
-*/
-	ctx.font = ("25px Times New Roman");
+	ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, 20);
 	ctx.fillText("Harrisburg Division", 0, 40);
