@@ -351,6 +351,8 @@ function createMCP(id, control, indication){
 
 };
 
+
+
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
