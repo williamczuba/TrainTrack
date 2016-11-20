@@ -345,6 +345,38 @@ function createTrack(x1, y1, x2, y2,canvas){
     createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
 
+function drawMileMarker(x1, y1, x2, y2, canvas){
+    lineWidth = 2;
+    var newCanvas = document.createElement("canvas");
+
+    newCanvas.width = 8;
+    newCanvas.height = (y2*canvas.height-y1*canvas.height);
+
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = "White";
+    newCtx.lineWidth = lineWidth;
+
+    newCtx.moveTo(lineWidth, 0);
+    newCtx.lineTo(lineWidth, newCanvas.height);
+    newCtx.stroke();
+
+    oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    document.body.appendChild(newCanvas);
+
+    var marker = {
+        x1: x1,
+        x2: x2,
+        y1: y1,
+        y2: y2,
+        canvas: newCanvas,
+        ctx: newCtx
+    };
+    return marker;
+};
+
+
+
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 	var newCanvas = document.createElement("canvas");
