@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"encoding/hex"
 	//"fmt"
+	"fmt"
 )
 
 //Purpose: Check for an error, and panic if necessary
@@ -21,9 +22,9 @@ func CheckError (e error) {
 	}
 }
 
-func init() {
-	InitConnection()
-}
+//func init() {
+//	InitConnection()
+//}
 
 //Only 1 connection for the entire server!
 //type Connection struct {
@@ -114,6 +115,7 @@ func InitConnection() {
 
 	// connect to this socket
 	var sockConnect = func() {
+		fmt.Println("Attempting to connect...")
 		conn,_ = net.Dial("tcp", url + ":4800")
 		//CheckError(err)
 		port, _ = bufio.NewReader(conn).ReadString('\n')
@@ -140,16 +142,38 @@ func InitConnection() {
 	conn.Close()
 
 	//Prepare for UDP traffic
-	serverAddr,err := net.ResolveUDPAddr("udp", url + ":" + port)
-	CheckError(err)
+	listenUDP := func() bool{
+		fmt.Println("Attempting to listen to UDP..")
+		serverAddr, err := net.ResolveUDPAddr("udp", url + ":" + port)
+		CheckError(err)
+		connect, err = net.DialUDP("udp", nil, serverAddr)
+		if err != nil {
+			fmt.Println("Error listening to UDP: , (Note this frequently happends due to the GBC server/routers)", err)
+			return true
+		}
+		return false
+	}
+
+	rejected := listenUDP()
+
+	for rejected {
+		select {
+		case <- ticker.C: // every tick,
+			rejected = listenUDP()
+		//CheckError(err)
+		case <- quit: // if we cancel
+			ticker.Stop()	//stop
+			return
+		}
+	}
 
 	//Start the connection to the UDP server
 	//If we leave the local address nil, it will resolve itself.
-	connect, err = net.DialUDP("udp", nil, serverAddr)
-	CheckError(err)
+
 
 	buf := []byte("Thanks")
-	_,err = connect.Write(buf)
+	_, err := connect.Write(buf)
+	CheckError(err)
 	packets = make(chan string)
 	quit = make(chan struct{}) //thread safe data channel
 	go keepAlive() // keep the connection alive

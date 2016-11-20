@@ -19,25 +19,27 @@ var waitMessages = '/map/listen';
 
 // Retrieve new train info
 var getPackets = function() {
-    console.log("HERE");
-
+    //TODO : Fix the ajax.
     $.ajax({
         url: waitMessages,
-        success: function(events) {
-            $(events).each(function() {
-                display(this);
-            });
-            getPackets()
+        success: function(CTD) {
+            // $(events).each(function() {
+            //     display(this);
+            // });
+            display(CTD);
+            getPackets();
         },
         dataType: 'json'
     });
-
-    console.log("HERE");
-
 };
 
+var show = function () {
+    
+}
+
 // Display the train data on the map.
-var display = function(event) {
-    var trainData = JSON.parse(event);
-    console.log("TD", trainData);
+var display = function(CTD) {
+    console.log("HERE");
+    var trainData = JSON.parse(CTD);
+    console.log("Train Data", trainData);
 };

@@ -186,21 +186,44 @@ func InitDB() {
 		lines := strings.Split(fileAsString, "\n")
 		println("length of lines: ", strconv.Itoa(len(lines)))
 
-
 		//[MCPInformation]
 		//Count=180
 		offset := 1 //MCP info starts at line 2.
 		fmt.Println("Start: ", lines[offset])
 	newMCP := new(models.Mcp)
-		for i:=1; i +offset +20 <= len(lines); i+=19{
-			newMCP= models.NewMCP(lines[i+offset:i+20+offset])
-			err := Dbm.Insert(newMCP)
-			if err != nil{
-				panic(err)
-			}
-		}
 
-	println("Last MCP info: ", newMCP.String()) // should be: MCPActivityC180=
+	for i:= 2; i+19 <= len(lines); i+= 19 {
+		newMCP, err = models.NewMCP(lines[i:i+19])
+		if err != nil {
+					//fmt.Println("Error: ", err)
+					fmt.Println("LINE: ", i+offset)
+					panic(err)
+				}
+				err := Dbm.Insert(newMCP)
+				if err != nil{
+					panic(err)
+				}
+		//str := "NEW MCP: \n"
+		//for j:=i; j< i+19;j++ {
+		//	str += lines[j] +"\n"
+		//}
+		//fmt.Println(str)
+	}
+
+		//for i:=1; i +offset +20 <= len(lines); i+=19{
+		//	newMCP, err = models.NewMCP(lines[i+offset:i+20+offset])
+		//	if err != nil {
+		//		//fmt.Println("Error: ", err)
+		//		fmt.Println("LINE: ", i+offset)
+		//		panic(err)
+		//	}
+		//	err := Dbm.Insert(newMCP)
+		//	if err != nil{
+		//		panic(err)
+		//	}
+		//}
+
+	//println("Last MCP info: ", newMCP.String()) // should be: MCPActivityC180=
 	//Attempt to get the last MCP
 	//mcp, err := Dbm.Select(models.Mcp{}, `select * from MCP`)
 	//var posts []models.Mcp

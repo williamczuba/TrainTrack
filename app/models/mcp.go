@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"strings"
+	"errors"
 )
 
 type Mcp struct {
@@ -29,12 +30,22 @@ type Mcp struct {
 }
 
 //TODO
-func NewMCP(str []string) *Mcp {
+func NewMCP(str []string) (*Mcp, error) {
 
 	//TODO: WILL need to have a string pattern recognizer.  Indexing is not working, there must be a typo.
 
 	//mcp := Mcp{"","","","","","","","","","","","","","","","","","",""}
 	data := make([]string, len(str))
+
+	// Check for errors
+	if !strings.Contains(str[0], "MCPAddress") {
+		sA := ""
+		for i:= 0; i < len(str); i++ {
+			sA += str[i] + "\n"
+		}
+		s:= fmt.Sprintf("%s is not an address.  Lines given: \n %s \n", str[0], sA)
+		return nil, errors.New(s)
+	}
 	for i:=0; i < len(str); i++ {
 		val := strings.Split(str[i], "=")
 		if len(val) == 2 {
@@ -70,7 +81,7 @@ func NewMCP(str []string) *Mcp {
 	//println((&mcp).String())
 	//var ret Mcp
 	//ret = mcp
-	return &mcp
+	return &mcp, nil
 }
 
 //Return the Address, Name, Subdivision
