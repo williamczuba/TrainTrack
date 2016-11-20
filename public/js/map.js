@@ -136,6 +136,17 @@ drawLurganToShip.prototype.draw = function(canvas, ctx){
 var drawShipToFront = function (){
 };
 
+drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
+    var cproff = new Image();
+    cproff.src = "/public/img/cproff.png";
+    var cploff = new Image();
+    cploff.src = "/public/img/cploff.png";
+    var cpron = new Image();
+    cpron.src = "/public/img/cpron.png";
+    var cplon = new Image();
+    cplon.src = "/public/img/cplon.png";
+};
+
 
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
