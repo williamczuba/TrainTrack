@@ -75,7 +75,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp53_ramp_r = createTrack(.770, .540, .796, .520, canvas);
 		var cp65_straight = createTrack(.7961, .520, .826, .520, canvas);
 		var cp65_ramp_l = createTrack(.8261, .520, .850, .540, canvas);
-		ctx.stroke();
+
 		return this;
 };
 
@@ -339,6 +339,18 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     	return track;
 };
 
+function createMCP(id, control, indication){
+
+    var MCP {
+        MCP_Id : id,
+        control: control,
+        indication: indication
+    };
+
+    return MCP;
+
+};
+
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
@@ -376,7 +388,6 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
 };
 
 
-
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 	var newCanvas = document.createElement("canvas");
@@ -398,13 +409,15 @@ function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 	return cp;
 };
 
+
+
 // Redraws the given track element in the given color.s
 function changeTrack(track, color){
 	track.ctx.strokeStyle = color;
 	track.ctx.moveTo(0,0);
 	track.ctx.lineTo(track.canvas.width, track.canvas.height);
 	track.ctx.stroke();
-}
+};
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
