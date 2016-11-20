@@ -75,7 +75,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp53_ramp_r = createTrack(.770, .540, .796, .520, canvas);
 		var cp65_straight = createTrack(.7961, .520, .826, .520, canvas);
 		var cp65_ramp_l = createTrack(.8261, .520, .850, .540, canvas);
-		ctx.stroke();
+
 		return this;
 };
 
@@ -94,34 +94,34 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cplon = new Image();
 	cplon.src = "/public/img/cplon.png";
 	// TOWN control points
-	var ng6rw9 = createControlPoint(.17, .475, "1:6NG/9RW", [], canvas, cproff);
-	var ng6nw9 = createControlPoint(.17, .502, "1:6NG/9NW", [], canvas, cproff);
-	var ng2rw7 = createControlPoint(.17, .525, "1:2NG7RW", [], canvas, cproff);
-	var ng2nw7 = createControlPoint(.17, .547, "1:2NG/7NW", [], canvas, cproff);
-	var sg2 = createControlPoint(.383, .525, "1:2SG", [], canvas, cploff);
-	var sg6nw2 = createControlPoint(.383, .545, "1:6SG/2NW", [], canvas, cploff);
-	var sg6rw2 = createControlPoint(.383, .565, "1:6SG/2RW", [], canvas, cploff);
-	var sg4 = createControlPoint(.383, .585, "1:4SG", [], canvas, cploff);
+	var ng6rw9 = createControlPoint(.17, .475, "1:6NG/9RW", canvas, cproff);
+	var ng6nw9 = createControlPoint(.17, .502, "1:6NG/9NW", canvas, cproff);
+	var ng2rw7 = createControlPoint(.17, .525, "1:2NG7RW", canvas, cproff);
+	var ng2nw7 = createControlPoint(.17, .547, "1:2NG/7NW", canvas, cproff);
+	var sg2 = createControlPoint(.383, .525, "1:2SG", canvas, cploff);
+	var sg6nw2 = createControlPoint(.383, .545, "1:6SG/2NW", canvas, cploff);
+	var sg6rw2 = createControlPoint(.383, .565, "1:6SG/2RW", canvas, cploff);
+	var sg4 = createControlPoint(.383, .585, "1:4SG", canvas, cploff);
 	// CP-67 - CP-62 Control Points
-	var eg22 = createControlPoint(.423, .545, "2:2EG", [], canvas, cproff);
-	var wg2nw12 = createControlPoint(.470, .525, "2:2WG/1NW", [], canvas, cploff);
-	var wg2rw12 = createControlPoint(.470, .545, "2:2WG/1RW", [], canvas, cploff);
-	var eg20 = createControlPoint(.500, .545, "0:2EG", [], canvas, cproff);
-	var wg2nw10 = createControlPoint(.540, .502, "0:2WG/1NW", [], canvas, cploff);
-	var wg2rw10 = createControlPoint(.540, .525, "0:2WG/1RW", [], canvas, cploff);
-	var eg2nw13 = createControlPoint(.550, .545, "0:2WG/1NW", [], canvas, cproff);
-	var eg2rw13 = createControlPoint(.550, .565, "0:2WG/1NW", [], canvas, cproff);
-	var wg23 = createControlPoint(.590, .525, "3:2WG", [], canvas, cploff);
-	var eg2rw14 = createControlPoint(.620, .525, "4:2EG/1RW", [], canvas, cproff);
-	var eg2nw14 = createControlPoint(.620, .545, "4:2EG/1NW", [], canvas, cproff);
-	var wg24 = createControlPoint(.655, .525, "4:2WG", [], canvas, cploff);	
+	var eg22 = createControlPoint(.423, .545, "2:2EG", canvas, cproff);
+	var wg2nw12 = createControlPoint(.470, .525, "2:2WG/1NW", canvas, cploff);
+	var wg2rw12 = createControlPoint(.470, .545, "2:2WG/1RW", canvas, cploff);
+	var eg20 = createControlPoint(.500, .545, "0:2EG", canvas, cproff);
+	var wg2nw10 = createControlPoint(.540, .502, "0:2WG/1NW", canvas, cploff);
+	var wg2rw10 = createControlPoint(.540, .525, "0:2WG/1RW", canvas, cploff);
+	var eg2nw13 = createControlPoint(.550, .545, "0:2WG/1NW", canvas, cproff);
+	var eg2rw13 = createControlPoint(.550, .565, "0:2WG/1NW", canvas, cproff);
+	var wg23 = createControlPoint(.590, .525, "3:2WG", canvas, cploff);
+	var eg2rw14 = createControlPoint(.620, .525, "4:2EG/1RW", canvas, cproff);
+	var eg2nw14 = createControlPoint(.620, .545, "4:2EG/1NW", canvas, cproff);
+	var wg24 = createControlPoint(.655, .525, "4:2WG", canvas, cploff);
 	// CP-53 - CP-50 Control Points
-	var ng25 = createControlPoint(.76, .545, "5:2NG", [], canvas, cproff);	
-	var sg2rw15 = createControlPoint(.8, .500, "5:2SG/1RW", [], canvas, cploff);	
-	var sg2nw15 = createControlPoint(.8, .525, "5:2SG/1NW", [], canvas, cploff);	
-	var ng2rw16 = createControlPoint(.820, .525, "6:2NG/1RW", [], canvas, cproff);	
-	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", [], canvas, cproff);	
-	var sg26 = createControlPoint(.870, .525, "6:2SG", [], canvas, cploff);	
+	var ng25 = createControlPoint(.76, .545, "5:2NG", canvas, cproff);
+	var sg2rw15 = createControlPoint(.8, .500, "5:2SG/1RW", canvas, cploff);
+	var sg2nw15 = createControlPoint(.8, .525, "5:2SG/1NW", canvas, cploff);
+	var ng2rw16 = createControlPoint(.820, .525, "6:2NG/1RW", canvas, cproff);
+	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", canvas, cproff);
+	var sg26 = createControlPoint(.870, .525, "6:2SG", canvas, cploff);
 
 	return this;
 };
@@ -134,6 +134,17 @@ drawLurganToShip.prototype.draw = function(canvas, ctx){
 };
 
 var drawShipToFront = function (){
+};
+
+drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
+    var cproff = new Image();
+    cproff.src = "/public/img/cproff.png";
+    var cploff = new Image();
+    cploff.src = "/public/img/cploff.png";
+    var cpron = new Image();
+    cpron.src = "/public/img/cpron.png";
+    var cplon = new Image();
+    cplon.src = "/public/img/cplon.png";
 };
 
 
@@ -339,11 +350,56 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     	return track;
 };
 
+function createMCP(id, control, indication){
+
+    var MCP {
+        MCP_Id : id,
+        control: control,
+        indication: indication
+    };
+
+    return MCP;
+
+};
+
+
+
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
     createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
+
+function drawMileMarker(x1, y1, x2, y2, canvas){
+    lineWidth = 2;
+    var newCanvas = document.createElement("canvas");
+
+    newCanvas.width = 8;
+    newCanvas.height = (y2*canvas.height-y1*canvas.height);
+
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = "White";
+    newCtx.lineWidth = lineWidth;
+
+    newCtx.moveTo(lineWidth, 0);
+    newCtx.lineTo(lineWidth, newCanvas.height);
+    newCtx.stroke();
+
+    oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    document.body.appendChild(newCanvas);
+
+    var marker = {
+        x1: x1,
+        x2: x2,
+        y1: y1,
+        y2: y2,
+        canvas: newCanvas,
+        ctx: newCtx
+    };
+    return marker;
+};
+
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
@@ -366,13 +422,15 @@ function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 	return cp;
 };
 
+
+
 // Redraws the given track element in the given color.s
 function changeTrack(track, color){
 	track.ctx.strokeStyle = color;
 	track.ctx.moveTo(0,0);
 	track.ctx.lineTo(track.canvas.width, track.canvas.height);
 	track.ctx.stroke();
-}
+};
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
