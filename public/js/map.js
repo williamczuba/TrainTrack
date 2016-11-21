@@ -94,6 +94,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cplon = new Image();
 	cplon.src = "/public/img/cplon.png";
 	// TOWN control points
+	console.log("In TOWN");
 	var ng6rw9 = createControlPoint(.17, .475, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .502, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .525, "1:2NG7RW", canvas, cproff);
@@ -229,7 +230,6 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ppg_thin_straight = createTrackWithWidth(.573, .1285, .590, .1285, canvas, .75);
 
     //draw mile markers. intervals of 16 pixels
-/*
     var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
     var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
     var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
@@ -262,7 +262,6 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
     var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
     var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
-*/
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
 //	var cpr = document.getElementByID("cproff")
@@ -352,8 +351,8 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 
 function createMCP(id, control, indication){
 
-    var MCP {
-        MCP_Id : id,
+    var MCP = {
+        mcp_Id : id,
         control: control,
         indication: indication
     };
@@ -396,13 +395,13 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
         y2: y2,
         canvas: newCanvas,
         ctx: newCtx
-    };
+    }
     return marker;
 };
 
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
-function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
+function createControlPoint(x, y, cMnemonic, canvas, img){
 	var newCanvas = document.createElement("canvas");
 	var newCtx = newCanvas.getContext('2d');
 	var oldCtx = canvas.getContext('2d');
@@ -414,11 +413,10 @@ function createControlPoint(x, y, cMnemonic, tMnemonics, canvas, img){
 		canvas: newCanvas,
 		ctx: newCtx,
 		cm: cMnemonic,
-		tm: tMnemonics,
 		x: x,
 		y: y,
 		img: img
-	}
+	};
 	return cp;
 };
 
