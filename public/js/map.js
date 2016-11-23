@@ -1,6 +1,7 @@
 
 //Javascript Code for drawing the map.
 
+//Functions for creating the track segments
 //Draws Lurgan to SHIP segment
 var drawLurganToShip = function() {
 };
@@ -79,6 +80,18 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		return this;
 };
 
+drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
+	//Lurgan Sub and NS-H Line segments
+	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "second", canvas);
+	var ra2 = createTrackSeg(.116, .485, .148, .505, "2RA", "second", canvas);
+	var rra = createTrackSeg(.116, .51, .148, .53, "RRA", "second", canvas);
+	var sra = createTrackSeg(.116, .53, .148, .55, "SRA", "second", canvas);
+	var na1 = createTrackSeg(.148, .46, .18, .48, "1NA", "second", canvas);
+	var na2 = createTrackSeg(.148, .485, .18, .505, "2NA", "second", canvas);
+	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "second", canvas);
+	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "second", canvas);
+}
+
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
 //track mnemonics they control.
 //TODO - starting to think control points having nothing to do with the tracks... probably need some sort of MCP structure
@@ -129,6 +142,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
+		this.drawLTSTrackSegments(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
 		this.drawLTSControlPoints(canvas, ctx);
 		return this;
@@ -180,7 +194,6 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
         ctx.fillText("ROSS", .755 * canvas.width, .18 * canvas.height);
         ctx.fillText("FRONT", .860 * canvas.width, .18 * canvas.height);
 
-
         // Orange, size 10
         ctx.font = ("0.8em Arial");
         ctx.fillStyle = "#ffa500";
@@ -190,7 +203,6 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
         ctx.fillStyle = "#d3d3d3";
         ctx.fillText("Cleversburg Junction", .22 * canvas.width, .09 * canvas.height);
         ctx.fillText("Viewing Platform", .23 * canvas.width, .105 * canvas.height);
-
 
         return this;
 };
@@ -277,7 +289,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 		return this;
 };
 
-
+//Functions for drawing and creating track elements
 function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     var newCanvas = document.createElement("canvas");
 //    	var lineWidth = 4;
@@ -365,14 +377,13 @@ function createMCP(id, control, indication){
 
 };
 
-
-
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
     createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
 
+//Will rework to create track segments
 function drawMileMarker(x1, y1, x2, y2, canvas){
     lineWidth = 2;
     var newCanvas = document.createElement("canvas");
@@ -404,6 +415,57 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
     return marker;
 };
 
+//Creates a new track segment and the mile markers it is between.
+function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas){
+	lineWidth = 2;
+	var newCanvas = document.createElement("canvas");
+	newCanvas.width = (x2*canvas.width-x1*canvas.width);
+    newCanvas.height = (y2*canvas.height-y1*canvas.height);
+
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = "White";
+    newCtx.lineWidth = lineWidth;
+	
+	if (drawWhich == "both"){
+		newCtx.moveTo(lineWidth, 0);
+		newCtx.lineTo(lineWidth, newCanvas.height);
+		newCtx.moveTo(newCanvas.width-lineWidth, 0);
+		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
+		newCtx.stroke();
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+	}
+	else if (drawWhich == "first"){
+		newCtx.moveTo(lineWidth, 0);
+		newCtx.lineTo(lineWidth, newCanvas.height);
+		newCtx.stroke();
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+	}
+	else if (drawWhich == "second"){
+		newCtx.moveTo(newCanvas.width-lineWidth, 0);
+		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
+		newCtx.stroke();
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+	}
+	else if (drawWhich == "none"){
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+	}
+	
+	var segment = {
+        x1: x1,
+        x2: x2,
+        y1: y1,
+        y2: y2,
+		segMnemonic: segMnemonic,
+        canvas: newCanvas,
+        ctx: newCtx
+    }
+	return segment
+};
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, canvas, img){
@@ -413,9 +475,9 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	$(img).load(function(){
 		newCanvas.width = img.width;
 		newCanvas.height = img.height;
-		newCtx.drawImage(img, 0, 0);
 		document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
+		newCtx.drawImage(img, 0, 0);
 		var cp = {
 			canvas: newCanvas,
 			ctx: newCtx,
@@ -427,8 +489,6 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 		return cp;
 	});
 };
-
-
 
 // Redraws the given track element in the given color.s
 function changeTrack(track, color){
