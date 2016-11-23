@@ -312,6 +312,7 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(lineWidth, 0);
     		newCtx.lineTo(lineWidth, newCanvas.height);
     		newCtx.stroke();
+			document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
     	}
     	else if (hLine == true){
@@ -324,18 +325,21 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(0, newCanvas.height);
     		newCtx.lineTo(newCanvas.width, 0);
     		newCtx.stroke();
+			document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
     	}
     	else if (xflip == true){
     		newCtx.moveTo(newCanvas.width, 0);
     		newCtx.lineTo(0, newCanvas.height);
     		newCtx.stroke();
+			document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
     	}
     	else{
     		newCtx.moveTo(0, 0);
     		newCtx.lineTo(newCanvas.width, newCanvas.height);
     		newCtx.stroke();
+			document.body.appendChild(newCanvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
     	}
     	var track = {
@@ -385,8 +389,9 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
     newCtx.lineTo(lineWidth, newCanvas.height);
     newCtx.stroke();
 
-    oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
     document.body.appendChild(newCanvas);
+	oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+   
 
     var marker = {
         x1: x1,
@@ -405,19 +410,22 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	var newCanvas = document.createElement("canvas");
 	var newCtx = newCanvas.getContext('2d');
 	var oldCtx = canvas.getContext('2d');
-	newCanvas.width = img.width;
-	newCanvas.height = img.height;
-	newCtx.drawImage(img, 0, 0);
-	oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
-	var cp = {
-		canvas: newCanvas,
-		ctx: newCtx,
-		cm: cMnemonic,
-		x: x,
-		y: y,
-		img: img
-	};
-	return cp;
+	$(img).load(function(){
+		newCanvas.width = img.width;
+		newCanvas.height = img.height;
+		newCtx.drawImage(img, 0, 0);
+		document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
+		var cp = {
+			canvas: newCanvas,
+			ctx: newCtx,
+			cm: cMnemonic,
+			x: x,
+			y: y,
+			img: img
+		};
+		return cp;
+	});
 };
 
 
