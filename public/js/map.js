@@ -92,7 +92,9 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "second", canvas);
 	//6T segments
 }
-
+//TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
+//instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
+//the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
 drawLurganToShip.prototype.createMCPLists = function(){
 	var town_c = {"","","2NGZ","1RWZ","4SGZ","1NWZ","SMZ","","","","6NGZ","3RWZ","2SGZ","3NWZ","","","","","","5RWZ","","5NWZ","","","","SSXOZ","SSXZ","7NWZ","","7NWZ","","","","","","9NWZ","","9NWZ","","","","","","2RWZ","","2NWZ","",""};
 	var town_i = {"ATK","1RWK","2NGK","1NWK","4SGK","HSAK","2TK","SSAK","1LZK","3RWK","6NGK","3NWK","2SGK","ISAK","1TK","SLAK","5LZK","5RWK","6SGK","5NWK","SSXK","2NAK","RNAK","SNAK","P0K","7RWK","NLCK","7NWK","SMK","1RAK","","1NAK","6TK","9RWK","L0K","9NWK","SLCK","2RAK","RRAK","SRAK","2LZK","2RWK","","2NWK","","","","LSAK"};
