@@ -91,33 +91,33 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "second", canvas);
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "second", canvas);
 	//6T segments
-}
+};
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
 //the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
-drawLurganToShip.prototype.createMCPLists = function(){
+drawLurganToShip.prototype.createLTS_MCPLists = function(){
 	var town_c = {"","","2NGZ","1RWZ","4SGZ","1NWZ","SMZ","","","","6NGZ","3RWZ","2SGZ","3NWZ","","","","","","5RWZ","","5NWZ","","","","SSXOZ","SSXZ","7NWZ","","7NWZ","","","","","","9NWZ","","9NWZ","","","","","","2RWZ","","2NWZ","",""};
 	var town_i = {"ATK","1RWK","2NGK","1NWK","4SGK","HSAK","2TK","SSAK","1LZK","3RWK","6NGK","3NWK","2SGK","ISAK","1TK","SLAK","5LZK","5RWK","6SGK","5NWK","SSXK","2NAK","RNAK","SNAK","P0K","7RWK","NLCK","7NWK","SMK","1RAK","","1NAK","6TK","9RWK","L0K","9NWK","SLCK","2RAK","RRAK","SRAK","2LZK","2RWK","","2NWK","","","","LSAK"};
-	var town = createMCP("1", town_c, town_i);
+	var town = createMCP("1", town_c, town_i, "75505550100101");
 	var cp67_c = {"7NWZ","","","","","","1RWZ","1NWZ","","","","","","2STZ","2WGZ","2EGZ","","","","","","","",""};
 	var cp67_i = {"3RWK","3NWK","7LZK","7NWK","7RWK","1LZK","1RWK","1NWK","SEAK","1TK","2WGK","2EGK","5LZK","5RWK","5NWK","3LZK","","SMK","1OXK","SEXK","SWAK","","1OK","SRAK","","","","","","SWXK","",""};
-	var cp67 = createMCP("2", cp67_c, cp67_i);
+	var cp67 = createMCP("2", cp67_c, cp67_i, "75505550200101");
 	var cp65_c = {"0OXZ","SOXOZ","SOXZ","2WGZ","2STZ","2EGZ","1RWZ","1NWZ","","","","MCZ","SMZ","2WXOZ","2WXZ","0OXOZ"}
 	var cp65_i = {"2WXK","0OXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","L0K","","SMK","2LAK","1OK","2WAK","0OK","1OXK","","","","B0K","","GFDK","DAK","P0K","","","","","","","",""}
-	var cp65 = createMCP("0", cp65_c, cp65_i);
+	var cp65 = createMCP("0", cp65_c, cp65_i, "75505550170101");
 	var cp64_c = {"","","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","","","2EGZ","2WGZ","","","","","","","",""};
 	var cp64_i = {"5RWK","5NWK","3LZK","3NWK","","1LZK","1RWK","1NWK","1OK","1TK","2EGK","2WGK","7LZK","7NWK","7RWK","5LZK","","","SMK","0OXK","1OXK","SEAK","","0OK","","","","","","","SEXK",""};
-	var cp64 = createMCP("3", cp64_c, cp64_i);
+	var cp64 = createMCP("3", cp64_c, cp64_i, "75505550180202");
 	var cp62_c = {"2EXZ","1OXOZ","1OXZ","2WGZ","2STZ","2EGZ","1RWZ","1NWZ","","","","MCZ","SMZ","SWXOZ","SWXZ","2EXOZ"};
 	var cp62_i = {"2EXK","1OXK","1LZK","TK","2WGK","2EGK","1RWK","1NWK","L0K","","SMK","SLAK","SWAK","2EAK","1OK","SWXK","","","","B0K","","GFDK","DAK","P0K"};
-	var cp62 = createMCP("4", cp62_c, cp62_i);
+	var cp62 = createMCP("4", cp62_c, cp62_i, "75505550160101");
 	var cp53_c = {"","","2NGZ","1RWZ","2SGZ","1NWZ","SMZ","","","","SNXOZ","SNXZ","CSXOZ","CSXZ","SSXOZ","SSXZ"};
 	var cp53_i = {"","1RWK","2NGK","1NWK","2SGK","SRAK","TK","SNAK","1LZK","P0K","B0K","SMK","L0K","","CSAK","SSAK","","","","","","SNXK","CSXK","SSXK"};
-	var cp53 = createMCP("5", cp53_c, cp53_i);	
+	var cp53 = createMCP("5", cp53_c, cp53_i, "75505550080203");
 	var cp50_c = {"","","2NGZ","1RWZ","2SGZ","1NWZ","SMZ","","","","SSXOZ","SSXZ","CNXOZ","CNXZ","SNXOZ","SNXZ"};
 	var cp50_i = {"","1RWK","2NGK","1NWK","2SGK","SLAK","TK","SSAK","1LZK","P0K","B0K","SMK","L0K","SSXK","CNXK","SNXK"};
-	var cp50 = createMCP("6", cp50_c, cp50_i);	
-}
+	var cp50 = createMCP("6", cp50_c, cp50_i, "75505550080101");
+};
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
 //track mnemonics they control.
@@ -177,6 +177,31 @@ drawLurganToShip.prototype.draw = function(canvas, ctx){
 
 var drawShipToFront = function (){
 };
+
+
+drawShipToFront.prototype.createSTF_MCPLists = function(){
+    var ship_c = {"2WGZ","2STZ","2EGZ","4WGZ","4STZ","4EGZ","3RWZ","3NWZ","","","1WXOZ","1WXZ","2WXOZ","2WXZ","SEXOZ","SEXZ"};
+    var ship_i = {"","","2WGK","2EGK","4WGK","4EGK","3RWK","3NWK","SRAK","SEAK","1WXK","2WXK","SEXK","3LZK","2TK","1TK","","","","SMK","","1WAK","REAK","2WAK","","","","","","","",""};
+    var ship = createMCP("7", ship_c, ship_i, "75505550020203");
+    var lee_c = {"2STZ","2EXOZ","2EXZ","2EGZ","2WGZ","1RWZ","1NWZ","SMZ","","","","","1WXOZ","1WXZ","1EXOZ","1EXZ"};
+    var lee_i = {"1EXK","2EXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","","","SMK","1EAK","2EAK","1LAK","1WAK","1WXK","","","","","","","",""};
+    var lee = createMCP("8", lee_c, lee_i, "75505550050101");
+    var carl_c = {"7RWZ","7NWZ","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","4WGZ","4EGZ","2WGZ","2EGZ"};
+    var carl_i = {"7RWK","7NWK","5RWK","5NWK","3RWK","3NWK","1RWK","1NWK","7LZK","5LZK","3LZK","1LZK","4WGK","4EGK","2WGK","2EGK","","GEAK","SEAK","IWAK","1OK","2OK","2TK","1TK","","","","","","","","pfk"};
+    var carl = createMCP("9", carl_c, carl_i, "75505550420101");
+    var spring_c = {"SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"};
+    var spring_i = {"2EAK","1EAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","","SLAK","SWAK"};
+    var spring = createMCP("a", spring_c, spring_i, "75505550410101");
+    var ross_c = {"SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"};
+    var ross_i = {"2LAK","2WAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","1WAK","SRAK","SEAK"};
+    var ross = createMCP("b", ross_c, ross_i, "75505550400101");
+    var front_c = {"","2WGZ","2EGZ","3RWZ","3NWZ","1RWZ","1NWZ","SMZ","2EXOZ","2EXZ","1OXOZ","1OXZ","1EXOZ","1EXZ","4WGZ","4EGZ","","","","SMZ","","","2OXOZ","2OXZ"};
+    var front_i = {"4EGK","4WGK","2EGK","2WGK","3RWK","3NWK","1RWK","1NWK","2TK","1TK","2OXK","2EXK","1OXK","1EXK","3LZK","1LZK","","","FW2K","FW1K","2OK","2EAK","1OK","1EAK","L0K","SMK","LCK","P0K","","","",""};
+    var front = createMCP("c", front_c, front_i, "75505550140203");
+};
+
+
+
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var cproff = new Image();
@@ -392,12 +417,13 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     	return track;
 };
 
-function createMCP(id, control, indication){
+function createMCP(id, control, indication, address){
 
     var MCP = {
         mcp_Id : id,
         control: control,
-        indication: indication
+        indication: indication,
+        address: address
     };
 
     return MCP;
