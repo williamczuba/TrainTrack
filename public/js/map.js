@@ -1,6 +1,11 @@
 
 //Javascript Code for drawing the map.
 
+
+function (){
+
+};
+
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mnemTable {};
 
@@ -10,7 +15,7 @@ because there are multiple segments that share the same mnemonic. So, when calle
 The segment will have the rest of the information.
 */
 var key = function(obj){
-    return obj[4] + " " + obj[0] + " " obj[1];
+    return obj[4] + obj[0] + obj[1];
 };
 
 //Functions for creating the track segments
