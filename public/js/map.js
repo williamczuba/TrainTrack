@@ -49,6 +49,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
 		// Lurgan Sub
 		var lurgan_straight = createTrack(.116, .495, .236, .495, canvas);
+		//TODO: Fix positioning of this line. Shouldn't be as far over as it is.
 		var lurgan_ramp = createTrack(.2361, .495, .286, .535, canvas);
 		// NS H-Line
 		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
@@ -91,6 +92,22 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "second", canvas);
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "second", canvas);
 	//6T segments
+	var t61 = createTrackSeg(.18, .46, .186, .48, "6T", "none", canvas);
+	var t62 = createTrackSeg(.186, .46, .206, .495, "6T", "none", canvas);
+	var t63 = createTrackSeg(.18, .485, .206, .495, "6T", "none", canvas);
+	var nw9 = createTrackSeg(.206, .485, .214, .505, "9NW", "none", canvas);
+	var t64 = createTrackSeg(.214, .485, .236, .505, "6T", "none", canvas);
+	var t65 = createTrackSeg(.236, .485, .286, .54, "6T", "none", canvas);
+	//1T segments
+	var t11 = createTrackSeg(.18, .51, .194, .53, "1T", "none", canvas);
+	var t12 = createTrackSeg(.194, .51, .216, .545, "1T", "none", canvas);
+	var t13 = createTrackSeg(.18, .53, .216, .55, "1T", "none", canvas);
+	var nw7 = createTrackSeg(.216, .53, .232, .55, "7NW", "none", canvas);
+	var t14 = createTrackSeg(.232, .53, .240, .55, "1T", "none", canvas);
+	//Roanoke/Downward Ramps connecting stretch
+	var t21 = createTrackSeg(.240, .53, .248, .55, "2T", "none", canvas);
+	var nw3 = createTrackSeg(.248, .53, .256, .55, "3NW", "none", canvas);
+	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
 }
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
