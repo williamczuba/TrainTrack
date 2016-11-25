@@ -113,6 +113,8 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
 //the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
 drawLurganToShip.prototype.createMCPLists = function(){
+	//Made the arrays wrong as a mistake... commented out until I go through and put in the proper brackets.
+	/*
 	var town_c = {"","","2NGZ","1RWZ","4SGZ","1NWZ","SMZ","","","","6NGZ","3RWZ","2SGZ","3NWZ","","","","","","5RWZ","","5NWZ","","","","SSXOZ","SSXZ","7NWZ","","7NWZ","","","","","","9NWZ","","9NWZ","","","","","","2RWZ","","2NWZ","",""};
 	var town_i = {"ATK","1RWK","2NGK","1NWK","4SGK","HSAK","2TK","SSAK","1LZK","3RWK","6NGK","3NWK","2SGK","ISAK","1TK","SLAK","5LZK","5RWK","6SGK","5NWK","SSXK","2NAK","RNAK","SNAK","P0K","7RWK","NLCK","7NWK","SMK","1RAK","","1NAK","6TK","9RWK","L0K","9NWK","SLCK","2RAK","RRAK","SRAK","2LZK","2RWK","","2NWK","","","","LSAK"};
 	var town = createMCP("1", town_c, town_i);
@@ -134,6 +136,7 @@ drawLurganToShip.prototype.createMCPLists = function(){
 	var cp50_c = {"","","2NGZ","1RWZ","2SGZ","1NWZ","SMZ","","","","SSXOZ","SSXZ","CNXOZ","CNXZ","SNXOZ","SNXZ"};
 	var cp50_i = {"","1RWK","2NGK","1NWK","2SGK","SLAK","TK","SSAK","1LZK","P0K","B0K","SMK","L0K","SSXK","CNXK","SNXK"};
 	var cp50 = createMCP("6", cp50_c, cp50_i);	
+	*/
 }
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
