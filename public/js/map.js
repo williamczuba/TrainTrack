@@ -2,21 +2,44 @@
 //Javascript Code for drawing the map.
 
 
-function (){
+/*Need a little more information before I can finish this part. Have the hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
+, which is pretty simple. I asked Will where we find out what color to change the track segments to, so will see what he says. I'll finish it once he responds.
+*/
 
-};
+/*Not exactly sure how we are going to take in what the backend sends to us,
+but it should look something like this.
+
+*/
+//function MCP(mnemonics){
+//    //break up the string into separate values in an array
+//    var mnemValues = mnemonics.split(",");
+//    //get the segments that are going to be changed (which will also be in the form of a list and thus separated by a comma)
+//    var segmentsToChange = mnemValues[4].split(",");
+//
+//    var currMnem = "";
+//    for (i = 0; i < segmentsToChange.length; i++){ //iterate through all of the sections that are supposed to change
+//        for (j = 0; j < mnemTable.length; j++){//iterate through to find all of the mnemonics in the hash table that begin with that mnemonic
+//            currMnem = mnemTable[key(segmentsToChange[i])];
+//            if (mnemTable[j].includes(currMnem)){
+//                changeTrack(currMnem, );
+//            }
+//        }
+//        currMnem = mnemTable[key(segmentsToChange[i])];
+//    }
+//};
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
-var mnemTable {};
 
 /* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
 The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
 because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
 The segment will have the rest of the information.
 */
-var key = function(obj){
-    return obj[4] + obj[0] + obj[1];
-};
+//var key = function(obj){
+//    var test = obj[4] + obj[0] + obj[1];
+//    console.log(test);
+//    return obj[4] + obj[0] + obj[1];
+//};
 
 //Functions for creating the track segments
 //Draws Lurgan to SHIP segment
@@ -101,52 +124,52 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	//Lurgan Sub and NS-H Line segments
 	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
-	mnemTable[key(ra1)] = ra1;
+//	mnemTable[key(ra1)] = ra1;
 	var ra2 = createTrackSeg(.116, .485, .148, .505, "2RA", "right", canvas);
-	mnemTable[key(ra2)] = ra2;
+//	mnemTable[key(ra2)] = ra2;
 	var rra = createTrackSeg(.116, .51, .148, .53, "RRA", "right", canvas);
-	mnemTable[key(rra)] = rra;
+//	mnemTable[key(rra)] = rra;
 	var sra = createTrackSeg(.116, .53, .148, .55, "SRA", "right", canvas);
-	mnemTable[key(sra)] = sra;
+//	mnemTable[key(sra)] = sra;
 	var na1 = createTrackSeg(.148, .46, .18, .48, "1NA", "right", canvas);
-	mnemTable[key(na1)] = na1;
+//	mnemTable[key(na1)] = na1;
 	var na2 = createTrackSeg(.148, .485, .18, .505, "2NA", "right", canvas);
-	mnemTable[key(na2)] = na2;
+//	mnemTable[key(na2)] = na2;
 	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "right", canvas);
-	mnemTable[key(rna)] = rna;
+//	mnemTable[key(rna)] = rna;
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "right", canvas);
-	mnemTable[key(sna)] = sna;
+//	mnemTable[key(sna)] = sna;
 	//6T segments
 	var t61 = createTrackSeg(.18, .46, .186, .48, "6T", "none", canvas);
-	mnemTable[key(t61)] = t61;
+//	mnemTable[key(t61)] = t61;
 	var t62 = createTrackSeg(.186, .46, .206, .495, "6T", "none", canvas);
-	mnemTable[key(t62)] = t62;
+//	mnemTable[key(t62)] = t62;
 	var t63 = createTrackSeg(.18, .485, .206, .495, "6T", "none", canvas);
-	mnemTable[key(t63)] = t63;
+//	mnemTable[key(t63)] = t63;
 	var nw9 = createTrackSeg(.206, .485, .214, .505, "9NW", "none", canvas);
-	mnemTable[key(nw9)] = nw9;
+//	mnemTable[key(nw9)] = nw9;
 	var t64 = createTrackSeg(.214, .485, .236, .505, "6T", "none", canvas);
-	mnemTable[key(t64)] = t64;
+//	mnemTable[key(t64)] = t64;
 	var t65 = createTrackSeg(.236, .485, .286, .54, "6T", "none", canvas);
-	mnemTable[key(t65)] = t65;
+//	mnemTable[key(t65)] = t65;
 	//1T segments
 	var t11 = createTrackSeg(.18, .51, .194, .53, "1T", "none", canvas);
-	mnemTable[key(t11)] = t11;
+//	mnemTable[key(t11)] = t11;
 	var t12 = createTrackSeg(.194, .51, .216, .545, "1T", "none", canvas);
-	mnemTable[key(t12)] = t12;
+//	mnemTable[key(t12)] = t12;
 	var t13 = createTrackSeg(.18, .53, .216, .55, "1T", "none", canvas);
-	mnemTable[key(t13)] = t13;
+//	mnemTable[key(t13)] = t13;
 	var nw7 = createTrackSeg(.216, .53, .232, .55, "7NW", "none", canvas);
-	mnemTable[key(nw7)] = nw7;
+//	mnemTable[key(nw7)] = nw7;
 	var t14 = createTrackSeg(.232, .53, .240, .55, "1T", "none", canvas);
-	mnemTable[key(t14)] = t14;
+//	mnemTable[key(t14)] = t14;
 	//Roanoke/Downward Ramps connecting stretch
 	var t21 = createTrackSeg(.240, .53, .248, .55, "2T", "none", canvas);
-	mnemTable[key(t21)] = t21;
+//	mnemTable[key(t21)] = t21;
 	var nw3 = createTrackSeg(.248, .53, .256, .55, "3NW", "none", canvas);
-	mnemTable[key(nw3)] = nw3;
+//	mnemTable[key(nw3)] = nw3;
 	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
-	mnemTable[key(t22)] = t22;
+//	mnemTable[key(t22)] = t22;
 };
 
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
@@ -259,6 +282,7 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
     var front = createMCP("c", front_c, front_i, "75505550140203");
 };
 
+//TODO: Add the control points when there isn't a backend error
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var cproff = new Image();
     cproff.src = "/public/img/cproff.png";
