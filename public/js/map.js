@@ -1,32 +1,17 @@
 
 //Javascript Code for drawing the map.
 
-//see if hash map has been created
-var created = false;
+//Global variable hash table for storing the mnemonics that correspond to their track segments
 var mnemTable {};
 
-var createHashKey = function(obj){
-
-    if (mnemTable.includes(obj)){
-
-    }
+/* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
+The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
+because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
+The segment will have the rest of the information.
+*/
+var key = function(obj){
+    return obj[4] + " " + obj[0] + " " obj[1];
 };
-
-mnemTable[key(obj1)] = obj1;
-mnemTable[key(obj2)] = obj2;
-
-//Hash map containing the
-function createHashMap(){
-    if (!created){
-
-        //create all the segments and add them to the table
-
-
-        created = true;
-    }
-};
-
-
 
 //Functions for creating the track segments
 //Draws Lurgan to SHIP segment
@@ -111,31 +96,54 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	//Lurgan Sub and NS-H Line segments
 	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
+	mnemTable[key(ra1)] = ra1;
 	var ra2 = createTrackSeg(.116, .485, .148, .505, "2RA", "right", canvas);
+	mnemTable[key(ra2)] = ra2;
 	var rra = createTrackSeg(.116, .51, .148, .53, "RRA", "right", canvas);
+	mnemTable[key(rra)] = rra;
 	var sra = createTrackSeg(.116, .53, .148, .55, "SRA", "right", canvas);
+	mnemTable[key(sra)] = sra;
 	var na1 = createTrackSeg(.148, .46, .18, .48, "1NA", "right", canvas);
+	mnemTable[key(na1)] = na1;
 	var na2 = createTrackSeg(.148, .485, .18, .505, "2NA", "right", canvas);
+	mnemTable[key(na2)] = na2;
 	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "right", canvas);
+	mnemTable[key(rna)] = rna;
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "right", canvas);
+	mnemTable[key(sna)] = sna;
 	//6T segments
 	var t61 = createTrackSeg(.18, .46, .186, .48, "6T", "none", canvas);
+	mnemTable[key(t61)] = t61;
 	var t62 = createTrackSeg(.186, .46, .206, .495, "6T", "none", canvas);
+	mnemTable[key(t62)] = t62;
 	var t63 = createTrackSeg(.18, .485, .206, .495, "6T", "none", canvas);
+	mnemTable[key(t63)] = t63;
 	var nw9 = createTrackSeg(.206, .485, .214, .505, "9NW", "none", canvas);
+	mnemTable[key(nw9)] = nw9;
 	var t64 = createTrackSeg(.214, .485, .236, .505, "6T", "none", canvas);
+	mnemTable[key(t64)] = t64;
 	var t65 = createTrackSeg(.236, .485, .286, .54, "6T", "none", canvas);
+	mnemTable[key(t65)] = t65;
 	//1T segments
 	var t11 = createTrackSeg(.18, .51, .194, .53, "1T", "none", canvas);
+	mnemTable[key(t11)] = t11;
 	var t12 = createTrackSeg(.194, .51, .216, .545, "1T", "none", canvas);
+	mnemTable[key(t12)] = t12;
 	var t13 = createTrackSeg(.18, .53, .216, .55, "1T", "none", canvas);
+	mnemTable[key(t13)] = t13;
 	var nw7 = createTrackSeg(.216, .53, .232, .55, "7NW", "none", canvas);
+	mnemTable[key(nw7)] = nw7;
 	var t14 = createTrackSeg(.232, .53, .240, .55, "1T", "none", canvas);
+	mnemTable[key(t14)] = t14;
 	//Roanoke/Downward Ramps connecting stretch
 	var t21 = createTrackSeg(.240, .53, .248, .55, "2T", "none", canvas);
+	mnemTable[key(t21)] = t21;
 	var nw3 = createTrackSeg(.248, .53, .256, .55, "3NW", "none", canvas);
+	mnemTable[key(nw3)] = nw3;
 	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
+	mnemTable[key(t22)] = t22;
 };
+
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
 //the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
@@ -265,21 +273,15 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 		ctx.font = ("1em Arial");
 		ctx.fillStyle = "#ffa500";
 		ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .18 );
-
 		ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .07);
 		ctx.fillText("Running", canvas.width * .120, canvas.height * .09);
 		ctx.fillText("Track", canvas.width * .120, canvas.height * .11);
-
 		ctx.fillText("Gettysburg RR", canvas.width * .445, canvas.height * .194);
-
         ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .1285);
-
         ctx.fillText("to", canvas.width * .900, canvas.height * .10);
         ctx.fillText("Paxton", canvas.width * .900, canvas.height * .12);
-
         ctx.fillText("to", canvas.width * .899, canvas.height * .17);
         ctx.fillText("Capitol", canvas.width * .899, canvas.height * .19);
-
 		// Gray, size 12
         ctx.fillStyle = "#d3d3d3";
         ctx.fillText("SHIP", .155 * canvas.width, .18 * canvas.height);
@@ -288,12 +290,10 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
         ctx.fillText("SPRING", .596 * canvas.width, .20 * canvas.height);
         ctx.fillText("ROSS", .755 * canvas.width, .18 * canvas.height);
         ctx.fillText("FRONT", .860 * canvas.width, .18 * canvas.height);
-
         // Orange, size 10
         ctx.font = ("0.8em Arial");
         ctx.fillStyle = "#ffa500";
         ctx.fillText("PPG", .585 * canvas.width, .120 * canvas.height);
-
         //Gray, size 10
         ctx.fillStyle = "#d3d3d3";
         ctx.fillText("Cleversburg Junction", .22 * canvas.width, .09 * canvas.height);
@@ -305,24 +305,19 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var lurgan_branch_straight = createTrack(.100, .15, .930, .15, canvas);
-
     //Near Cleversburg Junction viewing platform
     var cleversburg_straight = createTrack(.1320, .12, .220, .12, canvas);
     var cleversburg_ramp = createTrack(.220, .12, .235, .15, canvas);
     //Draw Gettysburg section
     var gettysburg_straight = createTrack(.502, .190, .530, .190, canvas);
     var gettysburg_ramp_up = createTrack(.530, .190, .540, .175, canvas);
-
     //Draw Carl section
     var carl_ramp_down = createTrack(.520, .150, .532, .175, canvas);
     var carl_straight = createTrack(.532, .175, .585, .175, canvas);
     var carl_ramp_up = createTrack(.585, .175, .597, .150, canvas);
-
-
     //Draw the PPG section
     var ppg_ramp = createTrack(.548, .150, .563, .1285, canvas);
     var ppg_straight = createTrack(.563, .1285, .573, .1285, canvas);
-
     //Draw the Ross/Front section
     var ross_ramp = createTrack(.765, .150, .785, .1285, canvas);
     var ross_straight = createTrack(.785, .1285, .930, .1285, canvas);
@@ -331,44 +326,42 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     //Draw the dashes in the Front section
     var front_dash_1 = createTrack (.860, .135, .870, .143, canvas);
     var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
-
-
     //draw the section near PPG that is thinner than the rest
     var ppg_thin_straight = createTrackWithWidth(.573, .1285, .590, .1285, canvas, .75);
 
-    //draw mile markers. intervals of 16 pixels
-    var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
-    var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
-    var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
-    var marker_39_upper = drawMileMarker(.148, .11, .148, .13, canvas);
-    var marker_36 = drawMileMarker(.180, .14, .180, .16, canvas);
-    var marker_36_upper = drawMileMarker(.180, .11, .180, .13, canvas);
-    var marker_381 = drawMileMarker(.196, .14, .196, .16, canvas);
-    var marker_382 = drawMileMarker(.196, .11, .196, .13, canvas);
-    var marker_last_on_ramp = drawMileMarker(.212, .14, .212, .16, canvas);
-    var marker_last_on_ramp_up = drawMileMarker(.212, .11, .212, .13, canvas);
-    var marker_after_ramp = drawMileMarker(.244, .14, .236, .16, canvas);
-    var marker_36 = drawMileMarker(.260, .14, .254, .16, canvas);
-    var marker_33 = drawMileMarker(.276, .14, .276, .16, canvas);
-    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
-    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
-    var marker_27 = drawMileMarker(.308, .14, .308, .16, canvas);
-    var marker_26 = drawMileMarker(.324, .14, .308, .16, canvas);
-    var marker_25 = drawMileMarker(.340, .14, .340, .16, canvas);
-
-    //extra based on the ratios
-    var ext_marker1 = drawMileMarker(.356, .14, .356, .16, canvas);
-    var ext_marker2 = drawMileMarker(.372, .14, .372, .16, canvas);
-    var ext_marker3 = drawMileMarker(.388, .14, .388, .16, canvas);
-    var ext_marker4 = drawMileMarker(.404, .14, .404, .16, canvas);
-    var ext_marker5 = drawMileMarker(.420, .14, .420, .16, canvas);
-    var ext_marker6 = drawMileMarker(.436, .14, .436, .16, canvas);
-    var ext_marker7 = drawMileMarker(.452, .14, .452, .16, canvas);
-    var ext_marker8 = drawMileMarker(.468, .14, .468, .16, canvas);
-    var ext_marker9 = drawMileMarker(.484, .14, .484, .16, canvas);
-    var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
-    var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
-    var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
+//    //draw mile markers. intervals of 16 pixels
+//    var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
+//    var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
+//    var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
+//    var marker_39_upper = drawMileMarker(.148, .11, .148, .13, canvas);
+//    var marker_36 = drawMileMarker(.180, .14, .180, .16, canvas);
+//    var marker_36_upper = drawMileMarker(.180, .11, .180, .13, canvas);
+//    var marker_381 = drawMileMarker(.196, .14, .196, .16, canvas);
+//    var marker_382 = drawMileMarker(.196, .11, .196, .13, canvas);
+//    var marker_last_on_ramp = drawMileMarker(.212, .14, .212, .16, canvas);
+//    var marker_last_on_ramp_up = drawMileMarker(.212, .11, .212, .13, canvas);
+//    var marker_after_ramp = drawMileMarker(.244, .14, .236, .16, canvas);
+//    var marker_36 = drawMileMarker(.260, .14, .254, .16, canvas);
+//    var marker_33 = drawMileMarker(.276, .14, .276, .16, canvas);
+//    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
+//    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
+//    var marker_27 = drawMileMarker(.308, .14, .308, .16, canvas);
+//    var marker_26 = drawMileMarker(.324, .14, .308, .16, canvas);
+//    var marker_25 = drawMileMarker(.340, .14, .340, .16, canvas);
+//
+//    //extra based on the ratios
+//    var ext_marker1 = drawMileMarker(.356, .14, .356, .16, canvas);
+//    var ext_marker2 = drawMileMarker(.372, .14, .372, .16, canvas);
+//    var ext_marker3 = drawMileMarker(.388, .14, .388, .16, canvas);
+//    var ext_marker4 = drawMileMarker(.404, .14, .404, .16, canvas);
+//    var ext_marker5 = drawMileMarker(.420, .14, .420, .16, canvas);
+//    var ext_marker6 = drawMileMarker(.436, .14, .436, .16, canvas);
+//    var ext_marker7 = drawMileMarker(.452, .14, .452, .16, canvas);
+//    var ext_marker8 = drawMileMarker(.468, .14, .468, .16, canvas);
+//    var ext_marker9 = drawMileMarker(.484, .14, .484, .16, canvas);
+//    var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
+//    var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
+//    var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
 //	var cpr = document.getElementByID("cproff")
