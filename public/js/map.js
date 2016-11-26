@@ -184,7 +184,7 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 	var cp67_i = ["3RWK","3NWK","7LZK","7NWK","7RWK","1LZK","1RWK","1NWK","SEAK","1TK","2WGK","2EGK","5LZK","5RWK","5NWK","3LZK","","SMK","1OXK","SEXK","SWAK","","1OK","SRAK","","","","","","SWXK","",""];
 	var cp67 = createMCP("2", cp67_c, cp67_i, "75505550200101");
 	var cp65_c = ["0OXZ","SOXOZ","SOXZ","2WGZ","2STZ","2EGZ","1RWZ","1NWZ","","","","MCZ","SMZ","2WXOZ","2WXZ","0OXOZ"];
-	var cp65_i = ["2WXK","0OXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","L0K","","SMK","2LAK","1OK","2WAK","0OK","1OXK","","","","B0K","","GFDK","DAK","P0K","","","","","","","",""}
+	var cp65_i = ["2WXK","0OXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","L0K","","SMK","2LAK","1OK","2WAK","0OK","1OXK","","","","B0K","","GFDK","DAK","P0K","","","","","","","",""]
 	var cp65 = createMCP("0", cp65_c, cp65_i, "75505550170101");
 	var cp64_c = ["","","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","","","2EGZ","2WGZ","","","","","","","",""];
 	var cp64_i = ["5RWK","5NWK","3LZK","3NWK","","1LZK","1RWK","1NWK","1OK","1TK","2EGK","2WGK","7LZK","7NWK","7RWK","5LZK","","","SMK","0OXK","1OXK","SEAK","","0OK","","","","","","","SEXK",""];
@@ -271,10 +271,10 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
     var carl_c = ["7RWZ","7NWZ","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","4WGZ","4EGZ","2WGZ","2EGZ"];
     var carl_i = ["7RWK","7NWK","5RWK","5NWK","3RWK","3NWK","1RWK","1NWK","7LZK","5LZK","3LZK","1LZK","4WGK","4EGK","2WGK","2EGK","","GEAK","SEAK","IWAK","1OK","2OK","2TK","1TK","","","","","","","","pfk"];
     var carl = createMCP("9", carl_c, carl_i, "75505550420101");
-    var spring_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"};
+    var spring_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
     var spring_i = ["2EAK","1EAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","","SLAK","SWAK"];
     var spring = createMCP("a", spring_c, spring_i, "75505550410101");
-    var ross_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"};
+    var ross_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
     var ross_i = ["2LAK","2WAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","1WAK","SRAK","SEAK"];
     var ross = createMCP("b", ross_c, ross_i, "75505550400101");
     var front_c = ["","2WGZ","2EGZ","3RWZ","3NWZ","1RWZ","1NWZ","SMZ","2EXOZ","2EXZ","1OXOZ","1OXZ","1EXOZ","1EXZ","4WGZ","4EGZ","","","","SMZ","","","2OXOZ","2OXZ"];
@@ -608,6 +608,7 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	});
 };
 
+
 // Redraws the given track element in the given color.s
 function changeTrack(track, color){
 	track.ctx.strokeStyle = color;
@@ -620,6 +621,7 @@ function changeTrack(track, color){
 $(document).ready(function(){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
+	var trackData = [];
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	console.log(canvas.width);
