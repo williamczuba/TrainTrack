@@ -675,6 +675,9 @@ function toolTip(canvas, x, y, width, height, text, timeout){
       div.style.top = pos.y + "px";
     }
   }
+	
+  canvas.addEventListener("mousemove", check);
+  canvas.addEventListener("click", check);
 }
 
 // Resizes the Canvas to the full viewport.
