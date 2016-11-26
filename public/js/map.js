@@ -609,13 +609,73 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 };
 
 
-// Redraws the given track element in the given color.s
+// Redraws the given track element in the given color.
 function changeTrack(track, color){
 	track.ctx.strokeStyle = color;
 	track.ctx.moveTo(0,0);
 	track.ctx.lineTo(track.canvas.width, track.canvas.height);
 	track.ctx.stroke();
 };
+
+// Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
+// Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
+function toolTip(canvas, x, y, width, height, text, timeout){
+
+	var tt = this,
+		div = document.createElement("div"),
+		parent = canvas.parentNode,
+		visible = false;
+	
+	var twidth = parent*.01;
+	
+	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
+	div.innerHTML = text;
+	
+	//show tooltip
+	this.show = function(pos) {
+		if (!visible) {
+			visible = true;
+			setDivPos(pos)
+			parent.appendChild(div);
+			setTimeout(hide, timeout);
+		}
+	}
+	
+	 // hide the tool-tip
+	 function hide() {
+	 visible = false;                            // hide it after timeout
+		parent.removeChild(div);                    // remove from DOM
+	 }
+	
+	// Check mouse position
+	function check(e){
+		var pos = getPos(e),
+			posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y - not sure about this, honestly. May need to use something else?
+		if (!visible &&
+        	pos.x >= x && pos.x < x + width && 
+        	pos.y >= y && pos.y < y + height) {
+      	tt.show(posAbs);	// Show tooltip at pos
+		}
+		else setDivPos(posAbs);  // else, update position
+	}
+	
+	// Get mouse position relative to canvas
+	function getPos(e) {
+		var r = canvas.getBoundingClientRect();
+		return {x: e.clientX - r.left, y: e.clientY - r.top}
+	}
+	
+  // Update and adjust div position if needed (anchor to a different corner etc.) - will need to change measurements at end from px
+  function setDivPos(pos) {
+    if (visible){
+      if (pos.x < 0) pos.x = 0;
+      if (pos.y < 0) pos.y = 0;
+      // other bound checks here
+      div.style.left = pos.x + "px";
+      div.style.top = pos.y + "px";
+    }
+  }
+}
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
