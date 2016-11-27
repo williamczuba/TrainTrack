@@ -324,7 +324,6 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var c4wg = createControlPoint(.910, .150, "c;4WG", canvas, cproff);
 };
 
-
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
         // Draw Text
