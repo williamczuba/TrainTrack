@@ -297,7 +297,6 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     cpron.src = "/public/img/cpron.png";
     var cplon = new Image();
     cplon.src = "/public/img/cplon.png";
-
     //Ship to Lee's Cross Roads
     var eg27 = createControlPoint(.383, .125, "7:2EG", canvas, cproff);
     var eg47 = createControlPoint(.383, .15, "7:4EG", canvas, cproff);
@@ -306,7 +305,6 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var eg1rw28 = createControlPoint(.467, .125, "8:2EG/1RW", canvas, cproff);
     var eg1nw28 = createControlPoint(.467, .150, "8:2EG/1NW", canvas, cproff);
     var wg28 = createControlPoint(.498, .150, "8:2WG", canvas, cproff);
-
     //Carl to Spring
     var eg29 = createControlPoint(.516, .150, "9:2EG", canvas, cproff);
     var eg49 = createControlPoint(.516, .175, "9:4EG", canvas, cproff);
@@ -316,7 +314,6 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var a2eg1nw = createControlPoint(.585, .150, "a:2EG/1NW", canvas, cproff);
     var a2eg1rw = createControlPoint(.585, .175, "a:2EG/1RW", canvas, cproff);
     var a2wg = createControlPoint(.615, .150, "a:2WG", canvas, cproff);
-
     //Ross to Front
     var b2eg = createControlPoint(.760, .150, "b:2EG", canvas, cproff);
     var b2wg1rw = createControlPoint(.780, .125, "b:2WG/1RW", canvas, cproff);
