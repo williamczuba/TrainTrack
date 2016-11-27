@@ -29,6 +29,7 @@ but it should look something like this.
 //};
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
+//var mnemTable = {};
 
 /* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
 The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
@@ -88,9 +89,9 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
 		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
 		// Lurgan Sub
-		var lurgan_straight = createTrack(.116, .495, .236, .495, canvas);
+		var lurgan_straight = createTrack(.116, .495, .226, .495, canvas);
 		//TODO: Fix positioning of this line. Shouldn't be as far over as it is.
-		var lurgan_ramp = createTrack(.2361, .495, .286, .535, canvas);
+		var lurgan_ramp = createTrack(.2261, .495, .286, .535, canvas);
 		// NS H-Line
 		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
 		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
@@ -282,7 +283,11 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
     var front = createMCP("c", front_c, front_i, "75505550140203");
 };
 
-//TODO: Add the control points when there isn't a backend error
+drawShipToFront.prototype.drawLTSTrackSegments = function(canvas, ctx){
+    var sla = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
+
+};
+
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var cproff = new Image();
     cproff.src = "/public/img/cproff.png";
@@ -292,6 +297,34 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     cpron.src = "/public/img/cpron.png";
     var cplon = new Image();
     cplon.src = "/public/img/cplon.png";
+
+    //Ship to Lee's Cross Roads
+    var eg27 = createControlPoint(.383, .125, "7:2EG", canvas, cproff);
+    var eg47 = createControlPoint(.383, .15, "7:4EG", canvas, cproff);
+    var wg27 = createControlPoint(.418, .125, "7:2WG", canvas, cproff);
+    var wg47 = createControlPoint(.418, .15, "7:4WG", canvas, cproff);
+    var eg1rw28 = createControlPoint(.467, .125, "8:2EG/1RW", canvas, cproff);
+    var eg1nw28 = createControlPoint(.467, .150, "8:2EG/1NW", canvas, cproff);
+    var wg28 = createControlPoint(.498, .150, "8:2WG", canvas, cproff);
+
+    //Carl to Spring
+    var eg29 = createControlPoint(.516, .150, "9:2EG", canvas, cproff);
+    var eg49 = createControlPoint(.516, .175, "9:4EG", canvas, cproff);
+    var wg7rw29 = createControlPoint(.577, .125, "9:2WG/7RW", canvas, cproff);
+    var wg7nw29 = createControlPoint(.577, .150, "9:2WG/7NW", canvas, cproff);
+    var wg49 = createControlPoint(.577, .175, "9:4WG", canvas, cproff);
+    var a2eg1nw = createControlPoint(.585, .150, "a:2EG/1NW", canvas, cproff);
+    var a2eg1rw = createControlPoint(.585, .175, "a:2EG/1RW", canvas, cproff);
+    var a2wg = createControlPoint(.615, .150, "a:2WG", canvas, cproff);
+
+    //Ross to Front
+    var b2eg = createControlPoint(.760, .150, "b:2EG", canvas, cproff);
+    var b2wg1rw = createControlPoint(.780, .125, "b:2WG/1RW", canvas, cproff);
+    var b2wg1nw = createControlPoint(.780, .150, "b:2WG/1NW", canvas, cproff);
+    var c2eg = createControlPoint(.850, .125, "c:2EG", canvas, cproff);
+    var c4eg = createControlPoint(.850, .150, "c:4EG", canvas, cproff);
+    var c2wg = createControlPoint(.910, .125, "c;2WG", canvas, cproff);
+    var c4wg = createControlPoint(.910, .150, "c;4WG", canvas, cproff);
 };
 
 
@@ -333,30 +366,30 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
-    var lurgan_branch_straight = createTrack(.100, .15, .930, .15, canvas);
+    var lurgan_branch_straight = createTrack(.116, .15, .930, .15, canvas);
     //Near Cleversburg Junction viewing platform
-    var cleversburg_straight = createTrack(.1320, .12, .220, .12, canvas);
-    var cleversburg_ramp = createTrack(.220, .12, .235, .15, canvas);
+    var cleversburg_straight = createTrack(.1320, .125, .315, .125, canvas);
+    var cleversburg_ramp = createTrack(.315, .125, .331, .145, canvas);
     //Draw Gettysburg section
     var gettysburg_straight = createTrack(.502, .190, .530, .190, canvas);
     var gettysburg_ramp_up = createTrack(.530, .190, .540, .175, canvas);
     //Draw Carl section
-    var carl_ramp_down = createTrack(.520, .150, .532, .175, canvas);
-    var carl_straight = createTrack(.532, .175, .585, .175, canvas);
-    var carl_ramp_up = createTrack(.585, .175, .597, .150, canvas);
+    var carl_ramp_down = createTrack(.516, .150, .532, .175, canvas);
+    var carl_straight = createTrack(.532, .175, .592, .175, canvas);
+    var carl_ramp_up = createTrack(.592, .175, .608, .150, canvas);
     //Draw the PPG section
-    var ppg_ramp = createTrack(.548, .150, .563, .1285, canvas);
-    var ppg_straight = createTrack(.563, .1285, .573, .1285, canvas);
+    var ppg_ramp = createTrack(.548, .15, .568, .125, canvas);
+    var ppg_straight = createTrack(.568, .125, .577, .125, canvas);
     //Draw the Ross/Front section
-    var ross_ramp = createTrack(.765, .150, .785, .1285, canvas);
-    var ross_straight = createTrack(.785, .1285, .930, .1285, canvas);
+    var ross_ramp = createTrack(.765, .150, .785, .125, canvas);
+    var ross_straight = createTrack(.785, .125, .930, .125, canvas);
     //Draw the dash in the SHIP section
     var ship_dash = createTrack(.187, .141, .197, .130, canvas);
     //Draw the dashes in the Front section
     var front_dash_1 = createTrack (.860, .135, .870, .143, canvas);
     var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
     //draw the section near PPG that is thinner than the rest
-    var ppg_thin_straight = createTrackWithWidth(.573, .1285, .590, .1285, canvas, .75);
+    var ppg_thin_straight = createTrackWithWidth(.577, .125, .590, .125, canvas, .75);
 
 //    //draw mile markers. intervals of 16 pixels
 //    var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
