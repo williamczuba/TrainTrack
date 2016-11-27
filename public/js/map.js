@@ -79,26 +79,23 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
-		//concept for storage of track segments - needed for recoloring?
-		//var tinfo = ["mnemonic", x, y, x2, y2]
 		// Draw Track - Nearby text on original layout listed in comments
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = "white";
 		// CSX
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
-		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
+		var csx_ramp = createTrack(.186, .470, .196, .49, canvas);
 		// Lurgan Sub
-		var lurgan_straight = createTrack(.116, .495, .236, .495, canvas);
-		//TODO: Fix positioning of this line. Shouldn't be as far over as it is.
-		var lurgan_ramp = createTrack(.2361, .495, .286, .535, canvas);
+		var lurgan_straight = createTrack(.116, .495, .213, .495, canvas);
+		var lurgan_ramp = createTrack(.2131, .495, .238, .535, canvas);
 		// NS H-Line
 		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
-		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
+		var nsh_ramp = createTrack(.1961, .520, .206, .540, canvas);
 		// to Roanoke
 		var roanoke_line = createTrack(.116, .540, .94, .540, canvas);
 		// NS Industrial Lead
-		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
-		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
+		var nsi_ramp = createTrack(.230, .540, .311, .600, canvas);
+		var nsi_straight = createTrack(.311, .600, .400, .600, canvas);
 		// CSX Lurgan Sub
 		var csxl_ramp = createTrack(.310, .540, .336, .560, canvas);
 		var csxl_straight = createTrack(.3361, .560, .400, .560, canvas);
@@ -122,6 +119,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
+	//TODO - make sure track segments match corrected lines. 
 	//Lurgan Sub and NS-H Line segments
 	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
 //	mnemTable[key(ra1)] = ra1;
@@ -142,33 +140,38 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	//6T segments
 	var t61 = createTrackSeg(.18, .46, .186, .48, "6T", "none", canvas);
 //	mnemTable[key(t61)] = t61;
-	var t62 = createTrackSeg(.186, .46, .206, .495, "6T", "none", canvas);
+	var t62 = createTrackSeg(.186, .46, .196, .495, "6T", "none", canvas);
 //	mnemTable[key(t62)] = t62;
-	var t63 = createTrackSeg(.18, .485, .206, .495, "6T", "none", canvas);
+	var t63 = createTrackSeg(.18, .485, .196, .505, "6T", "none", canvas);
 //	mnemTable[key(t63)] = t63;
-	var nw9 = createTrackSeg(.206, .485, .214, .505, "9NW", "none", canvas);
+	var nw9 = createTrackSeg(.196, .485, .204, .505, "9NW", "none", canvas);
 //	mnemTable[key(nw9)] = nw9;
-	var t64 = createTrackSeg(.214, .485, .236, .505, "6T", "none", canvas);
+	var t64 = createTrackSeg(.204, .485, .213, .505, "6T", "none", canvas);
 //	mnemTable[key(t64)] = t64;
-	var t65 = createTrackSeg(.236, .485, .286, .54, "6T", "none", canvas);
+	var t65 = createTrackSeg(.213, .485, .238, .54, "6T", "none", canvas);
 //	mnemTable[key(t65)] = t65;
 	//1T segments
 	var t11 = createTrackSeg(.18, .51, .194, .53, "1T", "none", canvas);
 //	mnemTable[key(t11)] = t11;
-	var t12 = createTrackSeg(.194, .51, .216, .545, "1T", "none", canvas);
+	var t12 = createTrackSeg(.194, .51, .206, .545, "1T", "none", canvas);
 //	mnemTable[key(t12)] = t12;
-	var t13 = createTrackSeg(.18, .53, .216, .55, "1T", "none", canvas);
+	var t13 = createTrackSeg(.18, .53, .206, .55, "1T", "none", canvas);
 //	mnemTable[key(t13)] = t13;
-	var nw7 = createTrackSeg(.216, .53, .232, .55, "7NW", "none", canvas);
+	var nw7 = createTrackSeg(.206, .53, .214, .55, "7NW", "none", canvas);
 //	mnemTable[key(nw7)] = nw7;
-	var t14 = createTrackSeg(.232, .53, .240, .55, "1T", "none", canvas);
-//	mnemTable[key(t14)] = t14;
+	var t14 = createTrackSeg(.214, .53, .22, .55, "1T", "none", canvas);
 	//Roanoke/Downward Ramps connecting stretch
-	var t21 = createTrackSeg(.240, .53, .248, .55, "2T", "none", canvas);
+	var nw5 = createTrackSeg(.22, .53, .230, .55, "5NW", "none", canvas);
+//	mnemTable[key(nw5)] = nw5;
+	var at1 = createTrackSeg(.23, .53, .238, .55, "1AT", "none", canvas);
+//	mnemTable[key(at1)] = at1;
+	var nw1 = createTrackSeg(.238, .53, .256, .55, "1NW", "both", canvas);
+//	mnemTable[key(nw1)] = nw1;	
+	var t21 = createTrackSeg(.256, .53, .274, .55, "2T", "both", canvas);
 //	mnemTable[key(t21)] = t21;
-	var nw3 = createTrackSeg(.248, .53, .256, .55, "3NW", "none", canvas);
+	var nw3 = createTrackSeg(.274, .53, .292, .55, "3NW", "both", canvas);
 //	mnemTable[key(nw3)] = nw3;
-	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
+	var t22 = createTrackSeg(.292, .53, .310, .55, "2T", "both", canvas);
 //	mnemTable[key(t22)] = t22;
 };
 
@@ -402,7 +405,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
 		this.drawSTFText(canvas, ctx);
-//		this.drawLTSControlPoints(canvas, ctx);
+    	this.drawSTFControlPoints(canvas, ctx);
 		return this;
 };
 
@@ -593,19 +596,19 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	$(img).load(function(){
 		newCanvas.width = img.width;
 		newCanvas.height = img.height;
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
+		//document.body.appendChild(newCanvas);
 		newCtx.drawImage(img, 0, 0);
-		var cp = {
-			canvas: newCanvas,
-			ctx: newCtx,
-			cm: cMnemonic,
-			x: x,
-			y: y,
-			img: img
-		};
-		return cp;
+		oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
 	});
+	var cp = {
+		canvas: newCanvas,
+		ctx: newCtx,
+		cm: cMnemonic,
+		x: x,
+		y: y,
+		img: img
+	};
+	return cp;
 };
 
 
@@ -626,7 +629,7 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 		parent = canvas.parentNode,
 		visible = false;
 	
-	var twidth = parent*.01;
+	var twidth = parent.width*.01;
 	
 	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
 	div.innerHTML = text;
@@ -695,13 +698,8 @@ $(document).ready(function(){
 	ctx.fillText("Norfolk Southern", 0, 20);
 	ctx.fillText("Harrisburg Division", 0, 40);
 	var dlts = new drawLurganToShip();
-	//var dbtw = new drawBurkeToWyomissing();
-	//var dctb = new drawCannonToBeaver();
 	dlts.draw(canvas, ctx);
 
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
-
-	//dbtw.draw(canvas, ctx);
-	//dctb.draw(canvas, ctx);
 })
