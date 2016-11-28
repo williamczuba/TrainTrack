@@ -283,9 +283,41 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
     var front = createMCP("c", front_c, front_i, "75505550140203");
 };
 
-drawShipToFront.prototype.drawLTSTrackSegments = function(canvas, ctx){
-    var sla = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
+drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
 
+    //Section before Lurgan upper portion begins
+    var sla = createTrackSeg(.116, .14, .124, .16, "SLA", right);
+    var sra = createTrackSeg(.125, .115, .133, .135, "SRA", right);
+
+    //Section with two concurrent sections-- Lurgan and Ship
+    var rea = createTrackSeg(.134, .115, .1645, .135, "REA", right);
+    var sea = createTrackSeg(.134, .14, .1645, .16, "SEA", right);
+    var t1 = createTrackSeg(.1646, .14, .2255, .16, "1T", right);
+    var t2 = createTrackSeg(.1646, .115, .2255, .135, "2T", right);
+    var wa1 = createTrackSeg(.2255, .115, .256, .135, "1WA", right);
+    var wa2 = createTrackSeg(.2255, .14, .256, .16, "2WA", right);
+    var ea1 = createTrackSeg(.257, 115, .2865, .135, "1EA", right);
+    var ea2 = createTrackSeg(.257, .14, .2865, .16, "2EA", right);
+
+    //End of ramp -- 8T sections
+    var t81 createTrackSeg(.2866, .115, .315, .135, "8T", none);
+    var t82 = createTrackSeg(.316, .125, .331, .145, "8T", none);
+    var t83 = createTrackSeg(.2866, .14, .330, .16, "8T", none);
+
+    //straightaway before Gettysburg ramp
+    var wa1 = createTrackSeg(.330, .14, .3587, .16, "1WA", right);
+    var la1 = createTrackSeg(.3588, .14, 44481, .16, "1LA", none);
+    var ea5 = createTrackSeg(.44481, .14, .53082, .16, "5EA", right);
+    var ea6 = createTrackSeg(.50215, .165, .53082, .185, "6EA", right);
+    //3T section
+    var t31 = createTrackSeg(.53082, .190, .540, .175, "3T", none);
+    var t32 = createTrackSeg(.53082, .14, .540, .16, "3T", none);
+
+    //Gettysburg/carl/Ppg ramp section
+    var t5 = createTrackSeg(.540, .165, .566, .185, "5T", none);
+    var ea2 = createTrackSeg(.567, .165, .185, .592, "2EA", right);
+    var t1 = createTrackSeg(.592, .165, .608, .150, "T", none);
+    var t2 = createTrackSeg(.592, .14, .608, .16, "T", none);
 };
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
@@ -326,36 +358,36 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
 
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
-        // Draw Text
-		// Orange, size 12
-		ctx.font = ("1em Arial");
-		ctx.fillStyle = "#ffa500";
-		ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .18 );
-		ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .07);
-		ctx.fillText("Running", canvas.width * .120, canvas.height * .09);
-		ctx.fillText("Track", canvas.width * .120, canvas.height * .11);
-		ctx.fillText("Gettysburg RR", canvas.width * .445, canvas.height * .194);
-        ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .1285);
-        ctx.fillText("to", canvas.width * .900, canvas.height * .10);
-        ctx.fillText("Paxton", canvas.width * .900, canvas.height * .12);
-        ctx.fillText("to", canvas.width * .899, canvas.height * .17);
-        ctx.fillText("Capitol", canvas.width * .899, canvas.height * .19);
+    // Draw Text
+	// Orange, size 12
+	ctx.font = ("1em Arial");
+	ctx.fillStyle = "#ffa500";
+	ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .18 );
+	ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .07);
+	ctx.fillText("Running", canvas.width * .120, canvas.height * .09);
+	ctx.fillText("Track", canvas.width * .120, canvas.height * .11);
+	ctx.fillText("Gettysburg RR", canvas.width * .445, canvas.height * .194);
+    ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .1285);
+    ctx.fillText("to", canvas.width * .900, canvas.height * .10);
+    ctx.fillText("Paxton", canvas.width * .900, canvas.height * .12);
+    ctx.fillText("to", canvas.width * .899, canvas.height * .17);
+    ctx.fillText("Capitol", canvas.width * .899, canvas.height * .19);
 		// Gray, size 12
-        ctx.fillStyle = "#d3d3d3";
-        ctx.fillText("SHIP", .155 * canvas.width, .18 * canvas.height);
-        ctx.fillText("LEES CROSS ROADS", canvas.width * .245, .18 * canvas.height);
-        ctx.fillText("CARL", .550 * canvas.width, .20 * canvas.height);
-        ctx.fillText("SPRING", .596 * canvas.width, .20 * canvas.height);
-        ctx.fillText("ROSS", .755 * canvas.width, .18 * canvas.height);
-        ctx.fillText("FRONT", .860 * canvas.width, .18 * canvas.height);
+    ctx.fillStyle = "#d3d3d3";
+    ctx.fillText("SHIP", .155 * canvas.width, .18 * canvas.height);
+    ctx.fillText("LEES CROSS ROADS", canvas.width * .245, .18 * canvas.height);
+    ctx.fillText("CARL", .550 * canvas.width, .20 * canvas.height);
+    ctx.fillText("SPRING", .596 * canvas.width, .20 * canvas.height);
+    ctx.fillText("ROSS", .755 * canvas.width, .18 * canvas.height);
+    ctx.fillText("FRONT", .860 * canvas.width, .18 * canvas.height);
         // Orange, size 10
-        ctx.font = ("0.8em Arial");
-        ctx.fillStyle = "#ffa500";
-        ctx.fillText("PPG", .585 * canvas.width, .120 * canvas.height);
+    ctx.font = ("0.8em Arial");
+    ctx.fillStyle = "#ffa500";
+    ctx.fillText("PPG", .585 * canvas.width, .120 * canvas.height);
         //Gray, size 10
-        ctx.fillStyle = "#d3d3d3";
-        ctx.fillText("Cleversburg Junction", .22 * canvas.width, .09 * canvas.height);
-        ctx.fillText("Viewing Platform", .23 * canvas.width, .105 * canvas.height);
+    ctx.fillStyle = "#d3d3d3";
+    ctx.fillText("Cleversburg Junction", .22 * canvas.width, .09 * canvas.height);
+    ctx.fillText("Viewing Platform", .23 * canvas.width, .105 * canvas.height);
 
         return this;
 };
@@ -386,40 +418,6 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var front_dash_2 = createTrack(.890, .143, .900, .135, canvas);
     //draw the section near PPG that is thinner than the rest
     var ppg_thin_straight = createTrackWithWidth(.577, .125, .590, .125, canvas, .75);
-
-//    //draw mile markers. intervals of 16 pixels
-//    var marker_45 = drawMileMarker(.116, .14, .116, .16, canvas);
-//    var marker_42 = drawMileMarker(.132, .14, .132, .16, canvas);
-//    var marker_39 = drawMileMarker(.148, .14, .148, .16, canvas);
-//    var marker_39_upper = drawMileMarker(.148, .11, .148, .13, canvas);
-//    var marker_36 = drawMileMarker(.180, .14, .180, .16, canvas);
-//    var marker_36_upper = drawMileMarker(.180, .11, .180, .13, canvas);
-//    var marker_381 = drawMileMarker(.196, .14, .196, .16, canvas);
-//    var marker_382 = drawMileMarker(.196, .11, .196, .13, canvas);
-//    var marker_last_on_ramp = drawMileMarker(.212, .14, .212, .16, canvas);
-//    var marker_last_on_ramp_up = drawMileMarker(.212, .11, .212, .13, canvas);
-//    var marker_after_ramp = drawMileMarker(.244, .14, .236, .16, canvas);
-//    var marker_36 = drawMileMarker(.260, .14, .254, .16, canvas);
-//    var marker_33 = drawMileMarker(.276, .14, .276, .16, canvas);
-//    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
-//    var marker_30 = drawMileMarker(.292, .14, .276, .16, canvas);
-//    var marker_27 = drawMileMarker(.308, .14, .308, .16, canvas);
-//    var marker_26 = drawMileMarker(.324, .14, .308, .16, canvas);
-//    var marker_25 = drawMileMarker(.340, .14, .340, .16, canvas);
-//
-//    //extra based on the ratios
-//    var ext_marker1 = drawMileMarker(.356, .14, .356, .16, canvas);
-//    var ext_marker2 = drawMileMarker(.372, .14, .372, .16, canvas);
-//    var ext_marker3 = drawMileMarker(.388, .14, .388, .16, canvas);
-//    var ext_marker4 = drawMileMarker(.404, .14, .404, .16, canvas);
-//    var ext_marker5 = drawMileMarker(.420, .14, .420, .16, canvas);
-//    var ext_marker6 = drawMileMarker(.436, .14, .436, .16, canvas);
-//    var ext_marker7 = drawMileMarker(.452, .14, .452, .16, canvas);
-//    var ext_marker8 = drawMileMarker(.468, .14, .468, .16, canvas);
-//    var ext_marker9 = drawMileMarker(.484, .14, .484, .16, canvas);
-//    var ext_marker10 = drawMileMarker(.500, .14, .500, .16, canvas);
-//    var ext_marker11 = drawMileMarker(.516, .14, .516, .16, canvas);
-//    var ext_marker11_lower = drawMileMarker(.516, .18, .516, .20, canvas);
 };
 //drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
 //	var cpr = document.getElementByID("cproff")
