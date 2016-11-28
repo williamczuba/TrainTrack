@@ -29,23 +29,25 @@ but it should look something like this.
 //};
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
-//var mnemTable = {};
+var mnemTable = {};
 
 /* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
 The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
 because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
 The segment will have the rest of the information.
 */
-//var key = function(obj){
-//    var test = obj[4] + obj[0] + obj[1];
-//    console.log(test);
-//    return obj[4] + obj[0] + obj[1];
-//};
+var key = function(obj){
+    var test = obj[4] + obj[0] + obj[1];
+    console.log(test);
+    return obj[4] + obj[0] + obj[1];
+};
+
 
 //Functions for creating the track segments
 //Draws Lurgan to SHIP segment
 var drawLurganToShip = function(){
 };
+
 // TODO - change text sizing
 drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 		// Draw Text
@@ -125,52 +127,53 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	//Lurgan Sub and NS-H Line segments
 	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
-//	mnemTable[key(ra1)] = ra1;
+	mnemTable[key(ra1)] = ra1;
 	var ra2 = createTrackSeg(.116, .485, .148, .505, "2RA", "right", canvas);
-//	mnemTable[key(ra2)] = ra2;
+	mnemTable[key(ra2)] = ra2;
 	var rra = createTrackSeg(.116, .51, .148, .53, "RRA", "right", canvas);
-//	mnemTable[key(rra)] = rra;
+	mnemTable[key(rra)] = rra;
 	var sra = createTrackSeg(.116, .53, .148, .55, "SRA", "right", canvas);
-//	mnemTable[key(sra)] = sra;
+	mnemTable[key(sra)] = sra;
 	var na1 = createTrackSeg(.148, .46, .18, .48, "1NA", "right", canvas);
-//	mnemTable[key(na1)] = na1;
+	mnemTable[key(na1)] = na1;
 	var na2 = createTrackSeg(.148, .485, .18, .505, "2NA", "right", canvas);
-//	mnemTable[key(na2)] = na2;
+	mnemTable[key(na2)] = na2;
 	var rna = createTrackSeg(.148, .51, .18, .53, "RNA", "right", canvas);
-//	mnemTable[key(rna)] = rna;
+	mnemTable[key(rna)] = rna;
 	var sna = createTrackSeg(.148, .53, .18, .55, "SNA", "right", canvas);
-//	mnemTable[key(sna)] = sna;
+	mnemTable[key(sna)] = sna;
 	//6T segments
 	var t61 = createTrackSeg(.18, .46, .186, .48, "6T", "none", canvas);
-//	mnemTable[key(t61)] = t61;
+	mnemTable[key(t61)] = t61;
 	var t62 = createTrackSeg(.186, .46, .206, .495, "6T", "none", canvas);
-//	mnemTable[key(t62)] = t62;
+	mnemTable[key(t62)] = t62;
 	var t63 = createTrackSeg(.18, .485, .206, .495, "6T", "none", canvas);
-//	mnemTable[key(t63)] = t63;
+	mnemTable[key(t63)] = t63;
 	var nw9 = createTrackSeg(.206, .485, .214, .505, "9NW", "none", canvas);
-//	mnemTable[key(nw9)] = nw9;
+	mnemTable[key(nw9)] = nw9;
 	var t64 = createTrackSeg(.214, .485, .236, .505, "6T", "none", canvas);
-//	mnemTable[key(t64)] = t64;
+	mnemTable[key(t64)] = t64;
 	var t65 = createTrackSeg(.236, .485, .286, .54, "6T", "none", canvas);
-//	mnemTable[key(t65)] = t65;
+	mnemTable[key(t65)] = t65;
 	//1T segments
 	var t11 = createTrackSeg(.18, .51, .194, .53, "1T", "none", canvas);
-//	mnemTable[key(t11)] = t11;
+	mnemTable[key(t11)] = t11;
 	var t12 = createTrackSeg(.194, .51, .216, .545, "1T", "none", canvas);
-//	mnemTable[key(t12)] = t12;
+	mnemTable[key(t12)] = t12;
 	var t13 = createTrackSeg(.18, .53, .216, .55, "1T", "none", canvas);
-//	mnemTable[key(t13)] = t13;
+	mnemTable[key(t13)] = t13;
 	var nw7 = createTrackSeg(.216, .53, .232, .55, "7NW", "none", canvas);
-//	mnemTable[key(nw7)] = nw7;
+	mnemTable[key(nw7)] = nw7;
 	var t14 = createTrackSeg(.232, .53, .240, .55, "1T", "none", canvas);
-//	mnemTable[key(t14)] = t14;
+	mnemTable[key(t14)] = t14;
 	//Roanoke/Downward Ramps connecting stretch
 	var t21 = createTrackSeg(.240, .53, .248, .55, "2T", "none", canvas);
-//	mnemTable[key(t21)] = t21;
+	mnemTable[key(t21)] = t21;
 	var nw3 = createTrackSeg(.248, .53, .256, .55, "3NW", "none", canvas);
-//	mnemTable[key(nw3)] = nw3;
+	mnemTable[key(nw3)] = nw3;
 	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
-//	mnemTable[key(t22)] = t22;
+	mnemTable[key(t22)] = t22;
+
 };
 
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
@@ -247,7 +250,6 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", canvas, cproff);
 	var sg26 = createControlPoint(.870, .523, "6:2SG", canvas, cploff);
 
-	return this;
 };
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
@@ -261,100 +263,6 @@ drawLurganToShip.prototype.draw = function(canvas, ctx){
 var drawShipToFront = function (){
 };
 
-
-drawShipToFront.prototype.createSTF_MCPLists = function(){
-    var ship_c = ["2WGZ","2STZ","2EGZ","4WGZ","4STZ","4EGZ","3RWZ","3NWZ","","","1WXOZ","1WXZ","2WXOZ","2WXZ","SEXOZ","SEXZ"];
-    var ship_i = ["","","2WGK","2EGK","4WGK","4EGK","3RWK","3NWK","SRAK","SEAK","1WXK","2WXK","SEXK","3LZK","2TK","1TK","","","","SMK","","1WAK","REAK","2WAK","","","","","","","",""];
-    var ship = createMCP("7", ship_c, ship_i, "75505550020203");
-    var lee_c = ["2STZ","2EXOZ","2EXZ","2EGZ","2WGZ","1RWZ","1NWZ","SMZ","","","","","1WXOZ","1WXZ","1EXOZ","1EXZ"];
-    var lee_i = ["1EXK","2EXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","","","SMK","1EAK","2EAK","1LAK","1WAK","1WXK","","","","","","","",""];
-    var lee = createMCP("8", lee_c, lee_i, "75505550050101");
-    var carl_c = ["7RWZ","7NWZ","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","4WGZ","4EGZ","2WGZ","2EGZ"];
-    var carl_i = ["7RWK","7NWK","5RWK","5NWK","3RWK","3NWK","1RWK","1NWK","7LZK","5LZK","3LZK","1LZK","4WGK","4EGK","2WGK","2EGK","","GEAK","SEAK","IWAK","1OK","2OK","2TK","1TK","","","","","","","","pfk"];
-    var carl = createMCP("9", carl_c, carl_i, "75505550420101");
-    var spring_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
-    var spring_i = ["2EAK","1EAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","","SLAK","SWAK"];
-    var spring = createMCP("a", spring_c, spring_i, "75505550410101");
-    var ross_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
-    var ross_i = ["2LAK","2WAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","1WAK","SRAK","SEAK"];
-    var ross = createMCP("b", ross_c, ross_i, "75505550400101");
-    var front_c = ["","2WGZ","2EGZ","3RWZ","3NWZ","1RWZ","1NWZ","SMZ","2EXOZ","2EXZ","1OXOZ","1OXZ","1EXOZ","1EXZ","4WGZ","4EGZ","","","","SMZ","","","2OXOZ","2OXZ"];
-    var front_i = ["4EGK","4WGK","2EGK","2WGK","3RWK","3NWK","1RWK","1NWK","2TK","1TK","2OXK","2EXK","1OXK","1EXK","3LZK","1LZK","","","FW2K","FW1K","2OK","2EAK","1OK","1EAK","L0K","SMK","LCK","P0K","","","",""];
-    var front = createMCP("c", front_c, front_i, "75505550140203");
-};
-
-drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
-
-    //Section before Lurgan upper portion begins
-    var sla = createTrackSeg(.116, .14, .124, .16, "SLA", right);
-    var sra = createTrackSeg(.125, .115, .133, .135, "SRA", right);
-
-    //Section with two concurrent sections-- Lurgan and Ship
-    var rea = createTrackSeg(.134, .115, .1645, .135, "REA", right);
-    var sea = createTrackSeg(.134, .14, .1645, .16, "SEA", right);
-    var t1 = createTrackSeg(.1646, .14, .2255, .16, "1T", right);
-    var t2 = createTrackSeg(.1646, .115, .2255, .135, "2T", right);
-    var wa1 = createTrackSeg(.2255, .115, .256, .135, "1WA", right);
-    var wa2 = createTrackSeg(.2255, .14, .256, .16, "2WA", right);
-    var ea1 = createTrackSeg(.257, 115, .2865, .135, "1EA", right);
-    var ea2 = createTrackSeg(.257, .14, .2865, .16, "2EA", right);
-
-    //End of ramp -- 8T sections
-    var t81 createTrackSeg(.2866, .115, .315, .135, "8T", none);
-    var t82 = createTrackSeg(.316, .125, .331, .145, "8T", none);
-    var t83 = createTrackSeg(.2866, .14, .330, .16, "8T", none);
-
-    //straightaway before Gettysburg ramp
-    var wa1 = createTrackSeg(.330, .14, .3587, .16, "1WA", right);
-    var la1 = createTrackSeg(.3588, .14, 44481, .16, "1LA", none);
-    var ea5 = createTrackSeg(.44481, .14, .53082, .16, "5EA", right);
-    var ea6 = createTrackSeg(.50215, .165, .53082, .185, "6EA", right);
-    //3T section
-    var t31 = createTrackSeg(.53082, .190, .540, .175, "3T", none);
-    var t32 = createTrackSeg(.53082, .14, .540, .16, "3T", none);
-
-    //Gettysburg/carl/Ppg ramp section
-    var t5 = createTrackSeg(.540, .165, .566, .185, "5T", none);
-    var ea2 = createTrackSeg(.567, .165, .185, .592, "2EA", right);
-    var t1 = createTrackSeg(.592, .165, .608, .150, "T", none);
-    var t2 = createTrackSeg(.592, .14, .608, .16, "T", none);
-};
-
-drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
-    var cproff = new Image();
-    cproff.src = "/public/img/cproff.png";
-    var cploff = new Image();
-    cploff.src = "/public/img/cploff.png";
-    var cpron = new Image();
-    cpron.src = "/public/img/cpron.png";
-    var cplon = new Image();
-    cplon.src = "/public/img/cplon.png";
-    //Ship to Lee's Cross Roads
-    var eg27 = createControlPoint(.383, .125, "7:2EG", canvas, cproff);
-    var eg47 = createControlPoint(.383, .15, "7:4EG", canvas, cproff);
-    var wg27 = createControlPoint(.418, .125, "7:2WG", canvas, cproff);
-    var wg47 = createControlPoint(.418, .15, "7:4WG", canvas, cproff);
-    var eg1rw28 = createControlPoint(.467, .125, "8:2EG/1RW", canvas, cproff);
-    var eg1nw28 = createControlPoint(.467, .150, "8:2EG/1NW", canvas, cproff);
-    var wg28 = createControlPoint(.498, .150, "8:2WG", canvas, cproff);
-    //Carl to Spring
-    var eg29 = createControlPoint(.516, .150, "9:2EG", canvas, cproff);
-    var eg49 = createControlPoint(.516, .175, "9:4EG", canvas, cproff);
-    var wg7rw29 = createControlPoint(.577, .125, "9:2WG/7RW", canvas, cproff);
-    var wg7nw29 = createControlPoint(.577, .150, "9:2WG/7NW", canvas, cproff);
-    var wg49 = createControlPoint(.577, .175, "9:4WG", canvas, cproff);
-    var a2eg1nw = createControlPoint(.585, .150, "a:2EG/1NW", canvas, cproff);
-    var a2eg1rw = createControlPoint(.585, .175, "a:2EG/1RW", canvas, cproff);
-    var a2wg = createControlPoint(.615, .150, "a:2WG", canvas, cproff);
-    //Ross to Front
-    var b2eg = createControlPoint(.760, .150, "b:2EG", canvas, cproff);
-    var b2wg1rw = createControlPoint(.780, .125, "b:2WG/1RW", canvas, cproff);
-    var b2wg1nw = createControlPoint(.780, .150, "b:2WG/1NW", canvas, cproff);
-    var c2eg = createControlPoint(.850, .125, "c:2EG", canvas, cproff);
-    var c4eg = createControlPoint(.850, .150, "c:4EG", canvas, cproff);
-    var c2wg = createControlPoint(.910, .125, "c;2WG", canvas, cproff);
-    var c4wg = createControlPoint(.910, .150, "c;4WG", canvas, cproff);
-};
 
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
@@ -394,7 +302,7 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
-    var lurgan_branch_straight = createTrack(.116, .15, .930, .15, canvas);
+    var lurgan_branch_straight = createTrack(.071, .15, .930, .15, canvas);
     //Near Cleversburg Junction viewing platform
     var cleversburg_straight = createTrack(.1320, .125, .315, .125, canvas);
     var cleversburg_ramp = createTrack(.315, .125, .331, .145, canvas);
@@ -419,17 +327,125 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     //draw the section near PPG that is thinner than the rest
     var ppg_thin_straight = createTrackWithWidth(.577, .125, .590, .125, canvas, .75);
 };
-//drawShipToFront.prototype.drawSTFControlPoints = function(canvas, ctx){
-//	var cpr = document.getElementByID("cproff")
-//	var cpl = document.getElementByID("cploff")
-//	ctx.drawImage(
-//	return this;
-//};
+
+drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
+
+    //Section before Lurgan upper portion begins
+    var sla = createTrackSeg(.071, .14, .1014, .16, "SRA", "right", canvas);
+    var sra = createTrackSeg(.1015, .14, .133, .16, "SRA", "right", canvas);
+
+    //Section with two concurrent sections-- Lurgan and Ship
+    var rea = createTrackSeg(.134, .115, .1645, .135, "REA", "right", canvas);
+    var sea = createTrackSeg(.134, .14, .1645, .16, "SEA", "right", canvas);
+    var t1 = createTrackSeg(.1646, .14, .2255, .16, "1T", "right", canvas);
+    var t2 = createTrackSeg(.1646, .115, .2255, .135, "2T", "right", canvas);
+    var wa1 = createTrackSeg(.2255, .115, .256, .135, "1WA", "right", canvas);
+    var wa2 = createTrackSeg(.2255, .14, .256, .16, "2WA", "right", canvas);
+    var ea1 = createTrackSeg(.257, 115, .2865, .135, "1EA", "right", canvas);
+    var ea2 = createTrackSeg(.257, .14, .2865, .16, "2EA", "right", canvas);
+
+//    //End of ramp -- 8T sections
+//    var t81 = createTrackSeg(.2866, .115, .315, .135, "8T", "none", canvas);
+//    var t82 = createTrackSeg(.316, .125, .331, .145, "8T", "none", canvas);
+//    var t83 = createTrackSeg(.2866, .14, .330, .16, "8T", "none", canvas);
+//
+//    //straightaway before Gettysburg ramp
+//    var wa1 = createTrackSeg(.330, .14, .3587, .16, "1WA", "right", canvas);
+//    var la1 = createTrackSeg(.3588, .14, 44481, .16, "1LA", "none", canvas);
+//    var ea5 = createTrackSeg(.44481, .14, .53082, .16, "5EA", "right", canvas);
+//    var ea6 = createTrackSeg(.50215, .165, .53082, .185, "6EA", "right", canvas);
+//    //3T section
+//    var t31 = createTrackSeg(.53082, .190, .540, .175, "3T", "none", canvas);
+//    var t32 = createTrackSeg(.53082, .14, .540, .16, "3T", "none", canvas);
+//
+//    //Gettysburg/carl/Ppg ramp section
+//    var t5 = createTrackSeg(.540, .165, .566, .185, "5T", "none", canvas);
+//    var ea2 = createTrackSeg(.567, .165, .592, .185, "2EA", "right", canvas);
+//    var t11 = createTrackSeg(.592, .165, .608, .150, "T", "none", canvas);
+//    var t21 = createTrackSeg(.592, .14, .608, .16, "T", "none", canvas);
+//    var t71 = createTrackSeg(.540, .14, .566, .16, "7T", "none", canvas);
+//    var t72 = createTrackSeg(.540, .14, .566, .115, "7T", "none", canvas);
+//    var ea1 = createTrackSeg(.567, .14, .185, .592, "1EA", "right", canvas);
+//
+//    //Ross section
+//    var swa = createTrackSeg(.608, .14, .6342, .16, "SWA", "right", canvas);
+//    var sla = createTrackSeg(.6342, .14, .6865, .16, "SLA", "none", canvas);
+//    var sra = createTrackSeg(.6865, .14, .7388, .16, "SRA", "none", canvas);
+//    var sea = createTrackSeg(.7388, .14, .765, .16, "SEA", "none", canvas);
+//    var t3 = createTrackSeg(.765, .14, .7925, .16, "T", "none", canvas);
+//    var t4 = createTrackSeg(.765, .14, .7925, .115, "T", "none", canvas);
+//    var wa2 = createTrackSeg(.7926, .14, .82, .16, "2WA", "right", canvas);
+//    var la2 = createTrackSeg(.821, .14, .8475, .16, "2LA", "right", canvas);
+//    var ea2 = createTrackSeg(.8476, .14, .875, .16, "2EA", "right", canvas);
+//    var t22 = createTrackSeg(.875, .14, .930, .16, "2T", "right", canvas);
+//    var wa12 = createTrackSeg(.7925, .14, .8231, .16, "1WA", "right", canvas);
+//    var ea12 = createTrackSeg(.8231, .14, .86115, .16, "1EA", "right", canvas);
+//    var t13 = createTrackSeg(.86116, .14, .930, .16, "1T", "right", canvas);
+};
+
+drawShipToFront.prototype.createSTF_MCPLists = function(){
+    var ship_c = ["2WGZ","2STZ","2EGZ","4WGZ","4STZ","4EGZ","3RWZ","3NWZ","","","1WXOZ","1WXZ","2WXOZ","2WXZ","SEXOZ","SEXZ"];
+    var ship_i = ["","","2WGK","2EGK","4WGK","4EGK","3RWK","3NWK","SRAK","SEAK","1WXK","2WXK","SEXK","3LZK","2TK","1TK","","","","SMK","","1WAK","REAK","2WAK","","","","","","","",""];
+    var ship = createMCP("7", ship_c, ship_i, "75505550020203");
+    var lee_c = ["2STZ","2EXOZ","2EXZ","2EGZ","2WGZ","1RWZ","1NWZ","SMZ","","","","","1WXOZ","1WXZ","1EXOZ","1EXZ"];
+    var lee_i = ["1EXK","2EXK","1LZK","TK","2EGK","2WGK","1RWK","1NWK","","","SMK","1EAK","2EAK","1LAK","1WAK","1WXK","","","","","","","",""];
+    var lee = createMCP("8", lee_c, lee_i, "75505550050101");
+    var carl_c = ["7RWZ","7NWZ","5RWZ","5NWZ","3RWZ","3NWZ","1RWZ","1NWZ","","","","","4WGZ","4EGZ","2WGZ","2EGZ"];
+    var carl_i = ["7RWK","7NWK","5RWK","5NWK","3RWK","3NWK","1RWK","1NWK","7LZK","5LZK","3LZK","1LZK","4WGK","4EGK","2WGK","2EGK","","GEAK","SEAK","IWAK","1OK","2OK","2TK","1TK","","","","","","","","pfk"];
+    var carl = createMCP("9", carl_c, carl_i, "75505550420101");
+    var spring_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
+    var spring_i = ["2EAK","1EAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","","SLAK","SWAK"];
+    var spring = createMCP("a", spring_c, spring_i, "75505550410101");
+    var ross_c = ["SMZ","SMOZ","","2WGZ","2STZ","2EGZ","1RWZ","1NWZ"];
+    var ross_i = ["2LAK","2WAK","TK","2WGK","1LZK","2EGK","1RWK","1NWK","SMK","SMFK","DAK","L0K","P0K","1WAK","SRAK","SEAK"];
+    var ross = createMCP("b", ross_c, ross_i, "75505550400101");
+    var front_c = ["","2WGZ","2EGZ","3RWZ","3NWZ","1RWZ","1NWZ","SMZ","2EXOZ","2EXZ","1OXOZ","1OXZ","1EXOZ","1EXZ","4WGZ","4EGZ","","","","SMZ","","","2OXOZ","2OXZ"];
+    var front_i = ["4EGK","4WGK","2EGK","2WGK","3RWK","3NWK","1RWK","1NWK","2TK","1TK","2OXK","2EXK","1OXK","1EXK","3LZK","1LZK","","","FW2K","FW1K","2OK","2EAK","1OK","1EAK","L0K","SMK","LCK","P0K","","","",""];
+    var front = createMCP("c", front_c, front_i, "75505550140203");
+};
+
+drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
+    var cproff = new Image();
+    cproff.src = "/public/img/cproff.png";
+    var cploff = new Image();
+    cploff.src = "/public/img/cploff.png";
+    var cpron = new Image();
+    cpron.src = "/public/img/cpron.png";
+    var cplon = new Image();
+    cplon.src = "/public/img/cplon.png";
+    //Ship to Lee's Cross Roads
+    var eg27 = createControlPoint(.383, .125, "7:2EG", canvas, cproff);
+    var eg47 = createControlPoint(.383, .15, "7:4EG", canvas, cproff);
+    var wg27 = createControlPoint(.418, .125, "7:2WG", canvas, cproff);
+    var wg47 = createControlPoint(.418, .15, "7:4WG", canvas, cproff);
+    var eg1rw28 = createControlPoint(.467, .125, "8:2EG/1RW", canvas, cproff);
+    var eg1nw28 = createControlPoint(.467, .150, "8:2EG/1NW", canvas, cproff);
+    var wg28 = createControlPoint(.498, .150, "8:2WG", canvas, cproff);
+    //Carl to Spring
+    var eg29 = createControlPoint(.516, .150, "9:2EG", canvas, cproff);
+    var eg49 = createControlPoint(.516, .175, "9:4EG", canvas, cproff);
+    var wg7rw29 = createControlPoint(.577, .125, "9:2WG/7RW", canvas, cproff);
+    var wg7nw29 = createControlPoint(.577, .150, "9:2WG/7NW", canvas, cproff);
+    var wg49 = createControlPoint(.577, .175, "9:4WG", canvas, cproff);
+    var a2eg1nw = createControlPoint(.585, .150, "a:2EG/1NW", canvas, cproff);
+    var a2eg1rw = createControlPoint(.585, .175, "a:2EG/1RW", canvas, cproff);
+    var a2wg = createControlPoint(.615, .150, "a:2WG", canvas, cproff);
+    //Ross to Front
+    var b2eg = createControlPoint(.760, .150, "b:2EG", canvas, cproff);
+    var b2wg1rw = createControlPoint(.780, .125, "b:2WG/1RW", canvas, cproff);
+    var b2wg1nw = createControlPoint(.780, .150, "b:2WG/1NW", canvas, cproff);
+    var c2eg = createControlPoint(.850, .125, "c:2EG", canvas, cproff);
+    var c4eg = createControlPoint(.850, .150, "c:4EG", canvas, cproff);
+    var c2wg = createControlPoint(.910, .125, "c;2WG", canvas, cproff);
+    var c4wg = createControlPoint(.910, .150, "c;4WG", canvas, cproff);
+};
+
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
+		this.drawSTFTrackSegments(canvas, ctx)
 		this.drawSTFText(canvas, ctx);
-//		this.drawLTSControlPoints(canvas, ctx);
+		this.drawSTFControlPoints(canvas, ctx);
 		return this;
 };
 
