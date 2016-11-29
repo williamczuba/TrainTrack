@@ -544,7 +544,6 @@ function createMCP(id, control, indication, address){
     return MCP;
 
 };
-
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2,canvas){
@@ -582,6 +581,7 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
     }
     return marker;
 };
+
 
 //Creates a new track segment and the mile markers it is between.
 function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
