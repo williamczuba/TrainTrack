@@ -1,7 +1,9 @@
 package app
 
-import "github.com/revel/revel"
-
+import (
+	"github.com/revel/revel"
+	"TrainTrack/app/controllers"
+)
 //Main revel app initialization
 //Set all revel filters
 func init() {
@@ -25,6 +27,8 @@ func init() {
 	// ( order dependent )
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+	revel.OnAppStart(controllers.InitDB)
+
 }
 
 //Define Header filters for the app

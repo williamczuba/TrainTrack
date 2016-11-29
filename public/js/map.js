@@ -10,23 +10,30 @@
 but it should look something like this.
 
 */
-//function MCP(mnemonics){
-//    //break up the string into separate values in an array
-//    var mnemValues = mnemonics.split(",");
-//    //get the segments that are going to be changed (which will also be in the form of a list and thus separated by a comma)
-//    var segmentsToChange = mnemValues[4].split(",");
-//
-//    var currMnem = "";
-//    for (i = 0; i < segmentsToChange.length; i++){ //iterate through all of the sections that are supposed to change
-//        for (j = 0; j < mnemTable.length; j++){//iterate through to find all of the mnemonics in the hash table that begin with that mnemonic
-//            currMnem = mnemTable[key(segmentsToChange[i])];
-//            if (mnemTable[j].includes(currMnem)){
-//                changeTrack(currMnem, );
-//            }
-//        }
-//        currMnem = mnemTable[key(segmentsToChange[i])];
-//    }
-//};
+function MCP(TrainData){
+   //break up the string into separate values in an array
+   var mnemValues = TrainData.mnemonics.split(",");
+   //get the segments that are going to be changed (which will also be in the form of a list and thus separated by a comma)
+	var mcp = mnemTable[key(TrainData)];
+	var size = 0;
+	var mcpMnem;
+	if (TrainData.type == "Control"){
+		size = mcp.control.length;
+		mcpMnem = mcp.control;
+	}
+	else{
+		size = mcp.indication.length;
+		mcpMnem = mcp.indication;
+	}
+
+   for (var i = 0; i < mnemValues.length; i++){
+	   for (var j = 0; j < size; j++){
+		   if (mnemValues[i] == mcpMnem[j]){
+				changeTrack()
+		   }
+	   }
+   }
+};
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mnemTable = {};
@@ -37,9 +44,9 @@ because there are multiple segments that share the same mnemonic. So, when calle
 The segment will have the rest of the information.
 */
 var key = function(obj){
-    var test = obj[4] + obj[0] + obj[1];
-    console.log(test);
-    return obj[4] + obj[0] + obj[1];
+    var test = obj.address;
+    // console.log(test);
+    return test;
 };
 
 
@@ -329,7 +336,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 };
 
 drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
-
+	// REGEX for trackSeg: createTrackSeg\(.\d{1,5}, .\d{1,5}, .\d{1,5}, .\d{1,5}, .{1,5}, \".{4,6}, canvas
     //Section before Lurgan upper portion begins
     var sla = createTrackSeg(.071, .14, .1014, .16, "SRA", "right", canvas);
     var sra = createTrackSeg(.1015, .14, .133, .16, "SRA", "right", canvas);
@@ -577,7 +584,7 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
 };
 
 //Creates a new track segment and the mile markers it is between.
-function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas){
+function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
 	lineWidth = 2;
 	var newCanvas = document.createElement("canvas");
 	newCanvas.width = (x2*canvas.width-x1*canvas.width);
@@ -587,7 +594,7 @@ function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas){
     var oldCtx = canvas.getContext('2d');
     newCtx.strokeStyle = "White";
     newCtx.lineWidth = lineWidth;
-	
+
 	if (drawWhich == "both"){
 		newCtx.moveTo(lineWidth, 0);
 		newCtx.lineTo(lineWidth, newCanvas.height);
@@ -615,7 +622,7 @@ function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas){
 		document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	}
-	
+
 	var segment = {
         x1: x1,
         x2: x2,
@@ -623,25 +630,26 @@ function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas){
         y2: y2,
 		segMnemonic: segMnemonic,
         canvas: newCanvas,
-        ctx: newCtx
+        ctx: newCtx,
+		mcp: mcp
     };
 	return segment;
 };
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, canvas, img){
-	var newCanvas = document.createElement("canvas");
-	var newCtx = newCanvas.getContext('2d');
+	// var newCanvas = document.createElement("canvas");
+	// var newCtx = newCanvas.getContext('2d');
 	var oldCtx = canvas.getContext('2d');
 	$(img).load(function(){
-		newCanvas.width = img.width;
-		newCanvas.height = img.height;
-		document.body.appendChild(newCanvas);
-		oldCtx.drawImage(newCanvas, x*canvas.width, y*canvas.height);
-		newCtx.drawImage(img, 0, 0);
+		// newCanvas.width = img.width;
+		// newCanvas.height = img.height;
+		// document.body.appendChild(newCanvas);
+		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
+		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height);
 		var cp = {
-			canvas: newCanvas,
-			ctx: newCtx,
+			// canvas: newCanvas,
+			// ctx: newCtx,
 			cm: cMnemonic,
 			x: x,
 			y: y,
@@ -653,11 +661,13 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 
 
 // Redraws the given track element in the given color.
-function changeTrack(track, color){
-	track.ctx.strokeStyle = color;
-	track.ctx.moveTo(0,0);
-	track.ctx.lineTo(track.canvas.width, track.canvas.height);
-	track.ctx.stroke();
+function changeTrack(TrackSeg, color){
+
+	var ctx = TrackSeg.canvas.getContext('2d');
+	ctx.strokeStyle = color;
+	ctx.moveTo(0,0);
+	ctx.lineTo(track.canvas.width, track.canvas.height);
+	ctx.stroke();
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.

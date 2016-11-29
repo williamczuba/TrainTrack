@@ -1,18 +1,21 @@
 package controllers
 
 import (
-	"golang.org/x/crypto/bcrypt"
+	//"golang.org/x/crypto/bcrypt"
 	"database/sql"
 	"github.com/go-gorp/gorp"
 	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
-	"github.com/revel/modules/db/app"
+	//"github.com/revel/modules/db/app"
 	"TrainTrack/app/models"
+	//"io/ioutil"
+	//"strings"
+	//"strconv"
+	//"reflect"
+	"fmt"
 	"io/ioutil"
 	"strings"
 	"strconv"
-	//"reflect"
-	"fmt"
 )
 
 var (
@@ -27,10 +30,17 @@ var (
 //	Nothing
 func InitDB() {
 	//Initialize the database (for the import)
-	db.Init()
+	//db.Init()
+	bp := r.BasePath
 
 	//Get Sqlite
-	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.SqliteDialect{}}
+	db, err := sql.Open("sqlite3", bp+"/tmpDb.bin")
+
+	if err != nil {
+		fmt.Println("Sql Open Fail")
+		panic(err)
+	}
+	Dbm = &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
 
 	// Function to set the columns for our Table
 	setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
@@ -124,7 +134,7 @@ func InitDB() {
 
 	// Set the column sizes for the username and name
 	// Set up database tracing for errors
-	//Dbm.TraceOn("[gorp]", r.INFO)
+	Dbm.TraceOn("[gorp]", r.INFO)
 
 	// Create the Table
 	Dbm.CreateTables()
@@ -138,101 +148,94 @@ func InitDB() {
 
 	// Make a temporary user demo (pass demo)
 	// Hash/encrypt the temp user password
-	bcryptPassword, _ := bcrypt.GenerateFromPassword(
-		[]byte("demo"), bcrypt.DefaultCost)
-	bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
-		[]byte("demo"), bcrypt.DefaultCost)
-	demoUser := &models.User{
-		UserId: 0,
-		FirstName:  "demoF",
-		LastName: "demoL",
-		StreetAddress:  "St. Address",
-		City: "City",
-		State: "State",
-		Country: "Country",
-		Email: "demo",
-		Password: "demo",
-		HashedPassword: bcryptPassword,
-		Approved: true,
-		SecurityQuestion: "What is this?",
-		SecureAnswer: "demo",
-		HashedSecureAnswer: bcryptSecureAnswer,
-		Admin: true,
-	}
-	if err := Dbm.Insert(demoUser); err != nil {
-		panic(err)
-	}
-	bcryptPassword, _ = bcrypt.GenerateFromPassword(
-		[]byte("trust"), bcrypt.DefaultCost)
-	trustMe := &models.User{1, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer, false}
-	if err := Dbm.Insert(trustMe); err != nil {
-		panic(err)
-	}
-	println("Trustme: username:", trustMe.Email, " password:", trustMe.Password)
-	println("DEMO Question: ", demoUser.SecurityQuestion)
+	//bcryptPassword, _ := bcrypt.GenerateFromPassword(
+	//	[]byte("demo"), bcrypt.DefaultCost)
+	//bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
+	//	[]byte("demo"), bcrypt.DefaultCost)
+	//demoUser := &models.User{
+	//	UserId: 0,
+	//	FirstName:  "demoF",
+	//	LastName: "demoL",
+	//	StreetAddress:  "St. Address",
+	//	City: "City",
+	//	State: "State",
+	//	Country: "Country",
+	//	Email: "demo",
+	//	Password: "demo",
+	//	HashedPassword: bcryptPassword,
+	//	Approved: true,
+	//	SecurityQuestion: "What is this?",
+	//	SecureAnswer: "demo",
+	//	HashedSecureAnswer: bcryptSecureAnswer,
+	//	Admin: true,
+	//}
 
+	//if err := Dbm.Insert(demoUser); err != nil {
+	//	panic(err)
+	//}
+	//bcryptPassword, _ = bcrypt.GenerateFromPassword(
+	//	[]byte("trust"), bcrypt.DefaultCost)
+	//trustMe := &models.User{1, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer, false}
+	//if err := Dbm.Insert(trustMe); err != nil {
+	//	panic(err)
+	//}
+	//println("Trustme: username:", trustMe.Email, " password:", trustMe.Password)
+	//println("DEMO Question: ", demoUser.SecurityQuestion)
 
 
 	// Initialize the MCPDB every time.
-	//var InitMCPDB func() = func() {
-		bp := r.BasePath
-		println(r.BasePath)
+	//println(r.BasePath)
+	//
+	//fileBytes, err := ioutil.ReadFile(bp + "/public/NS Harrisburg Division - Version 14.8.mcp")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//fileAsString := string(fileBytes)
+	//lines := strings.Split(fileAsString, "\n")
+	//println("length of lines: ", strconv.Itoa(len(lines)))
+	//newMCP := new(models.Mcp)
+	//for i:= 2; i+19 <= len(lines); i+= 19 {
+	//	newMCP, err = models.NewMCP(lines[i:i+19])
+	//	if err != nil {
+	//		//fmt.Println("Error: ", err)
+	//		panic(err)
+	//	}
+	//	err := Dbm.Insert(newMCP)
+	//	if err != nil{
+	//		panic(err)
+	//	}
+	//}
+	//
+	//
 
-		fileBytes, err := ioutil.ReadFile(bp + "/public/NS Harrisburg Division - Version 14.8.mcp")
-		if err != nil {
-			panic(err)
-		}
-		fileAsString := string(fileBytes)
-		lines := strings.Split(fileAsString, "\n")
-		println("length of lines: ", strconv.Itoa(len(lines)))
+}
+//Initialize the MCPDB.  Note this doesn't need to be called again since the MCP DB will be imported from the tmpDb.bin now.
+// This was used to convert the NS Harrisburg Division - Verison 14.8.mcp (Which was converted from ISO to UTF-8! this is important since golang reads files as UTF-8.)
+// 	into an sqlite database.
+func initMCPDB() {
 
-		//[MCPInformation]
-		//Count=180
-		offset := 1 //MCP info starts at line 2.
-		fmt.Println("Start: ", lines[offset])
+	bp := r.BasePath
+	fileBytes, err := ioutil.ReadFile(bp + "/public/NS Harrisburg Division - Version 14.8.mcp")
+	if err != nil {
+		panic(err)
+	}
+	fileAsString := string(fileBytes)
+	lines := strings.Split(fileAsString, "\n")
+	println("length of lines: ", strconv.Itoa(len(lines)))
 	newMCP := new(models.Mcp)
-
 	for i:= 2; i+19 <= len(lines); i+= 19 {
 		newMCP, err = models.NewMCP(lines[i:i+19])
 		if err != nil {
-					//fmt.Println("Error: ", err)
-					fmt.Println("LINE: ", i+offset)
-					panic(err)
-				}
-				err := Dbm.Insert(newMCP)
-				if err != nil{
-					panic(err)
-				}
-		//str := "NEW MCP: \n"
-		//for j:=i; j< i+19;j++ {
-		//	str += lines[j] +"\n"
-		//}
-		//fmt.Println(str)
+			//fmt.Println("Error: ", err)
+			panic(err)
+		}
+		err := Dbm.Insert(newMCP)
+		if err != nil{
+			panic(err)
+		}
 	}
 
-		//for i:=1; i +offset +20 <= len(lines); i+=19{
-		//	newMCP, err = models.NewMCP(lines[i+offset:i+20+offset])
-		//	if err != nil {
-		//		//fmt.Println("Error: ", err)
-		//		fmt.Println("LINE: ", i+offset)
-		//		panic(err)
-		//	}
-		//	err := Dbm.Insert(newMCP)
-		//	if err != nil{
-		//		panic(err)
-		//	}
-		//}
 
-	//println("Last MCP info: ", newMCP.String()) // should be: MCPActivityC180=
-	//Attempt to get the last MCP
-	//mcp, err := Dbm.Select(models.Mcp{}, `select * from MCP`)
-	//var posts []models.Mcp
-	//_, err = Dbm.Select(&posts, "select * from mcp")
-	//fmt.Println("All rows:")
-	//for x, p := range posts {
-	//	fmt.Printf("    %d: %v\n", x, p)
-	//}
-	//}
 }
 
 //Gorp Controller that extends the revel controller and allows us to use gorp transactions with the DB

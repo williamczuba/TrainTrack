@@ -66,11 +66,7 @@ type ClientTrainData struct {
 ////Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table),
 // then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
 func (c Map) GetTrainData() revel.Result {
-	//TEST GET MCP
-	tMCP := c.GetMCP("75505510190203")
-	fmt.Println(tMCP)
-
-
+	fmt.Println("Serving up train Data")
 	trainInfo := packetDecoding.GetTrainInfo()
 	mcp := c.GetMCP(trainInfo.L3.SourceAddr)
 	label := trainInfo.L4P.Label
@@ -90,7 +86,9 @@ func (c Map) GetTrainData() revel.Result {
 		CTD.Bits = mcp.ControlBits
 		CTD.Mnemonics = mcp.ControlMnemonics
 	}
-	fmt.Println("HERE")
+
+	fmt.Println("Served data")
+
 	return c.RenderJson(CTD)
 }
 

@@ -12,34 +12,47 @@ Subdivision		string	`json:"subdivision"`
 StateCounty		string	`json:"state_county"`
 CodeLineData		string	`json:"code_line_data"`
 */
-
-
 var waitMessages = '/map/listen';
 
 
+
+
 // Retrieve new train info
-var getPackets = function() {
-    //TODO : Fix the ajax.
-    $.ajax({
-        url: waitMessages,
-        success: function(CTD) {
-            // $(events).each(function() {
-            //     display(this);
-            // });
-            display(CTD);
-            getPackets();
-        },
-        dataType: 'json'
-    });
-};
+// var getPackets = function() {
+//     //TODO : Fix the ajax.
+//     console.log("Get Packets()");
+//     $.ajax({
+//         url: waitMessages,
+//         success: function(CTD) {
+//             console.log("Success");
+//             $(events).each(function() {
+//                 display(this);
+//             });
+//             display(CTD);
+//             getPackets();
+//         },
+//         dataType: 'json'
+//     });
+// };
 
 var show = function () {
     
-}
+};
 
 // Display the train data on the map.
 var display = function(CTD) {
-    console.log("HERE");
-    var trainData = JSON.parse(CTD);
-    console.log("Train Data", trainData);
+    console.log("CTD", CTD);
+};
+
+function getPackets() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // this.response is the object containing all train data to be displayed.
+            display(this.response);
+        }
+    };
+    xhttp.open("GET", waitMessages);
+    xhttp.send();
+
 };
