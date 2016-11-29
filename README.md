@@ -2,7 +2,7 @@
 This is the project page for the CS440 Train Track Project
 
 # About the project
-The TrainTrack project was assigned by Dr. Rodney Tosten.  The basic idea of the project is to rewrite the ATSC monitor that is available for Windows, so that a limited version of the application is available as a web based application.  For this project, we will focus on creating a working version of train locations in the Harrisburg area.
+The TrainTrack project was assigned by Dr. Rodney Tosten.  The basic idea of the project is to rewrite the ATCS monitor that is available for Windows, so that a limited version of the application is available as a web based application.  For this project, we will focus on creating a working version of train locations in the Harrisburg area.
 
 # About the team
 
