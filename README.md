@@ -6,7 +6,7 @@ The TrainTrack project was assigned by Dr. Rodney Tosten.  The basic idea of the
 
 # About the team
 
-Each team member was assigned a primary role for the project in addition to being a full stack developer.  Therefor, each team member will have programed at least part of every portion of the project, and will have experience as both a lead programmer and a bug hunter. 
+Each team member was assigned a primary role for the project in addition to being a full stack developer.  Therefore, each team member will have programed at least part of every portion of the project, and will have experience as both a lead programmer and a bug hunter. 
 
 The team members and their primary responsibilities are:
 
