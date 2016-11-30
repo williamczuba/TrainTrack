@@ -131,6 +131,8 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		return this;
 };
 
+//Will not be needed. Redrawing track will be tied to MCPs instead.
+/*
 drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	//Lurgan Sub and NS-H Line segments
 	var ra1 = createTrackSeg(.116, .46, .148, .48, "1RA", "right", canvas);
@@ -182,7 +184,7 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	mnemTable[key(t22)] = t22;
 
 };
-
+*/
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
 //the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
@@ -209,7 +211,8 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 	var cp50_c = ["","","2NGZ","1RWZ","2SGZ","1NWZ","SMZ","","","","SSXOZ","SSXZ","CNXOZ","CNXZ","SNXOZ","SNXZ"];
 	var cp50_i = ["","1RWK","2NGK","1NWK","2SGK","SLAK","TK","SSAK","1LZK","P0K","B0K","SMK","L0K","SSXK","CNXK","SNXK"];
 	var cp50 = createMCP("6", cp50_c, cp50_i, "75505550080101");
-
+	var mcpList = [town, cp67, cp64, cp64, cp62, cp53, cp50];
+	return mcpList
 };
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
@@ -261,7 +264,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
-		this.drawLTSTrackSegments(canvas, ctx);
+		//this.drawLTSTrackSegments(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
 		this.drawLTSControlPoints(canvas, ctx);
 		return this;
@@ -409,6 +412,8 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
     var front_c = ["","2WGZ","2EGZ","3RWZ","3NWZ","1RWZ","1NWZ","SMZ","2EXOZ","2EXZ","1OXOZ","1OXZ","1EXOZ","1EXZ","4WGZ","4EGZ","","","","SMZ","","","2OXOZ","2OXZ"];
     var front_i = ["4EGK","4WGK","2EGK","2WGK","3RWK","3NWK","1RWK","1NWK","2TK","1TK","2OXK","2EXK","1OXK","1EXK","3LZK","1LZK","","","FW2K","FW1K","2OK","2EAK","1OK","1EAK","L0K","SMK","LCK","P0K","","","",""];
     var front = createMCP("c", front_c, front_i, "75505550140203");
+	var mcpList = [ship, lee, carl, spring, ross, front];
+	return mcpList;
 };
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
@@ -459,6 +464,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 //Functions for drawing and creating track elements
 function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     var newCanvas = document.createElement("canvas");
+	var parent = canvas.parentNode;
 //    	var lineWidth = 4;
     	if (x2 >= x1){
     		newCanvas.width = (x2*canvas.width-x1*canvas.width);
@@ -491,34 +497,40 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(lineWidth, 0);
     		newCtx.lineTo(lineWidth, newCanvas.height);
     		newCtx.stroke();
-			document.body.appendChild(newCanvas);
+			//document.body.appendChild(newCanvas);
+			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
     	}
     	else if (hLine == true){
     		newCtx.moveTo(0, lineWidth);
     		newCtx.lineTo(newCanvas.width, lineWidth);
     		newCtx.stroke();
+			//document.body.appendChild(newCanvas);
+			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
     	}
     	else if (yflip == true){
     		newCtx.moveTo(0, newCanvas.height);
     		newCtx.lineTo(newCanvas.width, 0);
     		newCtx.stroke();
-			document.body.appendChild(newCanvas);
+			//document.body.appendChild(newCanvas);
+			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
     	}
     	else if (xflip == true){
     		newCtx.moveTo(newCanvas.width, 0);
     		newCtx.lineTo(0, newCanvas.height);
     		newCtx.stroke();
-			document.body.appendChild(newCanvas);
+			//document.body.appendChild(newCanvas);
+			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
     	}
     	else{
     		newCtx.moveTo(0, 0);
     		newCtx.lineTo(newCanvas.width, newCanvas.height);
     		newCtx.stroke();
-			document.body.appendChild(newCanvas);
+			//document.body.appendChild(newCanvas);
+			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
     	}
     	var track = {
@@ -550,6 +562,7 @@ function createTrack(x1, y1, x2, y2,canvas){
     createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
 
+/*
 //Will rework to create track segments
 function drawMileMarker(x1, y1, x2, y2, canvas){
     lineWidth = 2;
@@ -581,12 +594,13 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
     }
     return marker;
 };
-
+*/
 
 //Creates a new track segment and the mile markers it is between.
 function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
 	lineWidth = 2;
 	var newCanvas = document.createElement("canvas");
+	var parent = canvas.parentNode;
 	newCanvas.width = (x2*canvas.width-x1*canvas.width);
     newCanvas.height = (y2*canvas.height-y1*canvas.height);
 
@@ -601,25 +615,29 @@ function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
 		newCtx.moveTo(newCanvas.width-lineWidth, 0);
 		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
 		newCtx.stroke();
-		document.body.appendChild(newCanvas);
+		//document.body.appendChild(newCanvas);
+		parent.appendChild(canvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	}
 	else if (drawWhich == "left"){
 		newCtx.moveTo(lineWidth, 0);
 		newCtx.lineTo(lineWidth, newCanvas.height);
 		newCtx.stroke();
-		document.body.appendChild(newCanvas);
+		//document.body.appendChild(newCanvas);
+		parent.appendChild(canvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	}
 	else if (drawWhich == "right"){
 		newCtx.moveTo(newCanvas.width-lineWidth, 0);
 		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
 		newCtx.stroke();
-		document.body.appendChild(newCanvas);
+		//document.body.appendChild(newCanvas);
+		parent.appendChild(canvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	}
 	else if (drawWhich == "none"){
-		document.body.appendChild(newCanvas);
+		//document.body.appendChild(newCanvas);
+		parent.appendChild(canvas);
 		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
 	}
 
