@@ -527,7 +527,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
 		this.drawSTFTrackSegments(canvas, ctx)
 		this.drawSTFText(canvas, ctx);
-		//this.drawSTFControlPoints(canvas, ctx);
+		this.drawSTFControlPoints(canvas, ctx);
 		return this;
 };
 
