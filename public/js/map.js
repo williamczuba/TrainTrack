@@ -78,18 +78,15 @@ var drawLurganToShip = function(){
 // TODO - change text sizing
 drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 		// Draw Text
-		// Orange, size 12
+		// Orange, size 1em
 		ctx.font = ("1em Arial");
 		ctx.fillStyle = "#ffa500";
-		// TODO: Don't hardcode size values as px (ie 40, 380). Always use either em (for font), or %
-		//			Otherwise it'll be very difficult to resize to the screen.  If you use %, it will auto resize to fit on any screen.
-		ctx.fillText("CSX", 0.04*canvas.width, 0.48*canvas.height);
 		ctx.fillText("Lurgan Sub", 0.04*canvas.width, 0.5*canvas.height);
 		ctx.fillText("NS H-Line", 0.04*canvas.width, 0.53*canvas.height);
 		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.55*canvas.height);
 		ctx.fillText("Lurgan Branch", .796*canvas.width, 0.48*canvas.height);
 		ctx.fillText("to Ship", .796*canvas.width, 0.5*canvas.height);
-		// Gray, size 12
+		// Gray, size 1em
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.190*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-67", 0.44*canvas.width, 0.5*canvas.height);
@@ -98,7 +95,7 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 		ctx.fillText("CP-62", 0.62*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-53", 0.76*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-50", 0.84*canvas.width, 0.57*canvas.height);
-		// Orange, size 10
+		// Orange, size 0.8em
 		ctx.font = ("0.8em Arial");
 		ctx.fillStyle = "#ffa500";
 		ctx.fillText("NS Industrial Lead", 0.402*canvas.width, 0.610*canvas.height);
@@ -453,7 +450,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 //    var ppg_thin_straight = createTrackWithWidth(.577, .125, .590, .125, canvas, .75);
 
 };
-
+/*
 drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
 	// REGEX for trackSeg: createTrackSeg\(.\d{1,5}, .\d{1,5}, .\d{1,5}, .\d{1,5}, .{1,5}, \".{4,6}, canvas
     //Section before Lurgan upper portion begins
@@ -507,6 +504,7 @@ drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
 //    var ea12 = createTrackSeg(.8231, .14, .86115, .16, "1EA", "right", canvas);
 //    var t13 = createTrackSeg(.86116, .14, .930, .16, "1T", "right", canvas);
 };
+*/
 
 drawShipToFront.prototype.createSTF_MCPLists = function(){
     var ship_c = ["2WGZ","2STZ","2EGZ","4WGZ","4STZ","4EGZ","3RWZ","3NWZ","","","1WXOZ","1WXZ","2WXOZ","2WXZ","SEXOZ","SEXZ"];
@@ -905,7 +903,7 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 	
 	 // hide the tool-tip
 	 function hide() {
-	 visible = false;                            // hide it after timeout
+	 	visible = false;                            // hide it after timeout
 		parent.removeChild(div);                    // remove from DOM
 	 }
 	
@@ -950,8 +948,8 @@ $(document).ready(function(){
 	var trackData = [];
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	console.log(canvas.width);
-	console.log(canvas.height);
+	//console.log(canvas.width);
+	//console.log(canvas.height);
 	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 	ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
