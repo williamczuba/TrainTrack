@@ -758,6 +758,12 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 
 // Redraws the given track element in the given color.
 function changeTrack(track, color){
+
+    var x1 = track.x1;
+    var x2 = track.x2;
+    var y1 = track.y1;
+    var y2 = track.y2;
+
 	var newCanvas = document.createElement("canvas");
     var parent = canvas.parentNode;
     if (x2 >= x1){
