@@ -1,51 +1,71 @@
 
-//Javascript Code for drawing the map.
+//Javascript Code for drawing the map
 
+/*Need a little more information before I can finish this part. Have the hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
+, which is pretty simple.
 
 /*Need a little more information before I can finish this part. Have the hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
 , which is pretty simple. I asked Will where we find out what color to change the track segments to, so will see what he says. I'll finish it once he responds.
 */
 
-/*Not exactly sure how we are going to take in what the backend sends to us,
-but it should look something like this.
+//function MCP(TrainData){
+//   //break up the string into separate values in an array
+//   var mnemValues = TrainData.mnemonics.split(",");
+//   //get the segments that are going to be changed (which will also be in the form of a list and thus separated by a comma)
+//	var mcp = mcpTable[key(TrainData)];
+//	var size = 0;
+//	var mcpMnem;
+//	if (TrainData.type == "Control"){
+//		size = mcp.control.length;
+//		mcpMnem = mcp.control;
+//	}
+//	else{
+//		size = mcp.indication.length;
+//		mcpMnem = mcp.indication;
+//	}
+//
+//   for (var i = 0; i < mnemValues.length; i++){
+//	   for (var j = 0; j < size; j++){
+//		   if (mnemValues[i] == mcpMnem[j]){
+//				changeTrack()
+//		   }
+//	   }
+//   }
+//};
 
-*/
 function MCP(TrainData){
-   //break up the string into separate values in an array
-   var mnemValues = TrainData.mnemonics.split(",");
-   //get the segments that are going to be changed (which will also be in the form of a list and thus separated by a comma)
-	var mcp = mnemTable[key(TrainData)];
-	var size = 0;
-	var mcpMnem;
-	if (TrainData.type == "Control"){
-		size = mcp.control.length;
-		mcpMnem = mcp.control;
-	}
-	else{
-		size = mcp.indication.length;
-		mcpMnem = mcp.indication;
-	}
-
-   for (var i = 0; i < mnemValues.length; i++){
-	   for (var j = 0; j < size; j++){
-		   if (mnemValues[i] == mcpMnem[j]){
-				changeTrack()
-		   }
-	   }
-   }
+    //Find the MCP that corresponds to the name given
+    var mcpData = mcpTable[key(TrainData.name)];
+    console.log("MCP data: " + mcpData);
+    var segments = "";
+    console.log("Segments: " + segments);
+    if (mcpData != null){
+         segments = mcpData.segments;
+    }
+    var color = "";
+    if (TrainData.message_type == "Control"){
+        color = "Red";
+    }
+    else if (TrainData.message_type == "Indication"){
+        color = "Green";
+    }
+    for (i = 0; i < segments.length; i++){
+        changeTrack(segments[i], color);
+    }
 };
 
+
+
 //Global variable hash table for storing the mnemonics that correspond to their track segments
-var mnemTable = {};
+var mcpTable = {};
 
 /* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
 The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
 because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
 The segment will have the rest of the information.
 */
-var key = function(obj){
-    var test = obj.address;
-    return test;
+var key = function(mcp){
+    return mcp.name;
 };
 
 
@@ -274,7 +294,6 @@ var drawShipToFront = function (){
 
 
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
-
     // Draw Text
 	// Orange, size 12
 	ctx.font = ("1em Arial");
@@ -305,8 +324,7 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
     ctx.fillStyle = "#d3d3d3";
     ctx.fillText("Cleversburg Junction", .22 * canvas.width, .189 * canvas.height);
     ctx.fillText("Viewing Platform", .23 * canvas.width, .205 * canvas.height);
-
-        return this;
+    return this;
 };
 
 //Draws the section from Ship to Front
@@ -315,11 +333,17 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     //Ship -- two lines
     var ship_straight  = createTrack(.116, .25, .192, .25, canvas);
     var ship_top = createTrack(.148, .235, .192, .235, canvas);
+    var ship_segments = [ship_straight, ship_top];
+    var ship = createMCP("Ship", ship_segments);
+    mcpTable[key(ship)] = ship;
 
     //lee -- three lines
     var lee_top = createTrack(.192, .235, .240, .235, canvas);
     var lee_ramp = createTrack(.240, .235, .260, .250, canvas);
     var lee_straight = createTrack(.192, .25, .416, .25, canvas);
+    var lee_segments = [lee_top, lee_ramp, lee_straight];
+    var lee = createMCP("Lees Cross Roads", lee_segments);
+    mcpTable[key(lee)] = lee;
 
     //Carl -- 7 lines
     var carl_straight = createTrack(.416, .25, .592, .25, canvas);
@@ -329,21 +353,33 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var gburg_ramp = createTrack(.5221, .282, .542, .265, canvas);
     var ppg_ramp = createTrack(.553, .251, .573, .234, canvas);
     var ppg_straight = createTrack(.573, .234, .589, .234, canvas);
+    var carl_segments = [carl_straight, carl_ramp_l, carl_bottom_loop1, gburg_bottom, gburg_ramp, ppg_ramp, ppg_straight];
+    var carl = createMCP("Carl", carl_segments);
+    mcpTable[key(carl)] = carl;
 
     //Spring section-- 4 lines
     var ppg_top = createTrackWithWidth(.589, .234, .604, .234, canvas, .5);
     var carl_bottom_loop2 = createTrack(.592, .265, .640, .265, canvas);
     var carl_ramp_r = createTrack(.640, .265, .660, .250, canvas);
     var spring_straight = createTrack(.592, .25, .752, .25, canvas);
+    var spring_segments = [ppg_top, carl_bottom_loop2, spring_straight];
+    var spring = createMCP("Spring", spring_segments);
+    mcpTable[key(spring)] = spring;
 
     //Ross section-- 3 lines
     var ross_straight = createTrack(.752, .25, .896, .25, canvas);
     var ross_ramp = createTrack(.816, .25, .836, .235, canvas);
     var ross_top = createTrack(.836, .235, .868, .235, canvas);
+    var ross_segments = [ross_straight, ross_ramp, ross_top];
+    var ross = createMCP("Ross", ross_segments);
+    mcpTable[key(ross)] = ross;
 
     //Front section -- 2 lines
     var front_top = createTrack(.868, .235, .970, .235, canvas);
-    var front_bottom = createTrack(.836, .25, .970, .25, canvas)
+    var front_bottom = createTrack(.836, .25, .970, .25, canvas);
+    var front_segments = [front_top, front_bottom];
+    var front = createMCP("Front", front_segments);
+    mcpTable[key(front)] = front;
 
 //    var lurgan_branch_straight = createTrack(.071, .15, .930, .15, canvas);
 
@@ -496,7 +532,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 };
 
 //Functions for drawing and creating track elements
-function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
+function createTrackWithWidth(x1, y1, x2, y2, canvas, name, lineWidth){
     var newCanvas = document.createElement("canvas");
 	var parent = canvas.parentNode;
     	if (x2 >= x1){
@@ -577,23 +613,31 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     	return track;
 };
 
-function createMCP(id, control, indication, address){
+//function createMCP(id, control, indication, address){
+//
+//    var MCP = {
+//        mcp_Id : id,
+//        control: control,
+//        indication: indication,
+//        address: address
+//    };
+//
+//    return MCP;
+//
+//};
 
+function createMCP(name, segments){
     var MCP = {
-        mcp_Id : id,
-        control: control,
-        indication: indication,
-        address: address,
-		tracks: []
+        name: name,
+        segments: segments
     };
-
     return MCP;
-
 };
+
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
-function createTrack(x1, y1, x2, y2,canvas){
-    createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
+function createTrack(x1, y1, x2, y2, canvas, name){
+    createTrackWithWidth(x1,y1, x2, y2, canvas, name, 4);
 };
 
 /*
@@ -631,62 +675,62 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
 */
 
 //Creates a new track segment and the mile markers it is between.
-function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
-	lineWidth = 2;
-	var newCanvas = document.createElement("canvas");
-	var parent = canvas.parentNode;
-	newCanvas.width = (x2*canvas.width-x1*canvas.width);
-    newCanvas.height = (y2*canvas.height-y1*canvas.height);
-
-    var newCtx = newCanvas.getContext('2d');
-    var oldCtx = canvas.getContext('2d');
-    newCtx.strokeStyle = "White";
-    newCtx.lineWidth = lineWidth;
-
-	if (drawWhich == "both"){
-		newCtx.moveTo(lineWidth, 0);
-		newCtx.lineTo(lineWidth, newCanvas.height);
-		newCtx.moveTo(newCanvas.width-lineWidth, 0);
-		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
-		newCtx.stroke();
-		//document.body.appendChild(newCanvas);
-		parent.appendChild(canvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
-	}
-	else if (drawWhich == "left"){
-		newCtx.moveTo(lineWidth, 0);
-		newCtx.lineTo(lineWidth, newCanvas.height);
-		newCtx.stroke();
-		//document.body.appendChild(newCanvas);
-		parent.appendChild(canvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
-	}
-	else if (drawWhich == "right"){
-		newCtx.moveTo(newCanvas.width-lineWidth, 0);
-		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
-		newCtx.stroke();
-		//document.body.appendChild(newCanvas);
-		parent.appendChild(canvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
-	}
-	else if (drawWhich == "none"){
-		//document.body.appendChild(newCanvas);
-		parent.appendChild(canvas);
-		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
-	}
-
-	var segment = {
-        x1: x1,
-        x2: x2,
-        y1: y1,
-        y2: y2,
-		segMnemonic: segMnemonic,
-        canvas: newCanvas,
-        ctx: newCtx,
-		mcp: mcp
-    };
-	return segment;
-};
+//function createTrackSeg(x1, y1, x2, y2, segMnemonic, drawWhich, canvas, mcp){
+//	lineWidth = 2;
+//	var newCanvas = document.createElement("canvas");
+//	var parent = canvas.parentNode;
+//	newCanvas.width = (x2*canvas.width-x1*canvas.width);
+//    newCanvas.height = (y2*canvas.height-y1*canvas.height);
+//
+//    var newCtx = newCanvas.getContext('2d');
+//    var oldCtx = canvas.getContext('2d');
+//    newCtx.strokeStyle = "White";
+//    newCtx.lineWidth = lineWidth;
+//
+//	if (drawWhich == "both"){
+//		newCtx.moveTo(lineWidth, 0);
+//		newCtx.lineTo(lineWidth, newCanvas.height);
+//		newCtx.moveTo(newCanvas.width-lineWidth, 0);
+//		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
+//		newCtx.stroke();
+//		//document.body.appendChild(newCanvas);
+//		parent.appendChild(canvas);
+//		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+//	}
+//	else if (drawWhich == "left"){
+//		newCtx.moveTo(lineWidth, 0);
+//		newCtx.lineTo(lineWidth, newCanvas.height);
+//		newCtx.stroke();
+//		//document.body.appendChild(newCanvas);
+//		parent.appendChild(canvas);
+//		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+//	}
+//	else if (drawWhich == "right"){
+//		newCtx.moveTo(newCanvas.width-lineWidth, 0);
+//		newCtx.lineTo(newCanvas.width-lineWidth, newCanvas.height);
+//		newCtx.stroke();
+//		//document.body.appendChild(newCanvas);
+//		parent.appendChild(canvas);
+//		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+//	}
+//	else if (drawWhich == "none"){
+//		//document.body.appendChild(newCanvas);
+//		parent.appendChild(canvas);
+//		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+//	}
+//
+//	var segment = {
+//        x1: x1,
+//        x2: x2,
+//        y1: y1,
+//        y2: y2,
+//		segMnemonic: segMnemonic,
+//        canvas: newCanvas,
+//        ctx: newCtx,
+//		mcp: mcp
+//    };
+//	return segment;
+//};
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, canvas, img){
@@ -713,13 +757,76 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 
 
 // Redraws the given track element in the given color.
-function changeTrack(TrackSeg, color){
-
-	var ctx = TrackSeg.canvas.getContext('2d');
-	ctx.strokeStyle = color;
-	ctx.moveTo(0,0);
-	ctx.lineTo(track.canvas.width, track.canvas.height);
-	ctx.stroke();
+function changeTrack(track, color){
+	var newCanvas = document.createElement("canvas");
+    var parent = canvas.parentNode;
+    if (x2 >= x1){
+        newCanvas.width = (x2*canvas.width-x1*canvas.width);
+    }
+    else{
+        newCanvas.width = (x1*canvas.width-x2*canvas.width);
+        var xflip = true;
+    }
+    if (y2 >= y1){
+        newCanvas.height = (y2*canvas.height-y1*canvas.height);
+    }
+    else{
+        newCanvas.height = (y1*canvas.height-y2*canvas.height);
+        var yflip = true;
+    }
+        //	window.alert(newCanvas.width + " before " + newCanvas.height)
+    if (x1 == x2){
+        var vLine = true;
+        newCanvas.width = 8;
+    }
+    else if (y1 == y2){
+         var hLine = true;
+         newCanvas.height = 8;
+    }
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = color;
+    newCtx.lineWidth = 4;
+    if (vLine == true){
+        newCtx.moveTo(lineWidth, 0);
+        newCtx.lineTo(lineWidth, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    }
+    else if (hLine == true){
+        newCtx.moveTo(0, lineWidth);
+        newCtx.lineTo(newCanvas.width, lineWidth);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
+     }
+     else if (yflip == true){
+        newCtx.moveTo(0, newCanvas.height);
+        newCtx.lineTo(newCanvas.width, 0);
+        newCtx.stroke();
+        //document.body.appendChild(newCanvas);
+        parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
+    }
+    else if (xflip == true){
+        newCtx.moveTo(newCanvas.width, 0);
+        newCtx.lineTo(0, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
+    }
+    else{
+        newCtx.moveTo(0, 0);
+        newCtx.lineTo(newCanvas.width, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+     }
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
