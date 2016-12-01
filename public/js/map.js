@@ -756,12 +756,75 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 
 // Redraws the given track element in the given color.
 function changeTrack(track, color){
-
-	var ctx = TrackSeg.canvas.getContext('2d');
-	ctx.strokeStyle = color;
-	ctx.moveTo(0,0);
-	ctx.lineTo(track.canvas.width, track.canvas.height);
-	ctx.stroke();
+	var newCanvas = document.createElement("canvas");
+    var parent = canvas.parentNode;
+    if (x2 >= x1){
+        newCanvas.width = (x2*canvas.width-x1*canvas.width);
+    }
+    else{
+        newCanvas.width = (x1*canvas.width-x2*canvas.width);
+        var xflip = true;
+    }
+    if (y2 >= y1){
+        newCanvas.height = (y2*canvas.height-y1*canvas.height);
+    }
+    else{
+        newCanvas.height = (y1*canvas.height-y2*canvas.height);
+        var yflip = true;
+    }
+        //	window.alert(newCanvas.width + " before " + newCanvas.height)
+    if (x1 == x2){
+        var vLine = true;
+        newCanvas.width = 8;
+    }
+    else if (y1 == y2){
+         var hLine = true;
+         newCanvas.height = 8;
+    }
+    var newCtx = newCanvas.getContext('2d');
+    var oldCtx = canvas.getContext('2d');
+    newCtx.strokeStyle = color;
+    newCtx.lineWidth = 4;
+    if (vLine == true){
+        newCtx.moveTo(lineWidth, 0);
+        newCtx.lineTo(lineWidth, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    }
+    else if (hLine == true){
+        newCtx.moveTo(0, lineWidth);
+        newCtx.lineTo(newCanvas.width, lineWidth);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
+     }
+     else if (yflip == true){
+        newCtx.moveTo(0, newCanvas.height);
+        newCtx.lineTo(newCanvas.width, 0);
+        newCtx.stroke();
+        //document.body.appendChild(newCanvas);
+        parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
+    }
+    else if (xflip == true){
+        newCtx.moveTo(newCanvas.width, 0);
+        newCtx.lineTo(0, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
+    }
+    else{
+        newCtx.moveTo(0, 0);
+        newCtx.lineTo(newCanvas.width, newCanvas.height);
+        newCtx.stroke();
+    	//document.body.appendChild(newCanvas);
+    	parent.appendChild(canvas);
+        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+     }
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
