@@ -1,9 +1,8 @@
 
 //Javascript Code for drawing the map
 
-/*Need a little more information before I can finish this part. Have the hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
+/*The hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
 , which is pretty simple.
-
 */
 
 //function MCP(TrainData){
@@ -296,16 +295,16 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 	// Orange, size 12
 	ctx.font = ("1em Arial");
 	ctx.fillStyle = "#ffa500";
-	ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .28 );
-	ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .200);
-	ctx.fillText("Running", canvas.width * .120, canvas.height * .215);
-	ctx.fillText("Track", canvas.width * .120, canvas.height * .230);
+	ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .30 );
+	ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .190);
+	ctx.fillText("Running", canvas.width * .120, canvas.height * .205);
+	ctx.fillText("Track", canvas.width * .120, canvas.height * .220);
 	ctx.fillText("Gettysburg RR", canvas.width * .415, canvas.height * .289);
     ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .2285);
-    ctx.fillText("to", canvas.width * .945, canvas.height * .20);
-    ctx.fillText("Paxton", canvas.width * .945, canvas.height * .22);
-    ctx.fillText("to", canvas.width * .945, canvas.height * .27);
-    ctx.fillText("Capitol", canvas.width * .945, canvas.height * .29);
+    ctx.fillText("to", canvas.width * .945, canvas.height * .190);
+    ctx.fillText("Paxton", canvas.width * .945, canvas.height * .210);
+    ctx.fillText("to", canvas.width * .945, canvas.height * .28);
+    ctx.fillText("Capitol", canvas.width * .945, canvas.height * .30);
 		// Gray, size 12
     ctx.fillStyle = "#d3d3d3";
     ctx.fillText("SHIP", .155 * canvas.width, .28 * canvas.height);
@@ -329,7 +328,7 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
     //Ship -- two lines
-    var ship_straight  = createTrack(.116, .25, .192, .25, canvas);
+    var ship_straight  = createTrack(.116, .255, .192, .255, canvas);
     var ship_top = createTrack(.148, .235, .192, .235, canvas);
     var ship_segments = [ship_straight, ship_top];
     var ship = createMCP("Ship", ship_segments);
@@ -338,17 +337,17 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     //lee -- three lines
     var lee_top = createTrack(.192, .235, .240, .235, canvas);
     var lee_ramp = createTrack(.240, .235, .260, .250, canvas);
-    var lee_straight = createTrack(.192, .25, .416, .25, canvas);
+    var lee_straight = createTrack(.192, .255, .416, .255, canvas);
     var lee_segments = [lee_top, lee_ramp, lee_straight];
     var lee = createMCP("Lees Cross Roads", lee_segments);
     mcpTable[key(lee)] = lee;
 
     //Carl -- 7 lines
-    var carl_straight = createTrack(.416, .25, .592, .25, canvas);
-    var carl_ramp_l = createTrack(.524, .25, .544, .265, canvas);
-    var carl_bottom_loop1 = createTrack(.544, .265, .592, .265, canvas);
-    var gburg_bottom = createTrack(.476, .282, .522, .282, canvas);
-    var gburg_ramp = createTrack(.5221, .282, .542, .265, canvas);
+    var carl_straight = createTrack(.416, .255, .592, .255, canvas);
+    var carl_ramp_l = createTrack(.524, .255, .544, .270, canvas);
+    var carl_bottom_loop1 = createTrack(.544, .270, .592, .270, canvas);
+    var gburg_bottom = createTrack(.476, .287, .522, .287, canvas);
+    var gburg_ramp = createTrack(.5221, .287, .542, .270, canvas);
     var ppg_ramp = createTrack(.553, .251, .573, .234, canvas);
     var ppg_straight = createTrack(.573, .234, .589, .234, canvas);
     var carl_segments = [carl_straight, carl_ramp_l, carl_bottom_loop1, gburg_bottom, gburg_ramp, ppg_ramp, ppg_straight];
@@ -357,15 +356,15 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
     //Spring section-- 4 lines
     var ppg_top = createTrackWithWidth(.589, .234, .604, .234, canvas, .5);
-    var carl_bottom_loop2 = createTrack(.592, .265, .640, .265, canvas);
-    var carl_ramp_r = createTrack(.640, .265, .660, .250, canvas);
-    var spring_straight = createTrack(.592, .25, .752, .25, canvas);
+    var carl_bottom_loop2 = createTrack(.592, .270, .640, .270, canvas);
+    var carl_ramp_r = createTrack(.640, .270, .660, .255, canvas);
+    var spring_straight = createTrack(.592, .255, .752, .255, canvas);
     var spring_segments = [ppg_top, carl_bottom_loop2, spring_straight];
     var spring = createMCP("Spring", spring_segments);
     mcpTable[key(spring)] = spring;
 
     //Ross section-- 3 lines
-    var ross_straight = createTrack(.752, .25, .896, .25, canvas);
+    var ross_straight = createTrack(.752, .255, .896, .255, canvas);
     var ross_ramp = createTrack(.816, .25, .836, .235, canvas);
     var ross_top = createTrack(.836, .235, .868, .235, canvas);
     var ross_segments = [ross_straight, ross_ramp, ross_top];
@@ -374,8 +373,8 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
     //Front section -- 2 lines
     var front_top = createTrack(.868, .235, .970, .235, canvas);
-    var front_bottom = createTrack(.836, .25, .970, .25, canvas);
-    var front_segments = [front_top, front_bottom];
+    var front_straight = createTrack(.896, .255, .970, .255, canvas);
+    var front_segments = [front_top, front_straight];
     var front = createMCP("Front", front_segments);
     mcpTable[key(front)] = front;
 
@@ -484,41 +483,41 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
 	return mcpList;
 };
 
-//drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
-//    var cproff = new Image();
-//    cproff.src = "/public/img/cproff.png";
-//    var cploff = new Image();
-//    cploff.src = "/public/img/cploff.png";
-//    var cpron = new Image();
-//    cpron.src = "/public/img/cpron.png";
-//    var cplon = new Image();
-//    cplon.src = "/public/img/cplon.png";
-//    //Ship to Lee's Cross Roads
-//    var eg27 = createControlPoint(.383, .125, "7:2EG", canvas, cproff);
-//    var eg47 = createControlPoint(.383, .15, "7:4EG", canvas, cproff);
-//    var wg27 = createControlPoint(.418, .125, "7:2WG", canvas, cproff);
-//    var wg47 = createControlPoint(.418, .15, "7:4WG", canvas, cproff);
-//    var eg1rw28 = createControlPoint(.467, .125, "8:2EG/1RW", canvas, cproff);
-//    var eg1nw28 = createControlPoint(.467, .150, "8:2EG/1NW", canvas, cproff);
-//    var wg28 = createControlPoint(.498, .150, "8:2WG", canvas, cproff);
-//    //Carl to Spring
-//    var eg29 = createControlPoint(.516, .150, "9:2EG", canvas, cproff);
-//    var eg49 = createControlPoint(.516, .175, "9:4EG", canvas, cproff);
-//    var wg7rw29 = createControlPoint(.577, .125, "9:2WG/7RW", canvas, cproff);
-//    var wg7nw29 = createControlPoint(.577, .150, "9:2WG/7NW", canvas, cproff);
-//    var wg49 = createControlPoint(.577, .175, "9:4WG", canvas, cproff);
-//    var a2eg1nw = createControlPoint(.585, .150, "a:2EG/1NW", canvas, cproff);
-//    var a2eg1rw = createControlPoint(.585, .175, "a:2EG/1RW", canvas, cproff);
-//    var a2wg = createControlPoint(.615, .150, "a:2WG", canvas, cproff);
-//    //Ross to Front
-//    var b2eg = createControlPoint(.760, .150, "b:2EG", canvas, cproff);
-//    var b2wg1rw = createControlPoint(.780, .125, "b:2WG/1RW", canvas, cproff);
-//    var b2wg1nw = createControlPoint(.780, .150, "b:2WG/1NW", canvas, cproff);
-//    var c2eg = createControlPoint(.850, .125, "c:2EG", canvas, cproff);
-//    var c4eg = createControlPoint(.850, .150, "c:4EG", canvas, cproff);
-//    var c2wg = createControlPoint(.910, .125, "c:2WG", canvas, cproff);
-//    var c4wg = createControlPoint(.910, .150, "c:4WG", canvas, cproff);
-//};
+drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
+    var cproff = new Image();
+    cproff.src = "/public/img/cproff.png";
+    var cploff = new Image();
+    cploff.src = "/public/img/cploff.png";
+    var cpron = new Image();
+    cpron.src = "/public/img/cpron.png";
+    var cplon = new Image();
+    cplon.src = "/public/img/cplon.png";
+    //Ship to Lee's Cross Roads
+    var eg27 = createControlPoint(.155, .238, "7:2EG", canvas, cproff);
+    var eg47 = createControlPoint(.155, .257, "7:4EG", canvas, cproff);
+    var wg27 = createControlPoint(.180, .257, "7:2WG", canvas, cploff);
+    var wg47 = createControlPoint(.180, .238, "7:4WG", canvas, cploff);
+    var eg1rw28 = createControlPoint(.220, .238, "8:2EG/1RW", canvas, cproff);
+    var eg1nw28 = createControlPoint(.220, .257, "8:2EG/1NW", canvas, cproff);
+    var wg28 = createControlPoint(.265, .238, "8:2WG", canvas, cploff);
+    //Carl to Spring
+    var eg29 = createControlPoint(.490, .238, "9:2EG", canvas, cproff);
+    var eg49 = createControlPoint(.490, .289, "9:4EG", canvas, cproff);
+    var wg7rw29 = createControlPoint(.577, .217, "9:2WG/7RW", canvas, cploff);
+    var wg7nw29 = createControlPoint(.577, .238, "9:2WG/7NW", canvas, cploff);
+    var wg49 = createControlPoint(.577, .257, "9:4WG", canvas, cploff);
+    var a2eg1nw = createControlPoint(.615, .257, "a:2EG/1NW", canvas, cproff);
+    var a2eg1rw = createControlPoint(.615, .272, "a:2EG/1RW", canvas, cproff);
+    var a2wg = createControlPoint(.665, .238, "a:2WG", canvas, cploff);
+    //Ross to Front
+    var b2eg = createControlPoint(.780, .257, "b:2EG", canvas, cproff);
+    var b2wg1rw = createControlPoint(.832, .217, "b:2WG/1RW", canvas, cploff);
+    var b2wg1nw = createControlPoint(.832, .238, "b:2WG/1NW", canvas, cploff);
+    var c2eg = createControlPoint(.890, .237, "c:2EG", canvas, cproff);
+    var c4eg = createControlPoint(.890, .257, "c:4EG", canvas, cproff);
+    var c2wg = createControlPoint(.940, .217, "c:2WG", canvas, cploff);
+    var c4wg = createControlPoint(.940, .237, "c:4WG", canvas, cploff);
+};
 
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
