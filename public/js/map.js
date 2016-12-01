@@ -499,13 +499,13 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     //Ship to Lee's Cross Roads
     var eg27 = createControlPoint(.155, .238, "7:2EG", canvas, cproff);
     var eg47 = createControlPoint(.155, .257, "7:4EG", canvas, cproff);
-    var wg27 = createControlPoint(.180, .257, "7:2WG", canvas, cploff);
-    var wg47 = createControlPoint(.180, .238, "7:4WG", canvas, cploff);
+    var wg27 = createControlPoint(.180, .238, "7:2WG", canvas, cploff);
+    var wg47 = createControlPoint(.180, .217, "7:4WG", canvas, cploff);
     var eg1rw28 = createControlPoint(.220, .238, "8:2EG/1RW", canvas, cproff);
     var eg1nw28 = createControlPoint(.220, .257, "8:2EG/1NW", canvas, cproff);
     var wg28 = createControlPoint(.265, .238, "8:2WG", canvas, cploff);
     //Carl to Spring
-    var eg29 = createControlPoint(.490, .238, "9:2EG", canvas, cproff);
+    var eg29 = createControlPoint(.490, .257, "9:2EG", canvas, cproff);
     var eg49 = createControlPoint(.490, .289, "9:4EG", canvas, cproff);
     var wg7rw29 = createControlPoint(.577, .217, "9:2WG/7RW", canvas, cploff);
     var wg7nw29 = createControlPoint(.577, .238, "9:2WG/7NW", canvas, cploff);
