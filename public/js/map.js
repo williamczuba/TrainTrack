@@ -550,7 +550,8 @@ function createMCP(id, control, indication, address){
         mcp_Id : id,
         control: control,
         indication: indication,
-        address: address
+        address: address,
+		tracks: []
     };
 
     return MCP;
