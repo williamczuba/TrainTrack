@@ -6,8 +6,6 @@
 <<<<<<< HEAD
 =======
 
-/The hash map set up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent
-, which is pretty simple.
 >>>>>>> origin/master
 */
 
