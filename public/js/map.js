@@ -491,7 +491,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
 		this.drawSTFTrackSegments(canvas, ctx)
 		this.drawSTFText(canvas, ctx);
-		this.drawSTFControlPoints(canvas, ctx);
+		//this.drawSTFControlPoints(canvas, ctx);
 		return this;
 };
 
@@ -787,6 +787,7 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
+	window.addEventListener("resize", resizeCanvas, false);
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	var trackData = [];
@@ -797,16 +798,29 @@ $(document).ready(function(){
 	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 	ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
-	ctx.fillText("Norfolk Southern", 0, 20);
-	ctx.fillText("Harrisburg Division", 0, 40);
+	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
+	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
 	var dlts = new drawLurganToShip();
-	//var dbtw = new drawBurkeToWyomissing();
-	//var dctb = new drawCannonToBeaver();
 	dlts.draw(canvas, ctx);
-
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
-
-	//dbtw.draw(canvas, ctx);
-	//dctb.draw(canvas, ctx);
 })
+
+// Resizes the canvas
+// Code originally found at https://www.kirupa.com/html5/resizing_html_canvas_element.htm
+function resizeCanvas(e){
+	var canvas = document.getElementById('mapCanvas');
+	var ctx = canvas.getContext('2d');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+	ctx.font = ("2em Times New Roman");
+	ctx.fillStyle = "white";
+	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
+	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
+	var dlts = new drawLurganToShip();
+	dlts.draw(canvas, ctx);
+	var dstf = new drawShipToFront();
+	dstf.draw(canvas, ctx);
+}
+
