@@ -108,24 +108,15 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 };
 
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
-		//concept for storage of track segments - needed for recoloring?
-		//var tinfo = ["mnemonic", x, y, x2, y2]
 		// Draw Track - Nearby text on original layout listed in comments
-		ctx.lineWidth = 4;
-		ctx.strokeStyle = "white";
+		// Town Segments - goes up to SEA
 		// CSX
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
 		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
 		// Lurgan Sub
 		var lurgan_straight = createTrack(.116, .495, .226, .495, canvas);
-		//TODO: Fix positioning of this line. Shouldn't be as far over as it is.
-		var lurgan_ramp = createTrack(.2261, .495, .286, .535, canvas);
-		// NS H-Line
-		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
-		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
-		// to Roanoke
-		var roanoke_line = createTrack(.116, .540, .94, .540, canvas);
-		// NS Industrial Lead
+		//TODO: Fix positioning of this line. Shouldn't be as far over as it is. Matters less since track segments are out.
+		var lurgan_ramp = createTrack(.2261, .495, .286, .535, canvas);// NS Industrial Lead
 		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
 		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
 		// CSX Lurgan Sub
@@ -134,9 +125,33 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		// CSX Hanover Sub
 		var csxh_ramp = createTrack(.360, .560, .386, .580, canvas);
 		var csxh_straight = createTrack(.3861, .580, .400, .580, canvas);
+		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
+		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
+		// NS Industrial Lead
+		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
+		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
+		// CSX Hanover Sub
+		var csxh_ramp = createTrack(.360, .560, .386, .580, canvas);
+		var csxh_straight = createTrack(.3861, .580, .400, .580, canvas);
+		// From "to Roanoke" to SSA
+		var roanoke_to_ssa = createTrack(.116, .540, .400, .540, canvas);	
+		var town_segments = [csx_straight, csx_ramp, lurgan_straight, lurgan_ramp, nsi_ramp, nsi_straight, csxl_ramp, 
+							 csxl_straight, csxh_ramp, csxh_straight, nsh_straight, nsh_ramp, nsi_ramp, nsi_straight,
+							roanoke_to_ssa];
+		var town = createMCP("Town", town_segments);
+		mcpTable[key(town)] = town;
+		//CP67 segments
+		var sea_to_1t = createTrack(.400, .540, .470, .540, canvas);
+		//Also in CP65
+		var o1= createTrack(.470, .540, .500, .540, canvas);
 		// Greencastle Yard
 		var gc_ramp_l = createTrack(.440, .540, .466, .560, canvas);
-		var gc_straight = createTrack(.4661, .560, .560, .560, canvas);
+		var gc_straight_to_3sea = createTrack(.4661, .560, .540, .560, canvas);
+		var gc_straight_remaining = createTrack(.540, .560, .560, .560, canvas);
+		var cp67_segments = [sea_to_1t, o1, gc_ramp_l, gc_straight_to_3sea, gc_straight_remaining];
+		var cp67 = createMCP("CP-67", cp67_segments);
+		mcpTable[key(cp67)] = cp67;
+	
      	var gc_ramp_r = createTrack(.5601, .560, .586, .540, canvas);
 		// CP-65 to CP-62
 		var cp65_ramp_r = createTrack(.510, .540, .536, .520, canvas);
