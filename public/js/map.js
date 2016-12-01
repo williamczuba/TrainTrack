@@ -111,6 +111,8 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		// Draw Track - Nearby text on original layout listed in comments
 		// Town Segments - goes up to SEA
+
+		//Town section -- 17 lines
 		// CSX
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
 		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
@@ -141,27 +143,55 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 							roanoke_to_ssa];
 		var town = createMCP("Town", town_segments);
 		mcpTable[key(town)] = town;
-		//CP67 segments
+
+		//CP-67 -- 4 lines
 		var sea_to_1t = createTrack(.400, .540, .470, .540, canvas);
-		//Also in CP65
-		var o1= createTrack(.470, .540, .500, .540, canvas);
-		// Greencastle Yard
+		var o1 = createTrack(.470, .540, .500, .540, canvas);
 		var gc_ramp_l = createTrack(.440, .540, .466, .560, canvas);
-		var gc_straight_to_3sea = createTrack(.4661, .560, .540, .560, canvas);
-		var gc_straight_remaining = createTrack(.540, .560, .560, .560, canvas);
-		var cp67_segments = [sea_to_1t, o1, gc_ramp_l, gc_straight_to_3sea, gc_straight_remaining];
+		var gc_straight_to_3sea = createTrack(.4661, .560, .500, .560, canvas);
+		var cp67_segments = [sea_to_1t, o1, gc_ramp_l, gc_straight_to_3sea];
 		var cp67 = createMCP("CP-67", cp67_segments);
 		mcpTable[key(cp67)] = cp67;
-	
-     	var gc_ramp_r = createTrack(.5601, .560, .586, .540, canvas);
-		// CP-65 to CP-62
-		var cp65_ramp_r = createTrack(.510, .540, .536, .520, canvas);
-		var cp65_straight = createTrack(.5361, .520, .630, .520, canvas);
-		var cp65_ramp_l = createTrack(.6301, .520, .656, .540, canvas);
-		// Near CP-53 and CP-50
-		var cp53_ramp_r = createTrack(.770, .540, .796, .520, canvas);
-		var cp65_straight = createTrack(.7961, .520, .826, .520, canvas);
-		var cp65_ramp_l = createTrack(.8261, .520, .850, .540, canvas);
+
+        // CP-65 -- 3 lines
+		var cp65_bottom_straight = createTrack(.500, .540, .560, .540, canvas);
+		var cp65_top_straight1 = createTrack(.5361, .520, .583, .520, canvas);
+		var cp65_ramp_1 = createTrack(.510, .540, .536, .520, canvas);
+	    var cp65_segments = createTrack[cp65_bottom_straight, cp65_ramp_1, cp65_top_straight1];
+        var cp65 = createMCP("CP-65", cp65_segments);
+        mcpTable[key(cp65)] = cp65;
+
+		// CP-64 -- 3 lines
+		var gc_ramp_r = createTrack(.5601, .560, .586, .540, canvas);
+		var cp64_bottom_straight = createTrack(.560, .540, .620, .540, canvas);
+	    var gc_straight_remaining = createTrack(.500, .560, .560, .560, canvas); // from CP-67
+		var cp64_segments = [cp64_bottom_straight, gc_ramp_r, gc_straight_remaining];
+		var cp64 = createMCP("CP-64", cp64_segments);
+		mcpTable[key(cp64)] = cp64;
+
+        //CP-62 -- 3 lines
+    	var cp62_top_straight2 = createTrack(.5831, .520,  .630, .520, canvas);
+	    var cp62_ramp_r = createTrack(.6301, .520, .656, .540, canvas);
+	    var cp62_bottom_straight = createTrack(.620, .540, .700, .540, canvas);
+        var cp62_segments = [cp62_top_straight2, cp62_ramp_r, cp62_bottom_straight];
+        var cp62 = createMCP("CP-62", cp62_segments);
+        mcpTable[key(cp62)] = cp62;
+
+        //CP-53 -- 3 lines
+        var cp53_straight = createTrack(.700, .540, .815, .540, canvas);
+		var cp53_ramp_l = createTrack(.770, .540, .796, .520, canvas);
+		var cp53_top_straight = createTrack(.7961, .520, .815, .520, canvas);
+		var cp53_segments = [cp53_straight, cp53_ramp_l, cp53_top_straight];
+		var cp53 = createMCP("CP-53", cp53_segments);
+		mcpTable[key(cp53)] = cp53;
+
+        //CP - 50 -- 3 lines
+		var cp50_straight_top = createTrack(.8151, .520, .826, .520, canvas);
+		var cp50_ramp_r = createTrack(.8261, .520, .850, .540, canvas);
+        var cp50_straight_bottom = createTrack(.700, .540, .905, .540, canvas)
+        var cp50_segments = [cp50_straight_top, cp50_ramp_r, cp50_straight_bottom];
+        var cp50 = createMCP("CP-50", cp50_segments);
+        mcpTable[key(cp50)] = cp50;
 
 		return this;
 };
