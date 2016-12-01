@@ -300,9 +300,9 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 	ctx.font = ("1em Arial");
 	ctx.fillStyle = "#ffa500";
 	ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .30 );
-	ctx.fillText ("Lurgan", canvas.width * .120, canvas.height * .190);
-	ctx.fillText("Running", canvas.width * .120, canvas.height * .205);
-	ctx.fillText("Track", canvas.width * .120, canvas.height * .220);
+	ctx.fillText ("Lurgan", canvas.width * .112, canvas.height * .190);
+	ctx.fillText("Running", canvas.width * .112, canvas.height * .205);
+	ctx.fillText("Track", canvas.width * .112, canvas.height * .220);
 	ctx.fillText("Gettysburg RR", canvas.width * .415, canvas.height * .289);
     ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .2285);
     ctx.fillText("to", canvas.width * .945, canvas.height * .190);
@@ -331,14 +331,14 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
 
-    //Ship -- two lines
+    //Ship -- 2 lines
     var ship_straight  = createTrack(.116, .255, .192, .255, canvas);
     var ship_top = createTrack(.148, .235, .192, .235, canvas);
     var ship_segments = [ship_straight, ship_top];
     var ship = createMCP("Ship", ship_segments);
     mcpTable[key(ship)] = ship;
 
-    //lee -- three lines
+    //Lee -- 3 lines
     var lee_top = createTrack(.192, .235, .240, .235, canvas);
     var lee_ramp = createTrack(.240, .235, .260, .250, canvas);
     var lee_straight = createTrack(.192, .255, .416, .255, canvas);
@@ -363,7 +363,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var carl_bottom_loop2 = createTrack(.592, .270, .640, .270, canvas);
     var carl_ramp_r = createTrack(.640, .270, .660, .255, canvas);
     var spring_straight = createTrack(.592, .255, .752, .255, canvas);
-    var spring_segments = [ppg_top, carl_bottom_loop2, spring_straight];
+    var spring_segments = [ppg_top, carl_bottom_loop2, carl_ramp_r, spring_straight];
     var spring = createMCP("Spring", spring_segments);
     mcpTable[key(spring)] = spring;
 
@@ -383,7 +383,6 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     mcpTable[key(front)] = front;
 
 //    var lurgan_branch_straight = createTrack(.071, .15, .930, .15, canvas);
-
 //    //Near Cleversburg Junction viewing platform
 //    var cleversburg_straight = createTrack(.1320, .125, .315, .125, canvas);
 //    var cleversburg_ramp = createTrack(.315, .125, .331, .145, canvas);
@@ -532,7 +531,7 @@ drawShipToFront.prototype.draw = function(canvas, ctx){
 };
 
 //Functions for drawing and creating track elements
-function createTrackWithWidth(x1, y1, x2, y2, canvas, name, lineWidth){
+function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     var newCanvas = document.createElement("canvas");
 	var parent = canvas.parentNode;
     	if (x2 >= x1){
@@ -636,8 +635,8 @@ function createMCP(name, segments){
 
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
-function createTrack(x1, y1, x2, y2, canvas, name){
-    createTrackWithWidth(x1,y1, x2, y2, canvas, name, 4);
+function createTrack(x1, y1, x2, y2, canvas){
+    createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
 };
 
 /*
