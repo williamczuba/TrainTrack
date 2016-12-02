@@ -244,7 +244,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					108: []string{ 
+					117: []string{ 
 					},
 				},
 			},
@@ -289,8 +289,8 @@ func main() {
 			104: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
-			113: "verifyPassword",
-			115: "verifyPassword",
+			122: "verifyPassword",
+			124: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
 			43: "user.Email",
