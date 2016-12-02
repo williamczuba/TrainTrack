@@ -17,20 +17,20 @@ RUN go get github.com/tools/godep
 
 
 # # Grab the code from github and add it to the workspace #
-RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/github.com/williamczuba/TrainTrack #
+RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/TrainTrack
 
 # Change workdir for goDeps
-WORKDIR $GOPATH/src/github.com/williamczuba/TrainTrack
+WORKDIR $GOPATH/src/TrainTrack
 RUN echo $PWD
 RUN echo $(ls)
 
 # Restore godep dependencies
-RUN godep restore # $GOPATH/src/github.com/williamczuba/TrainTrack/
+RUN godep restore # $GOPATH/src/TrainTrack
 
 # Use the revel CLI to start up our application.
 # for google, should be 8080
 WORKDIR $GOPATH
-ENTRYPOINT revel run github.com/williamczuba/TrainTrack dev 8080 # Notice, we run in dev mode on port 8080
+ENTRYPOINT revel run TrainTrack dev 8080 # Notice, we run in dev mode on port 8080
 
 # Open up the port where the app is running.
 # for google, should be 8080
