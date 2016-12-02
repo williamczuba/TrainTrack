@@ -8,9 +8,6 @@ ENV PATH $HOME/gocode/bin:$PATH
 # Grab the source code and add it to the workspace.
 # ADD . /gocode/src/TrainTrack
 
-# Grab the code from github and add it to the workspace
-RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/github.com/williamczuba/TrainTrack
-
 # Install revel and the revel CLI.
 RUN go get github.com/revel/revel
 RUN go get github.com/revel/cmd/revel
@@ -18,9 +15,14 @@ RUN go get github.com/revel/cmd/revel
 # Install GoDep
 RUN go get github.com/tools/godep
 
+
+# Grab the code from github and add it to the workspace
+RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/github.com/williamczuba/TrainTrack
+
 # Change workdir for goDeps
 WORKDIR $GOPATH/src/github.com/williamczuba/TrainTrack
-RUN pwd
+RUN echo $PWD
+RUN echo $(ls)
 
 # Restore godep dependencies
 RUN godep restore # $GOPATH/src/github.com/williamczuba/TrainTrack/
