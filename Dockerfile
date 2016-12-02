@@ -16,8 +16,8 @@ RUN go get github.com/revel/cmd/revel
 RUN go get github.com/tools/godep
 
 
-# Grab the code from github and add it to the workspace #
-RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/github.com/williamczuba/TrainTrack
+# # Grab the code from github and add it to the workspace #
+RUN git clone https://github.com/williamczuba/TrainTrack.git $GOPATH/src/github.com/williamczuba/TrainTrack #
 
 # Change workdir for goDeps
 WORKDIR $GOPATH/src/github.com/williamczuba/TrainTrack
