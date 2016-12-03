@@ -57,8 +57,8 @@ type ClientTrainData struct {
 	MessageType		string `json:"message_type"`
 	Mnemonics 		string `json:"mnemonics"`
 	Bits 			string `json:"bits"`
-	Subdivision		string	`json:"subdivision"`
-	StateCounty		string	`json:"state_county"`
+	//Subdivision		string	`json:"subdivision"`
+	//StateCounty		string	`json:"state_county"`
 	CodeLineData		string	`json:"code_line_data"`
 }
 
@@ -66,16 +66,25 @@ type ClientTrainData struct {
 ////Get packets, decipher them, look up the addresses from the mcp data-table, ensure it's atcs protocol (look at the table),
 // then get important mnemonics based on layer info (control or indication), and return it (the mnemonics)
 func (c Map) GetTrainData() revel.Result {
-	fmt.Println("Serving up train Data")
-	trainInfo := packetDecoding.GetTrainInfo()
-	mcp := c.GetMCP(trainInfo.L3.SourceAddr)
-	label := trainInfo.L4P.Label
+	//fmt.Println("Serving up train Data")
 	var CTD ClientTrainData
+	trainInfo := packetDecoding.GetTrainInfo()
+	if trainInfo == nil {
+		fmt.Println("Server may be closed.  Unable to fetch Train Info")
+	}
+	label := trainInfo.L4P.Label
+	fmt.Println("Label", label)
+	mcp := c.GetMCP(trainInfo.L3.SourceAddr)
+	if mcp == nil {
+		fmt.Println("No Mcp with that address...")
+		return c.RenderJson(CTD)
+	}
+	//label := trainInfo.L4P.Label
 	CTD.Name = mcp.Name
-	CTD.StateCounty = mcp.StateCounty
+	//CTD.StateCounty = mcp.StateCounty
 	CTD.CodeLineData = trainInfo.L4P.CodeLineData
 	CTD.MilePost = mcp.Milepost
-	CTD.Subdivision = mcp.Subdivision
+	//CTD.Subdivision = mcp.Subdivision
 	if label == "9.2.11" { //Indication Packet
 		CTD.MessageType = "Indication"
 		CTD.Bits = mcp.IndicationBits
@@ -87,7 +96,7 @@ func (c Map) GetTrainData() revel.Result {
 		CTD.Mnemonics = mcp.ControlMnemonics
 	}
 
-	fmt.Println("Served data")
+	//fmt.Println("Served data")
 
 	return c.RenderJson(CTD)
 }

@@ -35,8 +35,9 @@
 //};
 
 function MCP(TrainData){
+	console.log("TRAIN DATA:", TrainData);
     //Find the MCP that corresponds to the name given
-    var mcpData = mcpTable[key(TrainData.name)];
+    var mcpData = mcpTable[TrainData.Name];//key(
     console.log("MCP data: " + mcpData);
     var segments = "";
     console.log("Segments: " + segments);
@@ -66,7 +67,8 @@ because there are multiple segments that share the same mnemonic. So, when calle
 The segment will have the rest of the information.
 */
 var key = function(mcp){
-    return mcp.name;
+	// console.log("MCP:", mcp);
+    return mcp.Name;
 };
 
 
@@ -567,7 +569,7 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
 		this.drawSTFTrack(canvas, ctx);
-		this.drawSTFTrackSegments(canvas, ctx)
+		// this.drawSTFTrackSegments(canvas, ctx)
 		this.drawSTFText(canvas, ctx);
 		this.drawSTFControlPoints(canvas, ctx);
 		return this;
