@@ -959,6 +959,7 @@ $(document).ready(function(){
 	dlts.draw(canvas, ctx);
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
+	
 })
 
 // Resizes the canvas
