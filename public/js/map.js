@@ -656,7 +656,8 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 			x2: x2,
 			y1: y1,
 			y2: y2,
-			lw: lineWidth
+			lw: lineWidth,
+			parent: canvas
     	};
     	return track;
 }
@@ -813,7 +814,8 @@ function changeTrack(track, color){
     var y2 = track.y2;
 
 	var newCanvas = document.createElement("canvas");
-    var parent = track.canvas.parentNode;
+    var parent = track.parent;
+	console.log(parent);
     if (x2 >= x1){
         newCanvas.width = (x2*track.canvas.width-x1*track.canvas.width);
     }
