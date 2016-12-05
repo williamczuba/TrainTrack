@@ -5,7 +5,6 @@
 , which is pretty simple.
 <<<<<<< HEAD
 =======
-
 >>>>>>> origin/master
 */
 
@@ -34,46 +33,52 @@
 //   }
 //};
 
-function MCP(TrainData){
+document.onload = function MCP(TrainData){
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
-
     console.log("Name: " , trainDataObj.Name);
 //    //Find the MCP that corresponds to the name given
-    var mcpData = mcpTable[TrainData.name];
+    var mcpData = mcpTable[key(trainDataObj.Name)];
     console.log("MCP Data: ", mcpData);
+//    var mcpData2 = mcpTable[key(TrainData.name)];
+//    console.log("MCP Data2: ", mcpData2)
     var segments = "";
-    console.log("Segments: ", segments);
     if (mcpData != null){
          segments = mcpData.segments;
     }
     var color = "";
-    if (TrainData.message_type == "Control"){
+    console.log("Message type: ", trainDataObj.message_type);
+    var msgType = trainDataObj.message_type;
+    if (msgType == "Control"){
+        console.log("Control")
         color = "red";
     }
-    else if (TrainData.message_type == "Indication"){
+    else if (msgType == "Indication"){
+        console.log("Indication")
         color = "green";
     }
     for (var i = 0; i < segments.length; i++){
 		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
-};
-
-
+}
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
 
-/* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
-The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
-because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
-The segment will have the rest of the information.
+/* This function creates the hash key from the mcp name. The name refers to an MCP object, which holds the MCP
+segments that will need to be colored.
 */
-var key = function(mcp){
-	// console.log("MCP:", mcp);
-    return mcp.Name;
+
+var key = function(mcpName){
+    var hash = 11;
+	for (var i = 0; i < mcpName.length; i++){
+        hash = hash * 53 + mcpName.charCodeAt(i);
+	}
+
+//	console.log("mcpName: ", mcpName, "Hash: " , hash);
+	return hash;
 };
 
 
@@ -135,18 +140,18 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var nsh_straight = createTrack(.116, .520, .196, .520, canvas);
 		var nsh_ramp = createTrack(.1961, .520, .216, .535, canvas);
 		// NS Industrial Lead
-		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
-		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
+//		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
+//		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
 		// CSX Hanover Sub
 		var csxh_ramp = createTrack(.360, .560, .386, .580, canvas);
 		var csxh_straight = createTrack(.3861, .580, .400, .580, canvas);
 		// From "to Roanoke" to SSA
-		var roanoke_to_ssa = createTrack(.116, .540, .400, .540, canvas);	
-		var town_segments = [csx_straight, csx_ramp, lurgan_straight, lurgan_ramp, nsi_ramp, nsi_straight, csxl_ramp, 
+		var roanoke_to_ssa = createTrack(.116, .540, .400, .540, canvas);
+		var town_segments = [csx_straight, csx_ramp, lurgan_straight, lurgan_ramp, nsi_ramp, nsi_straight, csxl_ramp,
 							 csxl_straight, csxh_ramp, csxh_straight, nsh_straight, nsh_ramp, nsi_ramp, nsi_straight,
 							roanoke_to_ssa];
 		var town = createMCP("Town", town_segments);
-		mcpTable[key(town)] = town;
+		mcpTable[town.name] = town;
 
 		//CP-67 -- 4 lines
 		var sea_to_1t = createTrack(.400, .540, .470, .540, canvas);
@@ -155,7 +160,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var gc_straight_to_3sea = createTrack(.4661, .560, .500, .560, canvas);
 		var cp67_segments = [sea_to_1t, o1, gc_ramp_l, gc_straight_to_3sea];
 		var cp67 = createMCP("CP-67", cp67_segments);
-		mcpTable[key(cp67)] = cp67;
+		mcpTable[key(cp67.name)] = cp67;
 
         // CP-65 -- 3 lines
 		var cp65_bottom_straight = createTrack(.500, .540, .560, .540, canvas);
@@ -163,7 +168,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp65_ramp_1 = createTrack(.510, .540, .536, .520, canvas);
 	    var cp65_segments = createTrack[cp65_bottom_straight, cp65_ramp_1, cp65_top_straight1];
         var cp65 = createMCP("CP-65", cp65_segments);
-        mcpTable[key(cp65)] = cp65;
+        mcpTable[key(cp65.name)] = cp65;
 
 		// CP-64 -- 3 lines
 		var gc_ramp_r = createTrack(.5601, .560, .586, .540, canvas);
@@ -171,7 +176,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 	    var gc_straight_remaining = createTrack(.500, .560, .560, .560, canvas); // from CP-67
 		var cp64_segments = [cp64_bottom_straight, gc_ramp_r, gc_straight_remaining];
 		var cp64 = createMCP("CP-64", cp64_segments);
-		mcpTable[key(cp64)] = cp64;
+		mcpTable[key(cp64.name)] = cp64;
 
         //CP-62 -- 3 lines
     	var cp62_top_straight2 = createTrack(.5831, .520,  .630, .520, canvas);
@@ -179,7 +184,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 	    var cp62_bottom_straight = createTrack(.620, .540, .700, .540, canvas);
         var cp62_segments = [cp62_top_straight2, cp62_ramp_r, cp62_bottom_straight];
         var cp62 = createMCP("CP-62", cp62_segments);
-        mcpTable[key(cp62)] = cp62;
+        mcpTable[key(cp62.name)] = cp62;
 
         //CP-53 -- 3 lines
         var cp53_straight = createTrack(.700, .540, .815, .540, canvas);
@@ -187,7 +192,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp53_top_straight = createTrack(.7961, .520, .815, .520, canvas);
 		var cp53_segments = [cp53_straight, cp53_ramp_l, cp53_top_straight];
 		var cp53 = createMCP("CP-53", cp53_segments);
-		mcpTable[key(cp53)] = cp53;
+		mcpTable[key(cp53.name)] = cp53;
 
         //CP - 50 -- 3 lines
 		var cp50_straight_top = createTrack(.8151, .520, .826, .520, canvas);
@@ -195,7 +200,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
         var cp50_straight_bottom = createTrack(.700, .540, .905, .540, canvas)
         var cp50_segments = [cp50_straight_top, cp50_ramp_r, cp50_straight_bottom];
         var cp50 = createMCP("CP-50", cp50_segments);
-        mcpTable[key(cp50)] = cp50;
+        mcpTable[key(cp50.name)] = cp50;
 
 		return this;
 };
@@ -251,7 +256,6 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 	mnemTable[key(nw3)] = nw3;
 	var t22 = createTrackSeg(.256, .53, .304, .55, "2T", "both", canvas);
 	mnemTable[key(t22)] = t22;
-
 };
 */
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
@@ -327,7 +331,6 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var ng2rw16 = createControlPoint(.820, .524, "6:2NG/1RW", canvas, cproff);
 	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", canvas, cproff);
 	var sg26 = createControlPoint(.870, .523, "6:2SG", canvas, cploff);
-
 };
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
@@ -384,7 +387,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ship_top = createTrack(.148, .235, .192, .235, canvas);
     var ship_segments = [ship_straight, ship_top];
     var ship = createMCP("Ship", ship_segments);
-    mcpTable[key(ship)] = ship;
+    mcpTable[key(ship.name)] = ship;
 
     //Lee -- 3 lines
     var lee_top = createTrack(.192, .235, .240, .235, canvas);
@@ -392,7 +395,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var lee_straight = createTrack(.192, .255, .416, .255, canvas);
     var lee_segments = [lee_top, lee_ramp, lee_straight];
     var lee = createMCP("Lees Cross Roads", lee_segments);
-    mcpTable[key(lee)] = lee;
+    mcpTable[key(lee.name)] = lee;
 
     //Carl -- 7 lines
     var carl_straight = createTrack(.416, .255, .592, .255, canvas);
@@ -404,7 +407,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ppg_straight = createTrack(.573, .234, .589, .234, canvas);
     var carl_segments = [carl_straight, carl_ramp_l, carl_bottom_loop1, gburg_bottom, gburg_ramp, ppg_ramp, ppg_straight];
     var carl = createMCP("Carl", carl_segments);
-    mcpTable[key(carl)] = carl;
+    mcpTable[key(carl.name)] = carl;
 
     //Spring section-- 4 lines
     var ppg_top = createTrackWithWidth(.589, .234, .604, .234, canvas, .5);
@@ -413,7 +416,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var spring_straight = createTrack(.592, .255, .752, .255, canvas);
     var spring_segments = [ppg_top, carl_bottom_loop2, carl_ramp_r, spring_straight];
     var spring = createMCP("Spring", spring_segments);
-    mcpTable[key(spring)] = spring;
+    mcpTable[key(spring.name)] = spring;
 
     //Ross section-- 3 lines
     var ross_straight = createTrack(.752, .255, .896, .255, canvas);
@@ -421,14 +424,15 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ross_top = createTrack(.836, .235, .868, .235, canvas);
     var ross_segments = [ross_straight, ross_ramp, ross_top];
     var ross = createMCP("Ross", ross_segments);
-    mcpTable[key(ross)] = ross;
+    mcpTable[key(ross.name)] = ross;
 
     //Front section -- 2 lines
     var front_top = createTrack(.868, .235, .970, .235, canvas);
     var front_straight = createTrack(.896, .255, .970, .255, canvas);
     var front_segments = [front_top, front_straight];
     var front = createMCP("Front", front_segments);
-    mcpTable[key(front)] = front;
+    mcpTable[key(front.name)] = front;
+
 
 //    var lurgan_branch_straight = createTrack(.071, .15, .930, .15, canvas);
 //    //Near Cleversburg Junction viewing platform
@@ -697,22 +701,17 @@ function createTrack(x1, y1, x2, y2, canvas){
 function drawMileMarker(x1, y1, x2, y2, canvas){
     lineWidth = 2;
     var newCanvas = document.createElement("canvas");
-
     newCanvas.width = 8;
     newCanvas.height = (y2*canvas.height-y1*canvas.height);
-
     var newCtx = newCanvas.getContext('2d');
     var oldCtx = canvas.getContext('2d');
     newCtx.strokeStyle = "White";
     newCtx.lineWidth = lineWidth;
-
     newCtx.moveTo(lineWidth, 0);
     newCtx.lineTo(lineWidth, newCanvas.height);
     newCtx.stroke();
-
     document.body.appendChild(newCanvas);
 	oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
-   
 
     var marker = {
         x1: x1,
@@ -882,7 +881,7 @@ function changeTrack(track, color){
     	//document.body.appendChild(newCanvas);
     	oldCtx.drawImage(newCanvas, x2*track.canvas.width, y1*track.canvas.height);
 		parent.appendChild(track.canvas);
-       
+
     }
     else{
 		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
@@ -893,7 +892,7 @@ function changeTrack(track, color){
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
      }
-	
+
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
@@ -904,12 +903,12 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 		div = document.createElement("div"),
 		parent = canvas.parentNode,
 		visible = false;
-	
+
 	var twidth = parent*.01;
-	
+
 	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
 	div.innerHTML = text;
-	
+
 	//show tooltip
 	this.show = function(pos) {
 		if (!visible) {
@@ -919,31 +918,31 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 			setTimeout(hide, timeout);
 		}
 	}
-	
+
 	 // hide the tool-tip
 	 function hide() {
 	 	visible = false;                            // hide it after timeout
 		parent.removeChild(div);                    // remove from DOM
 	 }
-	
+
 	// Check mouse position
 	function check(e){
 		var pos = getPos(e),
 			posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y - not sure about this, honestly. May need to use something else?
 		if (!visible &&
-        	pos.x >= x && pos.x < x + width && 
+        	pos.x >= x && pos.x < x + width &&
         	pos.y >= y && pos.y < y + height) {
       	tt.show(posAbs);	// Show tooltip at pos
 		}
 		else setDivPos(posAbs);  // else, update position
 	}
-	
+
 	// Get mouse position relative to canvas
 	function getPos(e) {
 		var r = canvas.getBoundingClientRect();
 		return {x: e.clientX - r.left, y: e.clientY - r.top}
 	}
-	
+
   // Update and adjust div position if needed (anchor to a different corner etc.) - will need to change measurements at end from px
   function setDivPos(pos) {
     if (visible){
@@ -954,13 +953,14 @@ function toolTip(canvas, x, y, width, height, text, timeout){
       div.style.top = pos.y + "px";
     }
   }
-	
+
   canvas.addEventListener("mousemove", check);
   canvas.addEventListener("click", check);
 }
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
+    console.log("Ready");
 	window.addEventListener("resize", resizeCanvas, false);
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
@@ -978,7 +978,7 @@ $(document).ready(function(){
 	dlts.draw(canvas, ctx);
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
-	
+
 })
 
 // Resizes the canvas
@@ -998,4 +998,3 @@ function resizeCanvas(e){
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
 }
-

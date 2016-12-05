@@ -148,7 +148,7 @@ func InitConnection() {
 		CheckError(err)
 		connect, err = net.DialUDP("udp", nil, serverAddr)
 		if err != nil {
-			fmt.Println("Error listening to UDP: , (Note this frequently happends due to the GBC server/routers)", err)
+			fmt.Println("Error listening to UDP: , (Note this frequently happens due to the GBC server/routers)", err)
 			return true
 		}
 		return false
