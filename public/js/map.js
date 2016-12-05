@@ -35,14 +35,16 @@
 //};
 
 function MCP(TrainData){
-	console.log("TRAIN DATA:", TrainData);
-    //Find the MCP that corresponds to the name given
-    var mcpData = mcpTable[TrainData.Name];//key(
-	console.log("TrainData Name: "+TrainData.Name)
-	console.log("MCP Name: " + mcpData.name);
-    console.log("MCP data: " + mcpData);
+	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
+    var trainDataObj = JSON.parse(TrainData);
+    console.log(trainDataObj);
+
+    console.log("Name: " , trainDataObj.Name);
+//    //Find the MCP that corresponds to the name given
+    var mcpData = mcpTable[TrainData.name];
+    console.log("MCP Data: ", mcpData);
     var segments = "";
-    console.log("Segments: " + segments);
+    console.log("Segments: ", segments);
     if (mcpData != null){
          segments = mcpData.segments;
     }
@@ -53,7 +55,7 @@ function MCP(TrainData){
     else if (TrainData.message_type == "Indication"){
         color = "Green";
     }
-    for (i = 0; i < segments.length; i++){
+    for (var i = 0; i < segments.length; i++){
         changeTrack(segments[i], color);
     }
 };
@@ -278,7 +280,7 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 	var cp50_i = ["","1RWK","2NGK","1NWK","2SGK","SLAK","TK","SSAK","1LZK","P0K","B0K","SMK","L0K","SSXK","CNXK","SNXK"];
 	var cp50 = createMCP("6", cp50_c, cp50_i, "75505550080101");
 	var mcpList = [town, cp67, cp64, cp64, cp62, cp53, cp50];
-	return mcpList
+	return mcpList;
 };
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
@@ -296,7 +298,6 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cplon = new Image();
 	cplon.src = "/public/img/cplon.png";
 	// TOWN control points
-	console.log("In TOWN");
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
