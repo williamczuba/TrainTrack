@@ -33,7 +33,7 @@
 //   }
 //};
 
-function MCP(TrainData){
+document.onload = function MCP(TrainData){
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
@@ -64,22 +64,19 @@ function MCP(TrainData){
     }
 }
 
-
-
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
 
-/* This function creates the hash key from the track segment. Created the hash function as the mnemonic, combined with the starting x and y coordinates
-The nice thing about that is, because we know exactly what we're going to get, that we won't have any collisions like we would if we just hashed it by the mnemonic name
-because there are multiple segments that share the same mnemonic. So, when called we will just need the mnemonic's name and the x1 and y1.
-The segment will have the rest of the information.
-//*/
+/* This function creates the hash key from the mcp name. The name refers to an MCP object, which holds the MCP
+segments that will need to be colored.
+*/
 
 var key = function(mcpName){
     var hash = 11;
 	for (var i = 0; i < mcpName.length; i++){
         hash = hash * 53 + mcpName.charCodeAt(i);
 	}
+
 //	console.log("mcpName: ", mcpName, "Hash: " , hash);
 	return hash;
 };
@@ -334,7 +331,6 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var ng2rw16 = createControlPoint(.820, .524, "6:2NG/1RW", canvas, cproff);
 	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", canvas, cproff);
 	var sg26 = createControlPoint(.870, .523, "6:2SG", canvas, cploff);
-
 };
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
@@ -429,7 +425,6 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var ross_segments = [ross_straight, ross_ramp, ross_top];
     var ross = createMCP("Ross", ross_segments);
     mcpTable[key(ross.name)] = ross;
-
 
     //Front section -- 2 lines
     var front_top = createTrack(.868, .235, .970, .235, canvas);

@@ -36,4 +36,5 @@ function getPackets() {
     };
     xhttp.open("GET", waitMessages);
     xhttp.send();
+    getPackets();
 }
