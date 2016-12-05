@@ -50,12 +50,13 @@ function MCP(TrainData){
     }
     var color = "";
     if (TrainData.message_type == "Control"){
-        color = "Red";
+        color = "red";
     }
     else if (TrainData.message_type == "Indication"){
-        color = "Green";
+        color = "green";
     }
     for (var i = 0; i < segments.length; i++){
+		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
 };
@@ -650,14 +651,15 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
     	}
     	var track = {
-    		canvas: newCanvas,
-    		ctx: newCtx,
+    		canvas: canvas,
+    		ctx: oldCtx,
+			nCanvas: newCanvas,
 			x1: x1,
 			x2: x2,
 			y1: y1,
 			y2: y2,
 			lw: lineWidth,
-			parent: canvas
+			parent: canvas.parentNode
     	};
     	return track;
 }
@@ -813,7 +815,8 @@ function changeTrack(track, color){
     var y1 = track.y1;
     var y2 = track.y2;
 
-	var newCanvas = document.createElement("canvas");
+	//var newCanvas = document.createElement("canvas");
+	var newCanvas = track.nCanvas
     var parent = track.parent;
 	console.log(parent);
     if (x2 >= x1){
@@ -845,45 +848,52 @@ function changeTrack(track, color){
 	var lineWidth = track.lw;
     newCtx.lineWidth = lineWidth;
     if (vLine == true){
+		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
         newCtx.moveTo(lineWidth, 0);
         newCtx.lineTo(lineWidth, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*track.canvas.width-lineWidth, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
-        oldCtx.drawImage(newCanvas, x1*track.canvas.width-lineWidth, y1*track.canvas.height);
     }
     else if (hLine == true){
+		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
         newCtx.moveTo(0, lineWidth);
         newCtx.lineTo(newCanvas.width, lineWidth);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height-lineWidth);
     	parent.appendChild(track.canvas);
-        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height-lineWidth);
      }
      else if (yflip == true){
+		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
         newCtx.moveTo(0, newCanvas.height);
         newCtx.lineTo(newCanvas.width, 0);
         newCtx.stroke();
         //document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y2*track.canvas.height);
         parent.appendChild(track.canvas);
-        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y2*track.canvas.height);
     }
     else if (xflip == true){
+		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
         newCtx.moveTo(newCanvas.width, 0);
         newCtx.lineTo(0, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
-    	parent.appendChild(track.canvas);
-        oldCtx.drawImage(newCanvas, x2*track.canvas.width, y1*track.canvas.height);
+    	oldCtx.drawImage(newCanvas, x2*track.canvas.width, y1*track.canvas.height);
+		parent.appendChild(track.canvas);
+       
     }
     else{
+		newCtx.clearRect(0,0, newCanvas.width, newCanvas.height);
         newCtx.moveTo(0, 0);
         newCtx.lineTo(newCanvas.width, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
+		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
-        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
      }
+	
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
