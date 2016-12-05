@@ -38,6 +38,8 @@ function MCP(TrainData){
 	console.log("TRAIN DATA:", TrainData);
     //Find the MCP that corresponds to the name given
     var mcpData = mcpTable[TrainData.Name];//key(
+	console.log("TrainData Name: "+TrainData.Name)
+	console.log("MCP Name: " + mcpData.name);
     console.log("MCP data: " + mcpData);
     var segments = "";
     console.log("Segments: " + segments);
@@ -802,7 +804,6 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 
 // Redraws the given track element in the given color.
 function changeTrack(track, color){
-
     var x1 = track.x1;
     var x2 = track.x2;
     var y1 = track.y1;
