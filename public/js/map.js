@@ -655,10 +655,11 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 			x1: x1,
 			x2: x2,
 			y1: y1,
-			y2: y2
+			y2: y2,
+			lw: lineWidth
     	};
     	return track;
-};
+}
 
 //function createMCP(id, control, indication, address){
 //
@@ -684,7 +685,8 @@ function createMCP(name, segments){
 // Creates a new segment of track and an accompanying canvas, and returns it.
 // track - the new segment of track
 function createTrack(x1, y1, x2, y2, canvas){
-    createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
+    var track = createTrackWithWidth(x1,y1, x2, y2, canvas, 4);
+	return track;
 };
 
 /*
@@ -811,19 +813,19 @@ function changeTrack(track, color){
     var y2 = track.y2;
 
 	var newCanvas = document.createElement("canvas");
-    var parent = canvas.parentNode;
+    var parent = track.canvas.parentNode;
     if (x2 >= x1){
-        newCanvas.width = (x2*canvas.width-x1*canvas.width);
+        newCanvas.width = (x2*track.canvas.width-x1*track.canvas.width);
     }
     else{
-        newCanvas.width = (x1*canvas.width-x2*canvas.width);
+        newCanvas.width = (x1*track.canvas.width-x2*track.canvas.width);
         var xflip = true;
     }
     if (y2 >= y1){
-        newCanvas.height = (y2*canvas.height-y1*canvas.height);
+        newCanvas.height = (y2*track.canvas.height-y1*track.canvas.height);
     }
     else{
-        newCanvas.height = (y1*canvas.height-y2*canvas.height);
+        newCanvas.height = (y1*track.canvas.height-y2*track.canvas.height);
         var yflip = true;
     }
         //	window.alert(newCanvas.width + " before " + newCanvas.height)
@@ -836,48 +838,49 @@ function changeTrack(track, color){
          newCanvas.height = 8;
     }
     var newCtx = newCanvas.getContext('2d');
-    var oldCtx = canvas.getContext('2d');
+    var oldCtx = track.canvas.getContext('2d');
     newCtx.strokeStyle = color;
-    newCtx.lineWidth = 4;
+	var lineWidth = track.lw;
+    newCtx.lineWidth = lineWidth;
     if (vLine == true){
         newCtx.moveTo(lineWidth, 0);
         newCtx.lineTo(lineWidth, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
-    	parent.appendChild(canvas);
-        oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
+    	parent.appendChild(track.canvas);
+        oldCtx.drawImage(newCanvas, x1*track.canvas.width-lineWidth, y1*track.canvas.height);
     }
     else if (hLine == true){
         newCtx.moveTo(0, lineWidth);
         newCtx.lineTo(newCanvas.width, lineWidth);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
-    	parent.appendChild(canvas);
-        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
+    	parent.appendChild(track.canvas);
+        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height-lineWidth);
      }
      else if (yflip == true){
         newCtx.moveTo(0, newCanvas.height);
         newCtx.lineTo(newCanvas.width, 0);
         newCtx.stroke();
         //document.body.appendChild(newCanvas);
-        parent.appendChild(canvas);
-        oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
+        parent.appendChild(track.canvas);
+        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y2*track.canvas.height);
     }
     else if (xflip == true){
         newCtx.moveTo(newCanvas.width, 0);
         newCtx.lineTo(0, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
-    	parent.appendChild(canvas);
-        oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
+    	parent.appendChild(track.canvas);
+        oldCtx.drawImage(newCanvas, x2*track.canvas.width, y1*track.canvas.height);
     }
     else{
         newCtx.moveTo(0, 0);
         newCtx.lineTo(newCanvas.width, newCanvas.height);
         newCtx.stroke();
     	//document.body.appendChild(newCanvas);
-    	parent.appendChild(canvas);
-        oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
+    	parent.appendChild(track.canvas);
+        oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
      }
 };
 
