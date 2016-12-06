@@ -32,14 +32,15 @@
 //	   }
 //   }
 //};
-
-document.onload = function MCP(TrainData){
+function MCP(TrainData){
+    console.log("Hi");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
-    console.log("Name: " , trainDataObj.Name);
+    var name = trainDataObj.Name;
+    console.log("Name: " , name);
 //    //Find the MCP that corresponds to the name given
-    var mcpData = mcpTable[key(trainDataObj.Name)];
+    var mcpData = mcpTable[key(name)];
     console.log("MCP Data: ", mcpData);
 //    var mcpData2 = mcpTable[key(TrainData.name)];
 //    console.log("MCP Data2: ", mcpData2)
@@ -62,13 +63,14 @@ document.onload = function MCP(TrainData){
 		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
-}
+};
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
 
 /* This function creates the hash key from the mcp name. The name refers to an MCP object, which holds the MCP
-segments that will need to be colored.
+segments that will need to be colored. The function takes 11, a prime number, and multiplies that by 53 before adding the ASCII
+code of each letter in the name. This creates a unique key.
 */
 
 var key = function(mcpName){
@@ -978,7 +980,6 @@ $(document).ready(function(){
 	dlts.draw(canvas, ctx);
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
-
 })
 
 // Resizes the canvas
