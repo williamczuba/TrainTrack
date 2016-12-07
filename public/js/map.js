@@ -168,7 +168,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp65_bottom_straight = createTrack(.500, .540, .560, .540, canvas);
 		var cp65_top_straight1 = createTrack(.5361, .520, .583, .520, canvas);
 		var cp65_ramp_1 = createTrack(.510, .540, .536, .520, canvas);
-	    var cp65_segments = createTrack[cp65_bottom_straight, cp65_ramp_1, cp65_top_straight1];
+	    var cp65_segments = [cp65_bottom_straight, cp65_ramp_1, cp65_top_straight1];
         var cp65 = createMCP("CP-65", cp65_segments);
         mcpTable[key(cp65.name)] = cp65;
 
@@ -688,6 +688,8 @@ function createMCP(name, segments){
         name: name,
         segments: segments
     };
+	console.log("MCP Name: ", MCP.name);
+	console.log("MCP Segments: ", MCP.segments);
     return MCP;
 };
 
@@ -977,9 +979,10 @@ $(document).ready(function(){
 	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
 	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
 	var dlts = new drawLurganToShip();
-	dlts.draw(canvas, ctx);
+	var dltsDraw = dlts.draw(canvas, ctx);
 	var dstf = new drawShipToFront();
-	dstf.draw(canvas, ctx);
+	var dstfDraw = dstf.draw(canvas, ctx);
+	
 })
 
 // Resizes the canvas
@@ -990,12 +993,12 @@ function resizeCanvas(e){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+	var dstf = new drawShipToFront();
+	dstf.draw(canvas, ctx);
+	var dlts = new drawLurganToShip();
+	dlts.draw(canvas, ctx);
 	ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
 	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
-	var dlts = new drawLurganToShip();
-	dlts.draw(canvas, ctx);
-	var dstf = new drawShipToFront();
-	dstf.draw(canvas, ctx);
 }
