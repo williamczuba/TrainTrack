@@ -31,9 +31,8 @@ function getPackets() {
             // this.response is the object containing all train data to be displayed.
             // display(this.response);
             var data = JSON.parse(this.response);
-            // console.log("Json Parse data:", data);
-            MCP(data); // Send the response to display the map
-
+            setTimeout(MCP(data),10); // Send the response to display the map
+            getPackets();
         }
     };
     xhttp.open("GET", waitMessages);
