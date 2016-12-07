@@ -33,7 +33,7 @@
 //   }
 //};
 function MCP(TrainData){
-    console.log("Hi");
+    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
@@ -128,7 +128,7 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		// Draw Track - Nearby text on original layout listed in comments
 		// Town Segments - goes up to SEA
-
+        console.log("Lurgan to Ship");
 		//Town section -- 17 lines
 		// CSX
 		var csx_straight = createTrack(.116, .470, .186, .470, canvas);
@@ -390,7 +390,7 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
 
 //Draws the section from Ship to Front
 drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
-
+    console.log("Ship to Front");
     //Ship -- 2 lines
     var ship_straight  = createTrack(.116, .255, .192, .255, canvas);
     var ship_top = createTrack(.148, .235, .192, .235, canvas);
@@ -701,8 +701,8 @@ function createMCP(name, segments){
 		time: clearTime,
 		timer: timer
     };
-	console.log("MCP Name: ", MCP.name);
-	console.log("MCP Segments: ", MCP.segments);
+//	console.log("MCP Name: ", MCP.name);
+//	console.log("MCP Segments: ", MCP.segments);
     return MCP;
 };
 
