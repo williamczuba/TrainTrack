@@ -30,12 +30,12 @@ function getPackets() {
         if (this.readyState == 4 && this.status == 200) {
             // this.response is the object containing all train data to be displayed.
             // display(this.response);
-            var data = JSON.parse(this.response);
-            setTimeout(MCP(data),10); // Send the response to display the map
+            setTimeout(MCP(this.response),10); // Send the response to display the map
             getPackets();
         }
     };
     xhttp.open("GET", waitMessages);
     xhttp.send();
+//    getPackets();
 
 }
