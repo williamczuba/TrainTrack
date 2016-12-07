@@ -34,25 +34,32 @@
 //   }
 //};
 
+// TrainData is a JS object containing the Name, bits, code_line_data, message_type, mile_post, and mnemonics all as STRINGS.
 function MCP(TrainData){
 	console.log("TRAIN DATA:", TrainData);
-    //Find the MCP that corresponds to the name given
+    // console.log("Call from MCP CP67 string", mcpTable["CP-67"]);
+	//Find the MCP that corresponds to the name given
     var mcpData = mcpTable[TrainData.Name];//key(
+	console.log("Name: ", TrainData.Name);
+	// console.log("Data if call direct", mcpTable[TrainData.Name]);
+	console.log("MCPTABLE:", mcpTable);
     console.log("MCP data: " + mcpData);
+
     var segments = "";
-    console.log("Segments: " + segments);
     if (mcpData != null){
-         segments = mcpData.segments;
+         segments = mcpData.segments; //TODO: segments ends up just being a " , ".  Do you ever put values in the segments of mcpData, or did you just create an empty array because it seems that way based on the console?
     }
-    var color = "";
+	console.log("Segments: " + segments);
+	var color = "";
     if (TrainData.message_type == "Control"){
         color = "Red";
     }
     else if (TrainData.message_type == "Indication"){
         color = "Green";
     }
+
     for (i = 0; i < segments.length; i++){
-        changeTrack(segments[i], color);
+        changeTrack(segments[i], color); //TODO: Look at what you're passing here.  changeTrack takes in a track OBJECT, but getting the segments[i] is a string.  Maybe make another hashtable to look up the track object based on the segment? However it gets done, we need to either get the track object from the segment string, or change the function to take in a segment string.
     }
 };
 
@@ -67,8 +74,9 @@ because there are multiple segments that share the same mnemonic. So, when calle
 The segment will have the rest of the information.
 */
 var key = function(mcp){
-	// console.log("MCP:", mcp);
-    return mcp.Name;
+	// console.log("MCP Name:", mcp.name, "MCP:", mcp);
+
+	return mcp.name;
 };
 
 
@@ -151,7 +159,6 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var cp67_segments = [sea_to_1t, o1, gc_ramp_l, gc_straight_to_3sea];
 		var cp67 = createMCP("CP-67", cp67_segments);
 		mcpTable[key(cp67)] = cp67;
-
         // CP-65 -- 3 lines
 		var cp65_bottom_straight = createTrack(.500, .540, .560, .540, canvas);
 		var cp65_top_straight1 = createTrack(.5361, .520, .583, .520, canvas);

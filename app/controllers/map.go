@@ -16,6 +16,23 @@ type Map struct {
 	App
 }
 
+// Since we had to restrict our program, this hashmap (really a hashset) will store all of the known MCP names from the front end.  This will prevent us from sending out unnecessary packets, and should therefor help minimize server network usage.
+var KNOWN_MCP map[string]bool = map[string]bool{
+	"CP-50":true,
+	"CP-53":true,
+	"CP-62":true,
+	"CP-64":true,
+	"CP-65":true,
+	"CP-67":true,
+	"Carl":true,
+	"Front":true,
+	"Lees Cross Roads":true,
+	"Ross":true,
+	"Ship":true,
+	"Spring":true,
+	"Town":true,
+	"_proto_":true, // This shows up on the front end, so while I know it doesn't exist in the MCP, I decided to include it for consistency
+}
 
 //Serve the Index page for the map
 func (c Map) Index() revel.Result {
@@ -68,37 +85,46 @@ type ClientTrainData struct {
 func (c Map) GetTrainData() revel.Result {
 	//fmt.Println("Serving up train Data")
 	var CTD ClientTrainData
-	trainInfo := packetDecoding.GetTrainInfo()
-	if trainInfo == nil {
-		fmt.Println("Server may be closed.  Unable to fetch Train Info")
-	}
-	label := trainInfo.L4P.Label
-	fmt.Println("Label", label)
-	mcp := c.GetMCP(trainInfo.L3.SourceAddr)
-	if mcp == nil {
-		fmt.Println("No Mcp with that address...")
+	// Get packets
+	for {
+		// This method call is essentially an event listener for packets.
+		trainInfo := packetDecoding.GetTrainInfo()
+		if trainInfo == nil {
+			fmt.Println("Server may be closed.  Unable to fetch Train Info")
+		}
+		label := trainInfo.L4P.Label
+		fmt.Println("Label", label)
+		mcp := c.GetMCP(trainInfo.L3.SourceAddr)
+		if mcp == nil {
+			fmt.Println("No Mcp with that address...")
+			continue //Don't send anything, get another packet... //c.RenderJson(CTD)
+		}
+		if !KNOWN_MCP[mcp.Name] { // if the mcp won't be recognized on the front end, dont send it
+			fmt.Println("MCP is not on our map...")
+			continue // get another packet.
+		}
+
+		//Construct the train data to render.
+
+		//label := trainInfo.L4P.Label
+		CTD.Name = mcp.Name
+		//CTD.StateCounty = mcp.StateCounty
+		CTD.CodeLineData = trainInfo.L4P.CodeLineData
+		CTD.MilePost = mcp.Milepost
+		//CTD.Subdivision = mcp.Subdivision
+		if label == "9.2.11" { //Indication Packet
+			CTD.MessageType = "Indication"
+			CTD.Bits = mcp.IndicationBits
+			CTD.Mnemonics = mcp.IndicationMnemonics
+
+		} else if label == "9.0.1" { //Control Packet
+			CTD.MessageType = "Control"
+			CTD.Bits = mcp.ControlBits
+			CTD.Mnemonics = mcp.ControlMnemonics
+		}
 		return c.RenderJson(CTD)
 	}
-	//label := trainInfo.L4P.Label
-	CTD.Name = mcp.Name
-	//CTD.StateCounty = mcp.StateCounty
-	CTD.CodeLineData = trainInfo.L4P.CodeLineData
-	CTD.MilePost = mcp.Milepost
-	//CTD.Subdivision = mcp.Subdivision
-	if label == "9.2.11" { //Indication Packet
-		CTD.MessageType = "Indication"
-		CTD.Bits = mcp.IndicationBits
-		CTD.Mnemonics = mcp.IndicationMnemonics
 
-	} else if label == "9.0.1" { //Control Packet
-		CTD.MessageType = "Control"
-		CTD.Bits = mcp.ControlBits
-		CTD.Mnemonics = mcp.ControlMnemonics
-	}
-
-	//fmt.Println("Served data")
-
-	return c.RenderJson(CTD)
 }
 
 //Utility function to check if the user is connected, and if not to return revel redirect, if they are, return nil

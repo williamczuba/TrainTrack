@@ -1,7 +1,12 @@
 {{set . "title" "Map"}}
 {{template "header.html" .}}
+<link rel="stylesheet" type="text/css" href="/public/css/map.css">
+<!-- Container for map -->
+<div id="mapContainer" >
 <!-- Creates Canvas -->
 <canvas id="mapCanvas"></canvas>
+</div>
+
 <div style ="display:none;">
 	<img id = "cploff" src = "/public/img/cploff.png">
 	<img id = "cproff" src = "">

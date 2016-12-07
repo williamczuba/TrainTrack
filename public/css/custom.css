@@ -15,12 +15,14 @@
 }
 
 .navbar-header {
-    float: center;
-    padding: 15px;
+    /*float: center;*/
+    height: 53px;
+    padding: 5px;
     text-align: center;
     width: 100%;
 }
-.navbar-brand {float:center;
+.navbar-brand {
+    /*float:center;*/
   font-size: 48px;
    color: blue;
 }
