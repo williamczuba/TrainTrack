@@ -48,6 +48,11 @@ function MCP(TrainData){
     var segments = "";
     if (mcpData != null){
          segments = mcpData.segments;
+		 if(mcpData.timer != undefined){
+			clearTimeout(mcpData.timer);
+		 }
+		 mcpData.time = 2000;
+		 mcpData.timer = setTimeout(resetTrack(mcpData.segments), mcpData.time);
     }
     var color = "";
     console.log("Message type: ", trainDataObj.message_type);
@@ -688,9 +693,13 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 //};
 
 function createMCP(name, segments){
-    var MCP = {
+    var clearTime = 2000;
+	var timer = undefined;
+	var MCP = {
         name: name,
-        segments: segments
+        segments: segments,
+		time: clearTime,
+		timer: timer
     };
 	console.log("MCP Name: ", MCP.name);
 	console.log("MCP Segments: ", MCP.segments);
@@ -964,6 +973,13 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 
   canvas.addEventListener("mousemove", check);
   canvas.addEventListener("click", check);
+}
+
+function resetTrack(segments){
+	 for (var i = 0; i < segments.length; i++){
+		console.log(segments[i]);
+        changeTrack(segments[i], "white");
+    }
 }
 
 // Resizes the Canvas to the full viewport.
