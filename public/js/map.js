@@ -38,6 +38,7 @@ function MCP(TrainData){
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
     var name = trainDataObj.Name;
+	name = name.trim();
     console.log("Name: " , name);
 //    //Find the MCP that corresponds to the name given
     var mcpData = mcpTable[key(name)];
@@ -152,7 +153,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var town_segments = [csx_straight, csx_ramp, lurgan_straight, lurgan_ramp, nsi_ramp, nsi_straight, csxl_ramp,
 							 csxl_straight, csxh_ramp, csxh_straight, nsh_straight, nsh_ramp, nsi_ramp, nsi_straight,
 							roanoke_to_ssa];
-		var town = createMCP("Town", town_segments);
+		var town = createMCP("Town ", town_segments);
 		mcpTable[town.name] = town;
 
 		//CP-67 -- 4 lines
@@ -203,7 +204,6 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
         var cp50_segments = [cp50_straight_top, cp50_ramp_r, cp50_straight_bottom];
         var cp50 = createMCP("CP-50", cp50_segments);
         mcpTable[key(cp50.name)] = cp50;
-
 		return this;
 };
 
@@ -263,6 +263,7 @@ drawLurganToShip.prototype.drawLTSTrackSegments = function(canvas, ctx){
 //TODO: The way I was making MCP's is probably not the best way to go about this. Should probably structure them as hashmaps
 //instead, with the mnemonic as the key and the value being the corresponding track segment/control point. Just modify
 //the implementation so there's SOME kind of connection between mnemonics and what they represent - there isn't right now.
+/*
 drawLurganToShip.prototype.createLTS_MCPLists = function(){
 
 	var town_c = ["","","2NGZ","1RWZ","4SGZ","1NWZ","SMZ","","","","6NGZ","3RWZ","2SGZ","3NWZ","","","","","","5RWZ","","5NWZ","","","","SSXOZ","SSXZ","7NWZ","","7NWZ","","","","","","9NWZ","","9NWZ","","","","","","2RWZ","","2NWZ","",""];
@@ -289,6 +290,7 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 	var mcpList = [town, cp67, cp64, cp64, cp62, cp53, cp50];
 	return mcpList;
 };
+*/
 
 //Creates control points for the Lurgan to Ship region. Control points contain their location, their mnemonic, and the
 //track mnemonics they control.
@@ -518,6 +520,7 @@ drawShipToFront.prototype.drawSTFTrackSegments = function(canvas, ctx){
 };
 */
 
+/*
 drawShipToFront.prototype.createSTF_MCPLists = function(){
     var ship_c = ["2WGZ","2STZ","2EGZ","4WGZ","4STZ","4EGZ","3RWZ","3NWZ","","","1WXOZ","1WXZ","2WXOZ","2WXZ","SEXOZ","SEXZ"];
     var ship_i = ["","","2WGK","2EGK","4WGK","4EGK","3RWK","3NWK","SRAK","SEAK","1WXK","2WXK","SEXK","3LZK","2TK","1TK","","","","SMK","","1WAK","REAK","2WAK","","","","","","","",""];
@@ -540,6 +543,7 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
 	var mcpList = [ship, lee, carl, spring, ross, front];
 	return mcpList;
 };
+*/
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var cproff = new Image();
