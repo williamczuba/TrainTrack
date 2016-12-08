@@ -38,7 +38,7 @@
 //}, 3000);
 
 function MCP(TrainData){
-//    console.log("MCP");
+    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
@@ -1060,13 +1060,15 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 }
 
 function resetTrack(mcpData){
-    console.log("Made it to resetTrack()");
+    console.log("Made it to resetTrack() ", mcpData.name);
      mcpData.color = "white";
-	 for (var i = 0; i < Object.keys(mcpData.segments).length; i++){
+	 for (var i = 0; i < mcpData.segments.length; i++){
 //		console.log(segments[i]);
-        changeTrack(mcp.segments[i], "white");
+        changeTrack(mcpData.segments[i], "white");
     }
+    console.log("reset track mcp: ", mcpData);
     mcpTable[key(mcpData.name)] = mcpData;
+    console.log("mcp track after: ", mcpData);
 }
 
 // Resizes the Canvas to the full viewport.
