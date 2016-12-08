@@ -34,27 +34,29 @@
 //};
 
 function MCP(TrainData){
+    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
     console.log(trainDataObj);
     var name = trainDataObj.Name;
 	name = name.trim();
-	console.log("Name: ", name, " timer: ", trainDataObj.timer);
+	console.log("Name: ", name);
 
 //    //Find the MCP that corresponds to the name given
     var mcpData = mcpTable[key(name)];
     console.log("MCP Data: ", mcpData);
+    console.log("Time id: ", mcpData.timeId);
 //    var mcpData2 = mcpTable[key(TrainData.name)];
 //    console.log("MCP Data2: ", mcpData2)
     var segments = "";
     if (mcpData != null){
          segments = mcpData.segments;
-		 if(mcpData.timer != undefined){
-			clearTimeout(mcpData.timer);
+		 if(mcpData.timeId != undefined){
+			clearTimeout(mcpData.timeId);
 		 }
 		 console.log("Entered reset portion.");
-		 mcpData.time = 2000;
-		 mcpData.timer = setTimeout(resetTrack(mcpData.segments), mcpData.time);
+		 mcpData.time = 20;
+		 mcpData.timeId = setTimeout(resetTrack(mcpData.segments), mcpData.time);
 		 mcpTable[key(name)] = mcpData;
     }
     var color = "";
@@ -70,7 +72,7 @@ function MCP(TrainData){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
-};
+}
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
@@ -693,12 +695,12 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 
 function createMCP(name, segments){
     var clearTime = 2000;
-	var timer = undefined;
+	var timeId = undefined;
 	var MCP = {
         name: name,
         segments: segments,
 		time: clearTime,
-		timer: timer
+		timeId: timeId
     };
 //	console.log("MCP Name: ", MCP.name);
 //	console.log("MCP Segments: ", MCP.segments);
