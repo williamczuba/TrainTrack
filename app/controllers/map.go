@@ -8,7 +8,7 @@ import (
 	//"TrainTrack/app/packetDecoding"
 	//"github.com/revel/samples/chat/app/chatroom"
 	"TrainTrack/app/packetDecoding"
-	"fmt"
+	//"fmt"
 )
 
 //Map structure, needs to extend App (which extends gorp and revel controller) to be a controller
@@ -60,7 +60,7 @@ func (c Map) GetMCP(address string) *models.Mcp {
 	}
 
 	if len(mcp) == 0 {
-		println("NO mcp with that address: ", address)
+		//println("NO mcp with that address: ", address)
 		return nil // if none, then they don't exist
 	}
 	//otherwise return the result
@@ -90,18 +90,18 @@ func (c Map) GetTrainData() revel.Result {
 		// This method call is essentially an event listener for packets.
 		trainInfo := packetDecoding.GetTrainInfo()
 		if trainInfo == nil {
-			fmt.Println("Server may be closed, or there was an issue with the packet.  Unable to fetch Train Info, dropping packet.")
+			//fmt.Println("Server may be closed, or there was an issue with the packet.  Unable to fetch Train Info, dropping packet.")
 			continue
 		}
 		label := trainInfo.L4P.Label
-		fmt.Println("Label", label)
+		//fmt.Println("Label", label)
 		mcp := c.GetMCP(trainInfo.L3.SourceAddr)
 		if mcp == nil {
-			fmt.Println("No Mcp with that address...")
+			//fmt.Println("No Mcp with that address...")
 			continue //Don't send anything, get another packet... //c.RenderJson(CTD)
 		}
 		if !KNOWN_MCP[mcp.Name] { // if the mcp won't be recognized on the front end, dont send it
-			fmt.Println("MCP is not on our map...")
+			//fmt.Println("MCP is not on our map...")
 			continue // get another packet.
 		}
 
@@ -123,6 +123,7 @@ func (c Map) GetTrainData() revel.Result {
 			CTD.Bits = mcp.ControlBits
 			CTD.Mnemonics = mcp.ControlMnemonics
 		}
+		//fmt.Println("Returned a train data.")
 		return c.RenderJson(CTD)
 	}
 
