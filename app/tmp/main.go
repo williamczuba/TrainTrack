@@ -221,29 +221,6 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Admin)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Dash",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					30: []string{ 
-						"users",
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Approve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.Map)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -267,7 +244,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					144: []string{ 
+					145: []string{ 
 					},
 				},
 			},
@@ -283,14 +260,37 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Admin)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Dash",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					30: []string{ 
+						"users",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Approve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "UserId", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
 			103: "verifyPassword",
 			104: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
-			149: "verifyPassword",
-			151: "verifyPassword",
+			150: "verifyPassword",
+			152: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
 			43: "user.Email",
