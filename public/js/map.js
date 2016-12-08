@@ -92,6 +92,22 @@ var key = function(mcpName){
 	return hash;
 };
 
+function getFont(fontSize, fontBase, canvas) {
+	var smallestVal = canvas.width;
+	// if(canvas.width > canvas.height) {
+	// 	smallestVal = canvas.height;
+	// }
+	if (smallestVal >= 1500) {
+		return (1.5 * fontSize) | 0;//1.5 is the max size. otherwise things run into each other.
+	}
+	var ratio = fontSize / fontBase;   // calc ratio
+	var size = smallestVal * ratio;   // get font size based on current width
+	// console.log("Size:",size, "Ratio", ratio, "smallest", smallestVal, "size|0=", (size|0));
+	if(size < 0.5) {
+		return 12;
+	}
+	return (size | 0); //+ 'em sans-serif'; // set font
+}
 
 //Functions for creating the track segments
 //Draws Lurgan to SHIP segment
@@ -100,31 +116,39 @@ var drawLurganToShip = function(){
 
 // TODO - change text sizing
 drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
+
 		// Draw Text
 		// Orange, size 1em
-		ctx.font = ("1em Arial");
+		var fontBase = 1080, // selected default width for canvas
+		fontSize = 12; // default size for font 1em
+		// ctx.font = ("1em Arial");
+		// console.log(getFont(fontSize, fontBase, canvas));
+		ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
 		ctx.fillStyle = "#ffa500";
-		ctx.fillText("Lurgan Sub", 0.04*canvas.width, 0.5*canvas.height);
-		ctx.fillText("NS H-Line", 0.04*canvas.width, 0.53*canvas.height);
-		ctx.fillText("to Roanoke", 0.04*canvas.width, 0.55*canvas.height);
+		ctx.fillText("Lurgan Sub", 0.01*canvas.width, 0.485*canvas.height);
+		ctx.fillText("NS H-Line", 0.01*canvas.width, 0.53*canvas.height);
+		ctx.fillText("to Roanoke", 0.01*canvas.width, 0.55*canvas.height);
 		ctx.fillText("Lurgan Branch", .796*canvas.width, 0.48*canvas.height);
-		ctx.fillText("to Ship", .796*canvas.width, 0.5*canvas.height);
+		ctx.fillText("to Ship", .796*canvas.width, 0.495*canvas.height);
 		// Gray, size 1em
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.190*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-67", 0.44*canvas.width, 0.5*canvas.height);
 		ctx.fillText("CP-65", 0.52*canvas.width, 0.5*canvas.height);
-		ctx.fillText("CP-64", 0.576*canvas.width, 0.57*canvas.height);
+		ctx.fillText("CP-64", 0.576*canvas.width, 0.56*canvas.height);
 		ctx.fillText("CP-62", 0.62*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-53", 0.76*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-50", 0.84*canvas.width, 0.57*canvas.height);
 		// Orange, size 0.8em
-		ctx.font = ("0.8em Arial");
-		ctx.fillStyle = "#ffa500";
+		// ctx.font = ("0.8em Arial");
+		var fontSize = 10;
+		// console.log(getFont(fontSize, fontBase, canvas));
+		ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
+			ctx.fillStyle = "#ffa500";
 		ctx.fillText("NS Industrial Lead", 0.402*canvas.width, 0.610*canvas.height);
 		ctx.fillText("CSX Lurgan Sub", 0.402*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CSX Hanover Sub", 0.402*canvas.width, 0.59*canvas.height);
-		ctx.fillText("Greencastle Yard", 0.490*canvas.width, 0.575*canvas.height);
+		ctx.fillText("Greencastle Yard", 0.51*canvas.width, 0.58*canvas.height);
 		return this;
 };
 
@@ -359,13 +383,16 @@ var drawShipToFront = function (){
 drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
     // Draw Text
 	// Orange, size 12
-	ctx.font = ("1em Arial");
+	// ctx.font = ("1em Arial");
+	var fontBase = 1080; // selected default width for canvas
+	var fontSize = 12;
+	ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
 	ctx.fillStyle = "#ffa500";
 	ctx.fillText("to CP-50", canvas.width * .112, canvas.height * .30 );
 	ctx.fillText ("Lurgan", canvas.width * .112, canvas.height * .190);
 	ctx.fillText("Running", canvas.width * .112, canvas.height * .205);
 	ctx.fillText("Track", canvas.width * .112, canvas.height * .220);
-	ctx.fillText("Gettysburg RR", canvas.width * .415, canvas.height * .289);
+	ctx.fillText("Gettysburg RR", canvas.width * .415, canvas.height * .315);
     ctx.fillText("Lurgan Branch", canvas.width * .675, canvas.height * .2285);
     ctx.fillText("to", canvas.width * .945, canvas.height * .190);
     ctx.fillText("Paxton", canvas.width * .945, canvas.height * .210);
@@ -380,7 +407,10 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
     ctx.fillText("ROSS", .755 * canvas.width, .28 * canvas.height);
     ctx.fillText("FRONT", .860 * canvas.width, .28 * canvas.height);
         // Orange, size 10
-    ctx.font = ("0.8em Arial");
+
+	var fontSize = 10;
+	ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
+    // ctx.font = ("0.8em Arial");
     ctx.fillStyle = "#ffa500";
     ctx.fillText("PPG", .585 * canvas.width, .220 * canvas.height);
         //Gray, size 10
@@ -805,13 +835,19 @@ function drawMileMarker(x1, y1, x2, y2, canvas){
 function createControlPoint(x, y, cMnemonic, canvas, img){
 	// var newCanvas = document.createElement("canvas");
 	// var newCtx = newCanvas.getContext('2d');
+	//Resize the MCP based on canvas size.
+	var idealWidth = 1080;
+	var idealHeight = 1250;
+	var cWR = canvas.width/idealWidth;
+	var cHR = canvas.height/idealHeight;
 	var oldCtx = canvas.getContext('2d');
 	$(img).load(function(){
 		// newCanvas.width = img.width;
 		// newCanvas.height = img.height;
 		// document.body.appendChild(newCanvas);
 		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
-		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height);
+
+		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
 		var cp = {
 			// canvas: newCanvas,
 			// ctx: newCtx,
@@ -991,11 +1027,21 @@ $(document).ready(function(){
 	var ctx = canvas.getContext('2d');
 	var trackData = [];
 	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	canvas.height=window.innerHeight;
+	if (window.innerWidth < 950 || window.innerHeight < 1200) {
+		canvas.width = 950;
+		canvas.height =1200;
+	}
+
+	// var canvasWidth = 400px;
+	// var canvasHeight = 200px;
 	//console.log(canvas.width);
 	//console.log(canvas.height);
-	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-	ctx.font = ("2em Times New Roman");
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	// ctx.font = ("2em Times New Roman");
+	var fontBase = 1080; // selected default width for canvas
+	var fontSize = 24;
+	ctx.font = getFont(fontSize, fontBase, canvas) + 'px Times New Roman';
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
 	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
@@ -1012,13 +1058,20 @@ function resizeCanvas(e){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-	ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+	canvas.height=window.innerHeight;
+	if (window.innerWidth < 950 || window.innerHeight < 1200) {
+		canvas.width = 950;
+		canvas.height =1200;
+	}
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	var dstf = new drawShipToFront();
 	dstf.draw(canvas, ctx);
 	var dlts = new drawLurganToShip();
 	dlts.draw(canvas, ctx);
-	ctx.font = ("2em Times New Roman");
+	var fontBase = 1080; // selected default width for canvas
+	var fontSize = 24;
+	ctx.font = getFont(fontSize, fontBase, canvas) + 'px Times New Roman';
+	// ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
 	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
