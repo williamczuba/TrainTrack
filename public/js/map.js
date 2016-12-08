@@ -65,12 +65,12 @@ function MCP(TrainData){
 //    console.log("Message type: ", trainDataObj.message_type);
     var msgType = trainDataObj.message_type;
     if (msgType == "Control"){
-        color = "red";
-        mcpData.color = "red";
-    }
-    else if (msgType == "Indication"){
         color = "green";
         mcpData.color = "green";
+    }
+    else if (msgType == "Indication"){
+        color = "red";
+        mcpData.color = "red";
     }
     mcpTable[key(name)] = mcpData;
 //    console.log("new data: ", mcpTable[key(name)]);
