@@ -26,7 +26,7 @@ type User struct {
 }
 
 //Return the username as a string
-func (u *User) String() string {
+func (u User) String() string {
 	return fmt.Sprintf("User(%s)", u.Email)
 }
 

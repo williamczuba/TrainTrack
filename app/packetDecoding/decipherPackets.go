@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"errors"
 )
 
 //TODO: RE-Write the GenLayers to use the new packet DECODED (all spacing was removed, so its pure hex now)
@@ -128,7 +129,11 @@ func NewTrainInfo(hex string) *TrainInfo {
 	//t.hexDump = hex
 	t.L2 = GenLayer2(hex)
 
-	t.L3 = GenLayer3(hex, t.L2.Info.End)
+	var err error
+	t.L3, err = GenLayer3(hex, t.L2.Info.End)
+	if err != nil { // Then stop
+		return nil
+	}
 	t.L4P = GenLayer4to7(hex, t.L3.LayerEndIndex)
 	return t
 }
@@ -170,7 +175,7 @@ func  GenLayer2(hex string) Layer2{
 	return l2
 }
 
-func  GenLayer3(hex string, start int) Layer3{
+func  GenLayer3(hex string, start int) (Layer3, error){
 	l3 := Layer3{}
 	info := new(LayerInfo)
 	info.Start = start
@@ -194,7 +199,8 @@ func  GenLayer3(hex string, start int) Layer3{
 	} else if tip == "11" {
 		l3.PacketType = "Ack"
 	} else {
-		fmt.Println("ERROR: Packet type = ", tip)
+		e := fmt.Sprintln("ERROR: Packet type = ", tip)
+		return l3, errors.New(e)
 	}
 
 	// priority
@@ -211,7 +217,8 @@ func  GenLayer3(hex string, start int) Layer3{
 	e = i+2
 	str = hex[i:e]
 	if str != "00" {
-		fmt.Println("ERROR, channel should be 00!")
+		e := fmt.Sprintln("ERROR, channel should be 00!")
+		return l3, errors.New(e)
 	}
 	l3.Channel = 0
 
@@ -267,7 +274,7 @@ func  GenLayer3(hex string, start int) Layer3{
 	str = hex[i:e]
 	str = replace(str)
 	l3.DestAddr = str
-	fmt.Println("Dest Address: " + str)
+	//fmt.Println("Dest Address: " + str)
 
 	//Source address
 	i = e
@@ -275,7 +282,7 @@ func  GenLayer3(hex string, start int) Layer3{
 	str = hex[i:e]
 	str = replace(str)
 	l3.SourceAddr = str
-	fmt.Println("Source address: ", str)
+	//fmt.Println("Source address: ", str)
 
 	//Fil3
 	i = e
@@ -289,13 +296,14 @@ func  GenLayer3(hex string, start int) Layer3{
 	l3.LayerEndIndex = e
 	l3.LenFacility = HexToDec(str)
 	if str != "0" {
-		fmt.Println("ERROR WITH FACILITY LEN")
+		e := fmt.Sprintln("ERROR WITH FACILITY LEN")
+		return l3, errors.New(e)
 	}
 	info.End = e
 	info.Size = info.End - info.Start
 	l3.Info = info
 
-	return l3
+	return l3, nil
 }
 
 func GenLayer4to7(hex string, start int) Layer4to7{

@@ -90,7 +90,8 @@ func (c Map) GetTrainData() revel.Result {
 		// This method call is essentially an event listener for packets.
 		trainInfo := packetDecoding.GetTrainInfo()
 		if trainInfo == nil {
-			fmt.Println("Server may be closed.  Unable to fetch Train Info")
+			fmt.Println("Server may be closed, or there was an issue with the packet.  Unable to fetch Train Info, dropping packet.")
+			continue
 		}
 		label := trainInfo.L4P.Label
 		fmt.Println("Label", label)
