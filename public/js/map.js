@@ -62,6 +62,15 @@ function MCP(TrainData){
          segments = mcpData.segments;
 //         console.log("mcp func segments: ", segments)
     }
+	if(mcpData.timeId != undefined){
+		console.log("TimeId: "+mcpData.timeId);
+    	window.clearTimeout(mcpData.timeId);
+		mcpData.timeId = undefined;
+		console.log("Clear TimeId: "+mcpData.timeId);
+    }
+	console.log("Time: " + mcpData.time);
+   	mcpData.timeId = setTimeout(resetTrack, mcpData.time, mcpData);
+	mcpTable[key(mcpData.name)] = mcpData;
     var color = "";
 //    console.log("Message type: ", trainDataObj.message_type);
     var msgType = trainDataObj.message_type;
@@ -79,15 +88,9 @@ function MCP(TrainData){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
-    if(mcpData.timeId != undefined){
-		console.log("TimeId: "+mcpData.timeId);
-    	window.clearTimeout(mcpData.timeId);
-		console.log("Clear TimeId: "+mcpData.timeId);
-    }
 
-    mcpData.time = 60000;
 //    console.log("Started timeout at bottom half of MCP at: ", getCurrTime());
-    mcpData.timeId = window.setTimeout(resetTrack(mcpData), mcpData.time);
+
 //    update the value in the hash table to include the new timeId setting -- done in resetTrack
 //    mcpTable[key(name)] = mcpData;
 //    console.log("mcpData in mcp func after: ", mcpData);
@@ -382,6 +385,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cplon = new Image();
 	cplon.src = "/public/img/cplon.png";
 	// TOWN control points
+	//function toolTip(canvas, x, y, width, height, text, timeout)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
@@ -910,16 +914,18 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
 
 		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
-		var cp = {
-			// canvas: newCanvas,
-			// ctx: newCtx,
-			cm: cMnemonic,
-			x: x,
-			y: y,
-			img: img
-		};
-		return cp;
 	});
+	var cp = {
+		// canvas: newCanvas,
+		// ctx: newCtx,
+		cm: cMnemonic,
+		x: x,
+		y: y,
+		width: cWR,
+		height: cHR,
+		img: img
+	}
+	return cp;
 };
 
 
@@ -1068,7 +1074,7 @@ function toolTip(canvas, x, y, width, height, text, timeout){
       div.style.top = pos.y + "px";
     }
   }
-
+	
   canvas.addEventListener("mousemove", check);
   canvas.addEventListener("click", check);
 }
@@ -1079,11 +1085,11 @@ function resetTrack(mcpData){
      mcpData.color = "white";
 	 for (var i = 0; i < mcpData.segments.length; i++){
 //		console.log("current segment:", mcpData.segments[i]);
-        changeTrack(mcpData.segments[i], "white");
+        changeTrack(mcpData.segments[i], mcpData.color);
     }
 //    console.log("MCP after making it to resetTrack: ", mcpData);
     mcpTable[key(mcpData.name)] = mcpData;
-	console.log("Reset track: " + mcpData.name);
+	console.log("Reset track: " + mcpData.name) + "to color: " + mcpData.color;
 //    console.log("mcp track after: ", mcpData);
 //    console.log("mcpTable[key(mcpData.name)] = ", mcpTable[key(mcpData.name)] );
 //    console.log("Left resetTrack at: ", getCurrTime());
