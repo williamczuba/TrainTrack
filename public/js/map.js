@@ -58,7 +58,7 @@ function MCP(TrainData){
 		if(mcpData.timeId != undefined){
 			clearTimeout(mcpData.timeId);
 		}
-		mcpData.time = 2000;
+		mcpData.time = 60000;
 		mcpData.timeId = setTimeout(resetTrack(mcpData), mcpData.time);
     }
     var color = "";
@@ -770,7 +770,7 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 
 function createMCP(name, segments){
     var color = "white";
-    var clearTime = 2000;
+    var clearTime = 60000;
 	var timeId = undefined;
 	var MCP = {
         name: name,
@@ -1079,7 +1079,7 @@ $(document).ready(function(){
 	var ctx = canvas.getContext('2d');
 	var trackData = [];
 	canvas.width = window.innerWidth;
-	canvas.height=window.innerHeight;
+	canvas.height = window.innerHeight;
 	if (window.innerWidth < 950 || window.innerHeight < 1200) {
 		canvas.width = 950;
 		canvas.height = 1200;
@@ -1087,16 +1087,16 @@ $(document).ready(function(){
 
 	// var canvasWidth = 400px;
 	// var canvasHeight = 200px;
-	//console.log(canvas.width);
-	//console.log(canvas.height);
+	console.log(canvas.width);
+	console.log(canvas.height);
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	// ctx.font = ("2em Times New Roman");
 	var fontBase = 1080; // selected default width for canvas
 	var fontSize = 24;
 	ctx.font = getFont(fontSize, fontBase, canvas) + 'px Times New Roman';
 	ctx.fillStyle = "white";
-	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
-	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
+	ctx.fillText("Norfolk Southern", 0, .030*canvas.height);
+	ctx.fillText("Harrisburg Division", 0, .060*canvas.height);
 	var dlts = new drawLurganToShip();
 	var dltsDraw = dlts.draw(canvas, ctx);
 	var dstf = new drawShipToFront();
@@ -1111,7 +1111,7 @@ function resizeCanvas(e){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	canvas.width = window.innerWidth;
-	canvas.height=window.innerHeight;
+	canvas.height = window.innerHeight;
 	if (window.innerWidth < 950 || window.innerHeight < 1200) {
 		canvas.width = 950;
 		canvas.height =1200;
@@ -1140,8 +1140,8 @@ function resizeCanvas(e){
 	ctx.font = getFont(fontSize, fontBase, canvas) + 'px Times New Roman';
 	// ctx.font = ("2em Times New Roman");
 	ctx.fillStyle = "white";
-	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
-	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
+	ctx.fillText("Norfolk Southern", 0, .030*canvas.height);
+	ctx.fillText("Harrisburg Division", 0, .060*canvas.height);
 }
 
 //Array of all the names of the MCPS
