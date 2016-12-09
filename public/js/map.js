@@ -36,6 +36,7 @@
 //setTimeout(function (){
 //    alert("hi");
 //}, 3000);
+// Function used for testing of clearing track segments.
 function getCurrTime(){
     var d = new Date();
    console.log(d.getHours(), " ", d.getMinutes(), " ", d.getSeconds())
@@ -46,6 +47,7 @@ function MCP(TrainData){
 //    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
+	console.log(trainDataObj);
 //    console.log(trainDataObj);
     var name = trainDataObj.Name;
 	name = name.trim();
@@ -64,12 +66,12 @@ function MCP(TrainData){
 //    console.log("Message type: ", trainDataObj.message_type);
     var msgType = trainDataObj.message_type;
     if (msgType == "Control"){
-        color = "red";
-        mcpData.color = "red";
-    }
-    else if (msgType == "Indication"){
         color = "green";
         mcpData.color = "green";
+    }
+    else if (msgType == "Indication"){
+        color = "red";
+        mcpData.color = "red";
     }
     //update the value in the hash table to include the new color setting
     mcpTable[key(name)] = mcpData;
@@ -78,13 +80,14 @@ function MCP(TrainData){
         changeTrack(segments[i], color);
     }
     if(mcpData.timeId != undefined){
-//        console.log("Delay cleared at: ", getCurrTime());
-        clearTimeout(mcpData.timeId);
+		console.log("TimeId: "+mcpData.timeId);
+    	window.clearTimeout(mcpData.timeId);
+		console.log("Clear TimeId: "+mcpData.timeId);
     }
 
     mcpData.time = 60000;
 //    console.log("Started timeout at bottom half of MCP at: ", getCurrTime());
-    mcpData.timeId = setTimeout(resetTrack(mcpData), mcpData.time);
+    mcpData.timeId = window.setTimeout(resetTrack(mcpData), mcpData.time);
 //    update the value in the hash table to include the new timeId setting -- done in resetTrack
 //    mcpTable[key(name)] = mcpData;
 //    console.log("mcpData in mcp func after: ", mcpData);
@@ -1080,6 +1083,7 @@ function resetTrack(mcpData){
     }
 //    console.log("MCP after making it to resetTrack: ", mcpData);
     mcpTable[key(mcpData.name)] = mcpData;
+	console.log("Reset track: " + mcpData.name);
 //    console.log("mcp track after: ", mcpData);
 //    console.log("mcpTable[key(mcpData.name)] = ", mcpTable[key(mcpData.name)] );
 //    console.log("Left resetTrack at: ", getCurrTime());
