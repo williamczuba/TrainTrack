@@ -36,30 +36,29 @@
 //setTimeout(function (){
 //    alert("hi");
 //}, 3000);
+function getCurrTime(){
+    var d = new Date();
+   console.log(d.getHours(), " ", d.getMinutes(), " ", d.getSeconds())
+}
+//window.setInterval(d = new Date(),100);
 
 function MCP(TrainData){
-    console.log("MCP");
+//    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
-    console.log(trainDataObj);
+//    console.log(trainDataObj);
     var name = trainDataObj.Name;
 	name = name.trim();
-//	console.log("Name: ", name);
+//	console.log("Mcp function name: ", name);
 
-//    //Find the MCP that corresponds to the name given
+    //Find the MCP that corresponds to the name given
     var mcpData = mcpTable[key(name)];
-    console.log("MCP Data: ", mcpData);
-//    console.log("Time id: ", mcpData.timeId);
-//    var mcpData2 = mcpTable[key(TrainData.name)];
-//    console.log("MCP Data2: ", mcpData2)
+//    console.log("mcpData in mcp func before: ", mcpData);
+
     var segments = "";
-    if (mcpData != null){
+    if (mcpData != undefined){
          segments = mcpData.segments;
-		if(mcpData.timeId != undefined){
-			clearTimeout(mcpData.timeId);
-		}
-		mcpData.time = 2000;
-		mcpData.timeId = setTimeout(resetTrack(mcpData), mcpData.time);
+//         console.log("mcp func segments: ", segments)
     }
     var color = "";
 //    console.log("Message type: ", trainDataObj.message_type);
@@ -72,12 +71,25 @@ function MCP(TrainData){
         color = "green";
         mcpData.color = "green";
     }
+    //update the value in the hash table to include the new color setting
     mcpTable[key(name)] = mcpData;
-//    console.log("new data: ", mcpTable[key(name)]);
     for (var i = 0; i < segments.length; i++){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
+    if(mcpData.timeId != undefined){
+//        console.log("Delay cleared at: ", getCurrTime());
+        clearTimeout(mcpData.timeId);
+    }
+
+    mcpData.time = 60000;
+//    console.log("Started timeout at bottom half of MCP at: ", getCurrTime());
+    mcpData.timeId = setTimeout(resetTrack(mcpData), mcpData.time);
+//    update the value in the hash table to include the new timeId setting -- done in resetTrack
+//    mcpTable[key(name)] = mcpData;
+//    console.log("mcpData in mcp func after: ", mcpData);
+//    console.log("mcpData in table in mcp func after: ", mcpTable[key(name)]);
+//    console.log("Finished function at: ", getCurrTime());
 };
 
 //Global variable to keep track of whether or not the hash map is filled with the MCPs from Lurgan to Ship
@@ -770,7 +782,7 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 
 function createMCP(name, segments){
     var color = "white";
-    var clearTime = 2000;
+    var clearTime = 60000;
 	var timeId = undefined;
 	var MCP = {
         name: name,
@@ -993,7 +1005,6 @@ function changeTrack(track, color){
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
      }
-
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
@@ -1060,20 +1071,23 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 }
 
 function resetTrack(mcpData){
-    console.log("Made it to resetTrack() ", mcpData.name);
+//    console.log("Entered resetTrack at: ", getCurrTime());
+//    console.log("Made it to resetTrack() with MCP as: ", mcpData);
      mcpData.color = "white";
 	 for (var i = 0; i < mcpData.segments.length; i++){
-//		console.log(segments[i]);
+//		console.log("current segment:", mcpData.segments[i]);
         changeTrack(mcpData.segments[i], "white");
     }
-    console.log("reset track mcp: ", mcpData);
+//    console.log("MCP after making it to resetTrack: ", mcpData);
     mcpTable[key(mcpData.name)] = mcpData;
-    console.log("mcp track after: ", mcpData);
+//    console.log("mcp track after: ", mcpData);
+//    console.log("mcpTable[key(mcpData.name)] = ", mcpTable[key(mcpData.name)] );
+//    console.log("Left resetTrack at: ", getCurrTime());
 }
 
 // Resizes the Canvas to the full viewport.
 $(document).ready(function(){
-    console.log("Ready");
+//    console.log("Ready");
 	window.addEventListener("resize", resizeCanvas, false);
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
