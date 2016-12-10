@@ -86,6 +86,7 @@ function MCP(TrainData){
     }
     //update the value in the hash table to include the new color setting
     mcpTable[key(name)] = mcpData;
+	console.log(mcpData.controlPoints);
     for (var i = 0; i < segments.length; i++){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
@@ -111,6 +112,16 @@ var stfFilled = false;
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
+
+//Load Control Point images as global vars
+var cproff = new Image();
+cproff.src = "/public/img/cproff.png";
+var cploff = new Image();
+cploff.src = "/public/img/cploff.png";
+var cpron = new Image();
+cpron.src = "/public/img/cpron.png";
+var cplon = new Image();
+cplon.src = "/public/img/cplon.png";
 
 /* This function creates the hash key from the mcp name. The name refers to an MCP object, which holds the MCP
 segments that will need to be colored. The function takes 11, a prime number, and multiplies that by 53 before adding the ASCII
@@ -381,15 +392,6 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 //TODO - starting to think control points having nothing to do with the tracks... probably need some sort of MCP structure
 //to hold track and CP mnemonics.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
-	// Load images
-	var cproff = new Image();
-	cproff.src = "/public/img/cproff.png";
-	var cploff = new Image();
-	cploff.src = "/public/img/cploff.png";
-	var cpron = new Image();
-	cpron.src = "/public/img/cpron.png";
-	var cplon = new Image();
-	cplon.src = "/public/img/cplon.png";
 	// TOWN control points
 	//function toolTip(canvas, x, y, width, height, text, timeout)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
@@ -400,6 +402,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var sg6nw2 = createControlPoint(.383, .544, "1:6SG/2NW", canvas, cploff);
 	var sg6rw2 = createControlPoint(.383, .564, "1:6SG/2RW", canvas, cploff);
 	var sg4 = createControlPoint(.383, .584, "1:4SG", canvas, cploff);
+	var townCP = []
 	// CP-67 - CP-62 Control Points
 	var eg22 = createControlPoint(.423, .545, "2:2EG", canvas, cproff);
 	var wg2nw12 = createControlPoint(.470, .523, "2:2WG/1NW", canvas, cploff);
@@ -652,14 +655,6 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
 */
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
-    var cproff = new Image();
-    cproff.src = "/public/img/cproff.png";
-    var cploff = new Image();
-    cploff.src = "/public/img/cploff.png";
-    var cpron = new Image();
-    cpron.src = "/public/img/cpron.png";
-    var cplon = new Image();
-    cplon.src = "/public/img/cplon.png";
     //Ship to Lee's Cross Roads
     var eg27 = createControlPoint(.155, .238, "7:2EG", canvas, cproff);
     var eg47 = createControlPoint(.155, .257, "7:4EG", canvas, cproff);
@@ -670,8 +665,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var wg28 = createControlPoint(.265, .238, "8:2WG", canvas, cploff);
 	var shipCP = [eg27, eg47, wg27, wg47];
 	var leeCP = [eg1rw28, eg1nw28, wg28];
-	mcpTable[key("Ship")].controlPoints = shipCP;
-	mcpTable[key("Lees Cross Roads")].controlPoints = leeCP;
+	var ship = mcpTable[key("Ship")];
+	ship.controlPoints = shipCP;
+	var lee = mcpTable[key("Lees Cross Roads")];
+	lee.controlPoints = leeCP;
     //Carl to Spring
     var eg29 = createControlPoint(.490, .257, "9:2EG", canvas, cproff);
     var eg49 = createControlPoint(.490, .289, "9:4EG", canvas, cproff);
@@ -683,8 +680,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var a2wg = createControlPoint(.665, .238, "a:2WG", canvas, cploff);
 	var carlCP = [eg29, eg49, wg7rw29, wg7nw29, wg49];
 	var springCP = [a2eg1nw, a2eg1rw, a2wg];
-	mcpTable[key("Carl")].controlPoints = carlCP; 
-	mcpTable[key("Spring")].controlPoints = springCP;
+	var carl = mcpTable[key("Carl")]; 
+	carl.controlPoints = carl;
+	var spring = mcpTable[key("Spring")];
+	spring.controlPoints = spring;
     //Ross to Front
     var b2eg = createControlPoint(.780, .257, "b:2EG", canvas, cproff);
     var b2wg1rw = createControlPoint(.832, .217, "b:2WG/1RW", canvas, cploff);
@@ -695,8 +694,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var c4wg = createControlPoint(.940, .237, "c:4WG", canvas, cploff);
 	var rossCP = [b2eg, b2wg1rw, b2wg1nw];
 	var frontCP = [c2eg, c4eg, c2wg, c4wg];
-	mcpTable[key("Ross")].controlPoints = rossCP;
-	mcpTable[key("Front")].controlPoints = frontCP;
+	var ross = mcpTable[key("Ross")];
+	ross.controlPoints = rossCP;
+	var front = mcpTable[key("Front")];
+	front.controlPoints = frontCP;
 };
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
@@ -1069,23 +1070,20 @@ function changePoint(cp){
 	var canvas = cp.canvas;
 	var cWR = canvas.width/idealWidth;
 	var cHR = canvas.height/idealHeight;
-	var ctx = canvas.getContext('2d');
-	console.log(cp.img);
-	if (cp.img.src.includes("/public/img/cploff.png")){
-		cp.img.src = "/public/img/cplon.png";
+	var ctx = canvas.getContext("2d");
+	if (cp.img === cploff){
+		cp.img = cplon;
 	}
-	else if(cp.img.src.includes("/public/img/cproff.png")){
-		cp.img.src = "/public/img/cpron.png";
+	else if(cp.img === cproff){
+		cp.img = cpron;
 	}
-	else if(cp.img.src.includes("/public/img/cplon.png")){
-		cp.img.src = "/public/img/cploff.png";
+	else if(cp.img === cplon){
+		cp.img = cploff;
 	}
-	else if(cp.img.src.includes("/public/img/cpron.png")){
-		cp.img.src = "/public/img/cproff.png";
+	else if(cp.img === cpron){
+		cp.img = cproff;
 	}
-	$(cp.img).load(function(){
-		ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
-	});
+	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
