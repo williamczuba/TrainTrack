@@ -64,14 +64,16 @@ function MCP(TrainData){
 		 controls = mcpData.controlPoints;
 //         console.log("mcp func segments: ", segments)
     }
-	if(mcpData.timeId != undefined){
-		console.log("TimeId: "+mcpData.timeId);
-    	window.clearTimeout(mcpData.timeId);
-		mcpData.timeId = undefined;
-		console.log("Clear TimeId: "+mcpData.timeId);
+	if(mcpData.sTimeId != undefined){
+		console.log("sTimeId: "+mcpData.sTimeId);
+    	window.clearTimeout(mcpData.sTimeId);
+		mcpData.sTimeId = undefined;
+		mcpData.cTimeId = undefined;
+		console.log("Clear sTimeId: "+mcpData.sTimeId);
     }
-	console.log("Time: " + mcpData.time);
-   	mcpData.timeId = setTimeout(resetTrack, mcpData.time, mcpData);
+	console.log("Time: " + mcpData.sTime);
+   	mcpData.sTimeId = setTimeout(resetTrack, mcpData.sTime, mcpData);
+	mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
 	mcpTable[key(mcpData.name)] = mcpData;
     var color = "";
 //    console.log("Message type: ", trainDataObj.message_type);
@@ -96,9 +98,9 @@ function MCP(TrainData){
 		changePoint(controls[j]);
 	}
 
-//    console.log("Started timeout at bottom half of MCP at: ", getCurrTime());
+//    console.log("Started sTimeout at bottom half of MCP at: ", getCurrTime());
 
-//    update the value in the hash table to include the new timeId setting -- done in resetTrack
+//    update the value in the hash table to include the new sTimeId setting -- done in resetTrack
 //    mcpTable[key(name)] = mcpData;
 //    console.log("mcpData in mcp func after: ", mcpData);
 //    console.log("mcpData in table in mcp func after: ", mcpTable[key(name)]);
@@ -393,7 +395,7 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 //to hold track and CP mnemonics.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	// TOWN control points
-	//function toolTip(canvas, x, y, width, height, text, timeout)
+	//function toolTip(canvas, x, y, width, height, text, sTimeout)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
@@ -829,13 +831,16 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
 function createMCP(name, segments){
     var color = "white";
     var clearTime = 60000;
-	var timeId = undefined;
+	var sTimeId = undefined;
+	var cTimeId = undefined;
 	var MCP = {
         name: name,
         segments: segments,
 		controlPoints: undefined,
-		time: clearTime,
-		timeId: timeId,
+		sTime: clearTime,
+		cTime: clearTime,
+		sTimeId: sTimeId,
+		cTimeId: cTimeId,
 		color: color
     };
 //	console.log("MCP Name: ", MCP.name);
@@ -1108,7 +1113,7 @@ function changePoint(cp){
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
 // Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
-function toolTip(canvas, x, y, width, height, text, timeout){
+function toolTip(canvas, x, y, width, height, text, sTimeout){
 
 	var tt = this,
 		div = document.createElement("div"),
@@ -1126,13 +1131,13 @@ function toolTip(canvas, x, y, width, height, text, timeout){
 			visible = true;
 			setDivPos(pos)
 			parent.appendChild(div);
-			setTimeout(hide, timeout);
+			setTimeout(hide, sTimeout);
 		}
 	}
 
 	 // hide the tool-tip
 	 function hide() {
-	 	visible = false;                            // hide it after timeout
+	 	visible = false;                            // hide it after sTimeout
 		parent.removeChild(div);                    // remove from DOM
 	 }
 
@@ -1183,6 +1188,13 @@ function resetTrack(mcpData){
 //    console.log("mcp track after: ", mcpData);
 //    console.log("mcpTable[key(mcpData.name)] = ", mcpTable[key(mcpData.name)] );
 //    console.log("Left resetTrack at: ", getCurrTime());
+}
+
+function resetPoints(mcpData){
+	for (var j = 0; j < mcpData.controlPoints.length; j++){
+		changePoint(mcpData.controlPoints[j]);
+	}
+	mcpTable[key(mcpData.name)] = mcpData;
 }
 
 // Resizes the Canvas to the full viewport.
