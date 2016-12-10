@@ -58,8 +58,10 @@ function MCP(TrainData){
 //    console.log("mcpData in mcp func before: ", mcpData);
 
     var segments = "";
+	var controls = "";
     if (mcpData != undefined){
          segments = mcpData.segments;
+		 controls = mcpData.controlPoints;
 //         console.log("mcp func segments: ", segments)
     }
 	if(mcpData.timeId != undefined){
@@ -88,6 +90,10 @@ function MCP(TrainData){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
+	for (var j = 0; j < controls.length; j++){
+		//console.log(controls[j]);
+		changePoint(controls[j]);
+	}
 
 //    console.log("Started timeout at bottom half of MCP at: ", getCurrTime());
 
@@ -662,6 +668,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var eg1rw28 = createControlPoint(.220, .238, "8:2EG/1RW", canvas, cproff);
     var eg1nw28 = createControlPoint(.220, .257, "8:2EG/1NW", canvas, cproff);
     var wg28 = createControlPoint(.265, .238, "8:2WG", canvas, cploff);
+	var shipCP = [eg27, eg47, wg27, wg47];
+	var leeCP = [eg1rw28, eg1nw28, wg28];
+	mcpTable[key("Ship")].controlPoints = shipCP;
+	mcpTable[key("Lees Cross Roads")].controlPoints = leeCP;
     //Carl to Spring
     var eg29 = createControlPoint(.490, .257, "9:2EG", canvas, cproff);
     var eg49 = createControlPoint(.490, .289, "9:4EG", canvas, cproff);
@@ -671,6 +681,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var a2eg1nw = createControlPoint(.615, .257, "a:2EG/1NW", canvas, cproff);
     var a2eg1rw = createControlPoint(.615, .272, "a:2EG/1RW", canvas, cproff);
     var a2wg = createControlPoint(.665, .238, "a:2WG", canvas, cploff);
+	var carlCP = [eg29, eg49, wg7rw29, wg7nw29, wg49];
+	var springCP = [a2eg1nw, a2eg1rw, a2wg];
+	mcpTable[key("Carl")].controlPoints = carlCP; 
+	mcpTable[key("Spring")].controlPoints = springCP;
     //Ross to Front
     var b2eg = createControlPoint(.780, .257, "b:2EG", canvas, cproff);
     var b2wg1rw = createControlPoint(.832, .217, "b:2WG/1RW", canvas, cploff);
@@ -679,6 +693,10 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var c4eg = createControlPoint(.890, .257, "c:4EG", canvas, cproff);
     var c2wg = createControlPoint(.940, .217, "c:2WG", canvas, cploff);
     var c4wg = createControlPoint(.940, .237, "c:4WG", canvas, cploff);
+	var rossCP = [b2eg, b2wg1rw, b2wg1nw];
+	var frontCP = [c2eg, c4eg, c2wg, c4wg];
+	mcpTable[key("Ross")].controlPoints = rossCP;
+	mcpTable[key("Front")].controlPoints = frontCP;
 };
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
@@ -794,6 +812,7 @@ function createMCP(name, segments){
 	var MCP = {
         name: name,
         segments: segments,
+		controlPoints: undefined,
 		time: clearTime,
 		timeId: timeId,
 		color: color
@@ -923,7 +942,8 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 		y: y,
 		width: cWR,
 		height: cHR,
-		img: img
+		img: img,
+		canvas: canvas
 	}
 	return cp;
 };
@@ -1014,6 +1034,58 @@ function changeTrack(track, color){
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
      }
+};
+
+function changePoint(cp){
+	/*
+	var idealWidth = 1080;
+	var idealHeight = 1250;
+	var cWR = canvas.width/idealWidth;
+	var cHR = canvas.height/idealHeight;
+	var oldCtx = canvas.getContext('2d');
+	$(img).load(function(){
+		// newCanvas.width = img.width;
+		// newCanvas.height = img.height;
+		// document.body.appendChild(newCanvas);
+		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
+
+		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
+	});
+	var cp = {
+		// canvas: newCanvas,
+		// ctx: newCtx,
+		cm: cMnemonic,
+		x: x,
+		y: y,
+		width: cWR,
+		height: cHR,
+		img: img, 
+		canvas: canvas
+	}
+	return cp;
+	*/
+	var idealWidth = 1080;
+	var idealHeight = 1250;
+	var canvas = cp.canvas;
+	var cWR = canvas.width/idealWidth;
+	var cHR = canvas.height/idealHeight;
+	var ctx = canvas.getContext('2d');
+	console.log(cp.img);
+	if (cp.img.src.includes("/public/img/cploff.png")){
+		cp.img.src = "/public/img/cplon.png";
+	}
+	else if(cp.img.src.includes("/public/img/cproff.png")){
+		cp.img.src = "/public/img/cpron.png";
+	}
+	else if(cp.img.src.includes("/public/img/cplon.png")){
+		cp.img.src = "/public/img/cploff.png";
+	}
+	else if(cp.img.src.includes("/public/img/cpron.png")){
+		cp.img.src = "/public/img/cproff.png";
+	}
+	$(cp.img).load(function(){
+		ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
+	});
 };
 
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
