@@ -61,19 +61,16 @@ function MCP(TrainData){
 	var controls = "";
     if (mcpData != undefined){
          segments = mcpData.segments;
-		 controls = mcpData.controlPoints;
-//         console.log("mcp func segments: ", segments)
+		//         console.log("mcp func segments: ", segments)
     }
 	if(mcpData.sTimeId != undefined){
 		console.log("sTimeId: "+mcpData.sTimeId);
     	window.clearTimeout(mcpData.sTimeId);
 		mcpData.sTimeId = undefined;
-		mcpData.cTimeId = undefined;
 		console.log("Clear sTimeId: "+mcpData.sTimeId);
     }
 	console.log("Time: " + mcpData.sTime);
    	mcpData.sTimeId = setTimeout(resetTrack, mcpData.sTime, mcpData);
-	mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
 	mcpTable[key(mcpData.name)] = mcpData;
     var color = "";
 //    console.log("Message type: ", trainDataObj.message_type);
@@ -81,6 +78,13 @@ function MCP(TrainData){
     if (msgType == "Control"){
         color = "green";
         mcpData.color = "green";
+		controls = mcpData.controlPoints;
+		window.clearTimeout(mcpData.cTimeId);
+		mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
+		for (var j = 0; j < controls.length; j++){
+			//console.log(controls[j]);
+			changePoint(controls[j]);
+		}
     }
     else if (msgType == "Indication"){
         color = "red";
@@ -93,10 +97,6 @@ function MCP(TrainData){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
-	for (var j = 0; j < controls.length; j++){
-		//console.log(controls[j]);
-		changePoint(controls[j]);
-	}
 
 //    console.log("Started sTimeout at bottom half of MCP at: ", getCurrTime());
 
@@ -445,6 +445,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var cp50CP = [sg26, ng2rw16, ng2nw16];
 	var cp50 = mcpTable[key("CP-50")];
 	cp50.controlPoints = cp50CP;
+	return this;
 };
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
@@ -720,6 +721,7 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
 	ross.controlPoints = rossCP;
 	var front = mcpTable[key("Front")];
 	front.controlPoints = frontCP;
+	return this;
 };
 
 drawShipToFront.prototype.draw = function(canvas, ctx){
