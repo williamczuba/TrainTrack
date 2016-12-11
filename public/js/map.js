@@ -395,7 +395,7 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 //to hold track and CP mnemonics.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	// TOWN control points
-	//function toolTip(canvas, x, y, width, height, text, sTimeout)
+	//function toolTip(cp)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
@@ -417,7 +417,7 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var eg20 = createControlPoint(.500, .543, "0:2EG", canvas, cproff);
 	var wg2nw10 = createControlPoint(.540, .501, "0:2WG/1NW", canvas, cploff);
 	var wg2rw10 = createControlPoint(.540, .523, "0:2WG/1RW", canvas, cploff);
-	var cp65CP = [eg20, wg2nw10, wg2rw10, eg2nw13, eg2rw13];
+	var cp65CP = [eg20, wg2nw10, wg2rw10];
 	var cp65 = mcpTable[key("CP-65")];
 	cp65.controlPoints = cp65CP;
 	var eg2nw13 = createControlPoint(.550, .543, "3:2WG/1NW", canvas, cproff);
@@ -704,9 +704,9 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
 	var carlCP = [eg29, eg49, wg7rw29, wg7nw29, wg49];
 	var springCP = [a2eg1nw, a2eg1rw, a2wg];
 	var carl = mcpTable[key("Carl")]; 
-	carl.controlPoints = carl;
+	carl.controlPoints = carlCP;
 	var spring = mcpTable[key("Spring")];
-	spring.controlPoints = spring;
+	spring.controlPoints = springCP;
     //Ross to Front
     var b2eg = createControlPoint(.780, .257, "b:2EG", canvas, cproff);
     var b2wg1rw = createControlPoint(.832, .217, "b:2WG/1RW", canvas, cploff);
@@ -1065,33 +1065,6 @@ function changeTrack(track, color){
 };
 
 function changePoint(cp){
-	/*
-	var idealWidth = 1080;
-	var idealHeight = 1250;
-	var cWR = canvas.width/idealWidth;
-	var cHR = canvas.height/idealHeight;
-	var oldCtx = canvas.getContext('2d');
-	$(img).load(function(){
-		// newCanvas.width = img.width;
-		// newCanvas.height = img.height;
-		// document.body.appendChild(newCanvas);
-		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
-
-		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
-	});
-	var cp = {
-		// canvas: newCanvas,
-		// ctx: newCtx,
-		cm: cMnemonic,
-		x: x,
-		y: y,
-		width: cWR,
-		height: cHR,
-		img: img, 
-		canvas: canvas
-	}
-	return cp;
-	*/
 	var idealWidth = 1080;
 	var idealHeight = 1250;
 	var canvas = cp.canvas;
@@ -1113,19 +1086,44 @@ function changePoint(cp){
 	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
 };
 
+//Redraws the given control point. Only performed when the window is resized.
+function redrawPoint(cp){
+	var idealWidth = 1080;
+	var idealHeight = 1250;
+	var canvas = cp.canvas;
+	var cWR = canvas.width/idealWidth;
+	var cHR = canvas.height/idealHeight;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
+}
+
 // Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
 // Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
-function toolTip(canvas, x, y, width, height, text, sTimeout){
-
+function toolTip(cp){
+	/*	
+	var cp = {
+		// canvas: newCanvas,
+		// ctx: newCtx,
+		cm: cMnemonic,
+		x: x,
+		y: y,
+		width: cWR,
+		height: cHR,
+		img: img, 
+		canvas: canvas
+	}
+	*/
 	var tt = this,
 		div = document.createElement("div"),
+		canvas = cp.canvas,
 		parent = canvas.parentNode,
+		timeout = 6000;
 		visible = false;
 
 	var twidth = parent*.01;
 
 	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
-	div.innerHTML = text;
+	div.innerHTML = cp.cm;
 
 	//show tooltip
 	this.show = function(pos) {
@@ -1133,7 +1131,7 @@ function toolTip(canvas, x, y, width, height, text, sTimeout){
 			visible = true;
 			setDivPos(pos)
 			parent.appendChild(div);
-			setTimeout(hide, sTimeout);
+			setTimeout(hide, timeout);
 		}
 	}
 
@@ -1148,8 +1146,8 @@ function toolTip(canvas, x, y, width, height, text, sTimeout){
 		var pos = getPos(e),
 			posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y - not sure about this, honestly. May need to use something else?
 		if (!visible &&
-        	pos.x >= x && pos.x < x + width &&
-        	pos.y >= y && pos.y < y + height) {
+        	pos.x >= cp.x && pos.x < cp.x + cp.width &&
+        	pos.y >= cp.y && pos.y < cp.y + cp.height) {
       	tt.show(posAbs);	// Show tooltip at pos
 		}
 		else setDivPos(posAbs);  // else, update position
@@ -1253,6 +1251,7 @@ function resizeCanvas(e){
     //keep the colors the same when you change the size
 	for (var i = 0; i < Object.keys(mcpTable).length; i++){
 	    var mcpSegments = mcpTable[key(segNames[i])].segments;
+		var mcpControls = mcpTable[key(segNames[i])].controlPoints;
 	    var mcpColor = mcpTable[key(segNames[i])].color;
 //	    console.log("segName: ", segNames[i], " color: ", mcpColor);
 	    for (var j = 0; j < Object.keys(mcpSegments).length; j++){
@@ -1261,6 +1260,9 @@ function resizeCanvas(e){
 	             changeTrack(mcpSegments[j], mcpColor);
 	        }
 	    }
+		for (var k = 0; k < Object.keys(mcpControls).length; k++){
+			redrawPoint(mcpControls[k]);
+		}
 	}
 
 	var fontBase = 1080; // selected default width for canvas
