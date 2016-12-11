@@ -47,7 +47,7 @@ function MCP(TrainData){
 //    console.log("MCP");
 	//Convert parameter from text to an object. This is why we couldn't access the 'name' field.
     var trainDataObj = JSON.parse(TrainData);
-	console.log(trainDataObj);
+//	console.log("TrainData: ", trainDataObj);
 //    console.log(trainDataObj);
     var name = trainDataObj.Name;
 	name = name.trim();
@@ -61,16 +61,19 @@ function MCP(TrainData){
 	var controls = "";
     if (mcpData != undefined){
          segments = mcpData.segments;
-		//         console.log("mcp func segments: ", segments)
+		 controls = mcpData.controlPoints;
+//         console.log("mcp func segments: ", segments)
     }
 	if(mcpData.sTimeId != undefined){
 		console.log("sTimeId: "+mcpData.sTimeId);
     	window.clearTimeout(mcpData.sTimeId);
 		mcpData.sTimeId = undefined;
+		mcpData.cTimeId = undefined;
 		console.log("Clear sTimeId: "+mcpData.sTimeId);
     }
 	console.log("Time: " + mcpData.sTime);
    	mcpData.sTimeId = setTimeout(resetTrack, mcpData.sTime, mcpData);
+	mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
 	mcpTable[key(mcpData.name)] = mcpData;
     var color = "";
 //    console.log("Message type: ", trainDataObj.message_type);
@@ -83,7 +86,7 @@ function MCP(TrainData){
 		mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
 		for (var j = 0; j < controls.length; j++){
 			//console.log(controls[j]);
-			changePoint(controls[j]);
+			changePoint(controls[j], mcpData);
 		}
     }
     else if (msgType == "Indication"){
@@ -92,11 +95,15 @@ function MCP(TrainData){
     }
     //update the value in the hash table to include the new color setting
     mcpTable[key(name)] = mcpData;
-	console.log(mcpData.controlPoints);
+//	console.log("control points: ", mcpData.controlPoints);
     for (var i = 0; i < segments.length; i++){
 //		console.log(segments[i]);
         changeTrack(segments[i], color);
     }
+	for (var j = 0; j < controls.length; j++){
+		//console.log(controls[j]);
+		changePoint(controls[j], mcpData);
+	}
 
 //    console.log("Started sTimeout at bottom half of MCP at: ", getCurrTime());
 
@@ -108,9 +115,13 @@ function MCP(TrainData){
 };
 
 //Global variable to keep track of whether or not the hash map is filled with the MCPs from Lurgan to Ship
-var ltsFilled = false;
+var ltsSegsFilled = false;
 //Global variable to keep track of whether or not the hash map is filled with the MCPs from Ship to Front
-var stfFilled = false;
+var stfSegsFilled = false;
+//Global variable to keep track of whether or not the control points from Lurgan to Ship are filled up
+var ltsCPsFilled = false;
+//Global variable to keep track of whether or not the control points from Ship to Front are filled up
+var stfCPsFilled = false;
 
 //Global variable hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
@@ -276,7 +287,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 
 
         //only recreate the MCPs and add them to the hash map if this is the initialization stage
-        if (!ltsFilled){
+        if (!ltsSegsFilled){
             var town = createMCP("Town", town_segments);
             mcpTable[key(town.name)] = town;
 
@@ -298,7 +309,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
             var cp50 = createMCP("CP-50", cp50_segments);
             mcpTable[key(cp50.name)] = cp50;
 
-            ltsFilled = true;
+            ltsSegsFilled = true;
         }
 
 		return this;
@@ -394,8 +405,9 @@ drawLurganToShip.prototype.createLTS_MCPLists = function(){
 //TODO - starting to think control points having nothing to do with the tracks... probably need some sort of MCP structure
 //to hold track and CP mnemonics.
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
+     console.log("LTS controls");
 	// TOWN control points
-	//function toolTip(cp)
+	//function toolTip(canvas, x, y, width, height, text, sTimeout)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
@@ -405,46 +417,78 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	var sg6rw2 = createControlPoint(.383, .564, "1:6SG/2RW", canvas, cploff);
 	var sg4 = createControlPoint(.383, .584, "1:4SG", canvas, cploff);
 	var townCP = [ng6rw9, ng6nw9, ng2rw7, ng2nw7, sg2, sg6nw2, sg6rw2, sg4]
-	var town = mcpTable[key("Town")];
-	town.controlPoints = townCP;
+
 	// CP-67 - CP-62 Control Points
 	var eg22 = createControlPoint(.423, .545, "2:2EG", canvas, cproff);
 	var wg2nw12 = createControlPoint(.470, .523, "2:2WG/1NW", canvas, cploff);
 	var wg2rw12 = createControlPoint(.470, .543, "2:2WG/1RW", canvas, cploff);
 	var cp67CP = [eg22, wg2nw12, wg2rw12];
-	var cp67 = mcpTable[key("CP-67")];
-	cp67.controlPoints = cp67CP;
+
 	var eg20 = createControlPoint(.500, .543, "0:2EG", canvas, cproff);
 	var wg2nw10 = createControlPoint(.540, .501, "0:2WG/1NW", canvas, cploff);
 	var wg2rw10 = createControlPoint(.540, .523, "0:2WG/1RW", canvas, cploff);
-	var cp65CP = [eg20, wg2nw10, wg2rw10];
-	var cp65 = mcpTable[key("CP-65")];
-	cp65.controlPoints = cp65CP;
 	var eg2nw13 = createControlPoint(.550, .543, "3:2WG/1NW", canvas, cproff);
-	var eg2rw13 = createControlPoint(.550, .563, "3:2WG/1NW", canvas, cproff);
+	var eg2rw13 = createControlPoint(.550, .563, "3:2WG/1RW", canvas, cproff);
+	var cp65CP = [eg20, wg2nw10, wg2rw10, eg2nw13, eg2rw13];
+
 	var wg23 = createControlPoint(.590, .522, "3:2WG", canvas, cploff);
 	var cp64CP = [eg2nw13, eg2rw13, wg23];
-	var cp64 = mcpTable[key("CP-64")];
-	cp64.controlPoints = cp64CP;
+
 	var eg2rw14 = createControlPoint(.620, .522, "4:2EG/1RW", canvas, cproff);
 	var eg2nw14 = createControlPoint(.620, .543, "4:2EG/1NW", canvas, cproff);
 	var wg24 = createControlPoint(.655, .522, "4:2WG", canvas, cploff);
 	var cp62CP = [eg2rw14, eg2nw14, wg24];
-	var cp62 = mcpTable[key("CP-62")];
-	cp62.controlPoints = cp62CP;
+
 	// CP-53 - CP-50 Control Points
 	var ng25 = createControlPoint(.76, .543, "5:2NG", canvas, cproff);
 	var sg2rw15 = createControlPoint(.8, .500, "5:2SG/1RW", canvas, cploff);
 	var sg2nw15 = createControlPoint(.8, .524, "5:2SG/1NW", canvas, cploff);
 	var cp53CP = [ng25, sg2rw15, sg2nw15];
-	var cp53 = mcpTable[key("CP-53")];
-	cp53.controlPoints = cp53CP;
+
 	var ng2rw16 = createControlPoint(.820, .524, "6:2NG/1RW", canvas, cproff);
 	var ng2nw16 = createControlPoint(.820, .545, "6:2NG/1NW", canvas, cproff);
 	var sg26 = createControlPoint(.870, .523, "6:2SG", canvas, cploff);
 	var cp50CP = [sg26, ng2rw16, ng2nw16];
-	var cp50 = mcpTable[key("CP-50")];
-	cp50.controlPoints = cp50CP;
+
+    if (!ltsCPsFilled){
+        var town = mcpTable[key("Town")];
+        town.controlPoints = townCP;
+        town.cpStatus = "off";
+        mcpTable[key("Town")] = town;
+
+        var cp67 = mcpTable[key("CP-67")];
+    	cp67.controlPoints = cp67CP;
+    	cp67.cpStatus = "off";
+    	mcpTable[key("CP-67")] = cp67;
+
+        var cp65 = mcpTable[key("CP-65")];
+        cp65.controlPoints = cp65CP;
+        cp65.cpStatus = "off";
+        mcpTable[key("CP-65")] = cp65;
+
+        var cp64 = mcpTable[key("CP-64")];
+        cp64.controlPoints = cp64CP;
+        cp64.cpStatus = "off";
+        mcpTable[key("CP-64")] = cp64;
+
+        var cp62 = mcpTable[key("CP-62")];
+	    cp62.controlPoints = cp62CP;
+	    cp62.cpStatus = "off";
+	    mcpTable[key("CP-62")] = cp62;
+
+        var cp53 = mcpTable[key("CP-53")];
+        cp53.controlPoints = cp53CP;
+        cp53.cpStatus = "off";
+        mcpTable[key("CP-53")] = cp53;
+
+        var cp50 = mcpTable[key("CP-50")];
+        cp50.controlPoints = cp50CP;
+        cp50.status = "off";
+        mcpTable[key("CP-50")] = cp50;
+
+        ltsCPsFilled = true;
+    }
+
 	return this;
 };
 
@@ -547,7 +591,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var front_segments = [front_top, front_straight];
 
     //only recreate the MCPs and add them to the hash map if this is the initialization stage
-    if (!stfFilled) {
+    if (!stfSegsFilled) {
          var ship = createMCP("Ship", ship_segments);
          mcpTable[key(ship.name)] = ship;
 
@@ -566,7 +610,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
          var front = createMCP("Front", front_segments);
          mcpTable[key(front.name)] = front;
 
-         stfFilled = true;
+         stfSegsFilled = true;
     }
 
 //    var lurgan_branch_straight = createTrack(.071, .15, .930, .15, canvas);
@@ -678,6 +722,8 @@ drawShipToFront.prototype.createSTF_MCPLists = function(){
 */
 
 drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
+    console.log("stf control");
+//    console.log("STF controls. ")
     //Ship to Lee's Cross Roads
     var eg27 = createControlPoint(.155, .238, "7:2EG", canvas, cproff);
     var eg47 = createControlPoint(.155, .257, "7:4EG", canvas, cproff);
@@ -688,10 +734,9 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var wg28 = createControlPoint(.265, .238, "8:2WG", canvas, cploff);
 	var shipCP = [eg27, eg47, wg27, wg47];
 	var leeCP = [eg1rw28, eg1nw28, wg28];
-	var ship = mcpTable[key("Ship")];
-	ship.controlPoints = shipCP;
-	var lee = mcpTable[key("Lees Cross Roads")];
-	lee.controlPoints = leeCP;
+
+//	console.log("curr ship entry: ", mcpTable[key("Ship")]);
+//    console.log("curr lee entry: ", mcpTable[key("Lees Cross Roads")])
     //Carl to Spring
     var eg29 = createControlPoint(.490, .257, "9:2EG", canvas, cproff);
     var eg49 = createControlPoint(.490, .289, "9:4EG", canvas, cproff);
@@ -703,10 +748,7 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var a2wg = createControlPoint(.665, .238, "a:2WG", canvas, cploff);
 	var carlCP = [eg29, eg49, wg7rw29, wg7nw29, wg49];
 	var springCP = [a2eg1nw, a2eg1rw, a2wg];
-	var carl = mcpTable[key("Carl")]; 
-	carl.controlPoints = carlCP;
-	var spring = mcpTable[key("Spring")];
-	spring.controlPoints = springCP;
+
     //Ross to Front
     var b2eg = createControlPoint(.780, .257, "b:2EG", canvas, cproff);
     var b2wg1rw = createControlPoint(.832, .217, "b:2WG/1RW", canvas, cploff);
@@ -717,10 +759,41 @@ drawShipToFront.prototype.drawSTFControlPoints = function (canvas, ctx){
     var c4wg = createControlPoint(.940, .237, "c:4WG", canvas, cploff);
 	var rossCP = [b2eg, b2wg1rw, b2wg1nw];
 	var frontCP = [c2eg, c4eg, c2wg, c4wg];
-	var ross = mcpTable[key("Ross")];
-	ross.controlPoints = rossCP;
-	var front = mcpTable[key("Front")];
-	front.controlPoints = frontCP;
+
+    if (!stfCPsFilled){
+        var ship = mcpTable[key("Ship")];
+        ship.controlPoints = shipCP;
+        ship.cpStatus = "off";
+        mcpTable[key("Ship")] = ship;
+
+        var lee = mcpTable[key("Lees Cross Roads")];
+        lee.controlPoints = leeCP;
+        lee.cpStatus = "off";
+        mcpTable[key("Lees Cross Roads")] = lee;
+
+        var carl = mcpTable[key("Carl")];
+        carl.controlPoints = carl;
+        carl.cpStatus = "off";
+        mcpTable[key("Carl")] = carl;
+
+        var spring = mcpTable[key("Spring")];
+        spring.controlPoints = spring;
+        spring.cpStatus = "off";
+        mcpTable[key("Spring")] = spring;
+
+        var ross = mcpTable[key("Ross")];
+    	ross.controlPoints = rossCP;
+    	ross.cpStatus = "off";
+    	mcpTable[key("Ross")] = ross;
+
+    	var front = mcpTable[key("Front")];
+    	front.controlPoints = frontCP;
+    	front.cpStatus = "off";
+    	mcpTable[key("Front")] = front;
+
+    	stfCPsFilled = true;
+    }
+
 	return this;
 };
 
@@ -835,10 +908,13 @@ function createMCP(name, segments){
     var clearTime = 60000;
 	var sTimeId = undefined;
 	var cTimeId = undefined;
+	var controlPoints = undefined;
+	var cpStatus = undefined;
 	var MCP = {
         name: name,
         segments: segments,
-		controlPoints: undefined,
+		controlPoints: controlPoints,
+		cpStatus: cpStatus,
 		sTime: clearTime,
 		cTime: clearTime,
 		sTimeId: sTimeId,
@@ -955,11 +1031,7 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	var cHR = canvas.height/idealHeight;
 	var oldCtx = canvas.getContext('2d');
 	$(img).load(function(){
-		// newCanvas.width = img.width;
-		// newCanvas.height = img.height;
-		// document.body.appendChild(newCanvas);
-		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
-
+//	    console.log("Loaded control point.")
 		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
 	});
 	var cp = {
@@ -1064,43 +1136,21 @@ function changeTrack(track, color){
      }
 };
 
-function changePoint(cp){
+function changePoint(cp, mcpData){
+	/*
 	var idealWidth = 1080;
 	var idealHeight = 1250;
-	var canvas = cp.canvas;
 	var cWR = canvas.width/idealWidth;
 	var cHR = canvas.height/idealHeight;
-	var ctx = canvas.getContext("2d");
-	if (cp.img === cploff){
-		cp.img = cplon;
-	}
-	else if(cp.img === cproff){
-		cp.img = cpron;
-	}
-	else if(cp.img === cplon){
-		cp.img = cploff;
-	}
-	else if(cp.img === cpron){
-		cp.img = cproff;
-	}
-	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
-};
+	var oldCtx = canvas.getContext('2d');
+	$(img).load(function(){
+		// newCanvas.width = img.width;
+		// newCanvas.height = img.height;
+		// document.body.appendChild(newCanvas);
+		// oldCtx.drawImage(canvas, x*canvas.width, y*canvas.height);
 
-//Redraws the given control point. Only performed when the window is resized.
-function redrawPoint(cp){
-	var idealWidth = 1080;
-	var idealHeight = 1250;
-	var canvas = cp.canvas;
-	var cWR = canvas.width/idealWidth;
-	var cHR = canvas.height/idealHeight;
-	var ctx = canvas.getContext("2d");
-	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
-}
-
-// Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
-// Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
-function toolTip(cp){
-	/*	
+		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
+	});
 	var cp = {
 		// canvas: newCanvas,
 		// ctx: newCtx,
@@ -1112,18 +1162,46 @@ function toolTip(cp){
 		img: img, 
 		canvas: canvas
 	}
+	return cp;
 	*/
+	var idealWidth = 1080;
+	var idealHeight = 1250;
+	var canvas = cp.canvas;
+	var cWR = canvas.width/idealWidth;
+	var cHR = canvas.height/idealHeight;
+	var ctx = canvas.getContext("2d");
+	if (cp.img === cploff){
+		cp.img = cplon;
+		mcpData.cpStatus = "on";
+	}
+	else if(cp.img === cproff){
+		cp.img = cpron;
+		mcpData.cpStatus = "on";
+	}
+	else if(cp.img === cplon){
+		cp.img = cploff;
+		mcpData.cpStatus = "off";
+	}
+	else if(cp.img === cpron){
+		cp.img = cproff;
+		mcpData.cpStatus = "off";
+	}
+	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
+};
+
+// Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
+// Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
+function toolTip(canvas, x, y, width, height, text, sTimeout){
+
 	var tt = this,
 		div = document.createElement("div"),
-		canvas = cp.canvas,
 		parent = canvas.parentNode,
-		timeout = 6000;
 		visible = false;
 
 	var twidth = parent*.01;
 
 	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
-	div.innerHTML = cp.cm;
+	div.innerHTML = text;
 
 	//show tooltip
 	this.show = function(pos) {
@@ -1131,7 +1209,7 @@ function toolTip(cp){
 			visible = true;
 			setDivPos(pos)
 			parent.appendChild(div);
-			setTimeout(hide, timeout);
+			setTimeout(hide, sTimeout);
 		}
 	}
 
@@ -1146,8 +1224,8 @@ function toolTip(cp){
 		var pos = getPos(e),
 			posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y - not sure about this, honestly. May need to use something else?
 		if (!visible &&
-        	pos.x >= cp.x && pos.x < cp.x + cp.width &&
-        	pos.y >= cp.y && pos.y < cp.y + cp.height) {
+        	pos.x >= x && pos.x < x + width &&
+        	pos.y >= y && pos.y < y + height) {
       	tt.show(posAbs);	// Show tooltip at pos
 		}
 		else setDivPos(posAbs);  // else, update position
@@ -1192,7 +1270,7 @@ function resetTrack(mcpData){
 
 function resetPoints(mcpData){
 	for (var j = 0; j < mcpData.controlPoints.length; j++){
-		changePoint(mcpData.controlPoints[j]);
+		changePoint(mcpData.controlPoints[j], mcpData);
 	}
 	mcpTable[key(mcpData.name)] = mcpData;
 }
@@ -1233,7 +1311,7 @@ $(document).ready(function(){
 // Resizes the canvas
 // Code originally found at https://www.kirupa.com/html5/resizing_html_canvas_element.htm
 function resizeCanvas(e){
-//    console.log("Resize");
+    console.log("Resize");
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	canvas.width = window.innerWidth;
@@ -1250,19 +1328,31 @@ function resizeCanvas(e){
 
     //keep the colors the same when you change the size
 	for (var i = 0; i < Object.keys(mcpTable).length; i++){
+//	    console.log("current name: ", mcpTable[key(segNames[i])].name);
+//	    console.log("mcpData: ", mcpTable[key(segNames[i])]);
+	    var mcpCpStatus = mcpTable[key(segNames[i])].cpStatus;
 	    var mcpSegments = mcpTable[key(segNames[i])].segments;
-		var mcpControls = mcpTable[key(segNames[i])].controlPoints;
 	    var mcpColor = mcpTable[key(segNames[i])].color;
-//	    console.log("segName: ", segNames[i], " color: ", mcpColor);
-	    for (var j = 0; j < Object.keys(mcpSegments).length; j++){
-	        if (mcpColor != "white"){
-//	            console.log("curr seg: ", mcpSegments[j], " curr color: ", mcpColor)
+	    var mcpControls = mcpTable[key(segNames[i])].controlPoints;
+//	    console.log("mcpControls: ", mcpControls);
+	    for (var j = 0; j < mcpSegments.length; j++){
+	        if (mcpColor !== "white"){
 	             changeTrack(mcpSegments[j], mcpColor);
 	        }
 	    }
-		for (var k = 0; k < Object.keys(mcpControls).length; k++){
-			redrawPoint(mcpControls[k]);
-		}
+	    var currCP = "";
+//	    console.log("mcpControls length: ", mcpControls.length);
+	    for (var k = 0; k < mcpControls.length; k++){
+//	        console.log("mcp controls at k: ", mcpControls[k]);
+	        currCP = mcpControls[k].img;
+//	        console.log("img: ", currCP);
+	        if (mcpCpStatus !== "off"){
+	        	changePoint(mcpControls[k], mcpTable[key(segNames[i])], mcpControls[k].img);
+	        }
+	        else if (mcpCpStatus === "on"){
+	            changePoint(mcpControls[k], mcpTable[key(segNames[i])], mcpControls[k].img);
+	        }
+       	}
 	}
 
 	var fontBase = 1080; // selected default width for canvas
@@ -1272,6 +1362,23 @@ function resizeCanvas(e){
 	ctx.fillStyle = "white";
 	ctx.fillText("Norfolk Southern", 0, .020*canvas.height);
 	ctx.fillText("Harrisburg Division", 0, .040*canvas.height);
+}
+
+function getOppositeCP (img){
+    var opp = "";
+    if (img === "cploff"){
+    	opp = "cplon";
+    }
+    else if(img === "cproff"){
+    	opp = "cpron"";
+    }
+    else if(img === "cplon"){
+    	opp = "cploff";
+    }
+    else if(img === "cpron"){
+    	opp = "cproff";
+    }
+    return opp;
 }
 
 //Array of all the names of the MCPS
