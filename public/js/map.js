@@ -16,6 +16,7 @@ function MCP(TrainData){
     if (mcpData != undefined){
          segments = mcpData.segments;
     }
+	//Clear the timer.
 	if(mcpData.sTimeId != undefined){
     	window.clearTimeout(mcpData.sTimeId);
 		mcpData.sTimeId = undefined;
@@ -29,7 +30,7 @@ function MCP(TrainData){
         color = "green";
         mcpData.color = "green";
 		controls = mcpData.controlPoints;
-		//Reset after 1 minute
+		//Reset control points after 1 minute
 		window.clearTimeout(mcpData.cTimeId);
 		mcpData.cTimeId = setTimeout(resetPoints, mcpData.cTime, mcpData);
 		for (var j = 0; j < controls.length; j++){
@@ -41,7 +42,7 @@ function MCP(TrainData){
         color = "red";
         mcpData.color = "red";
     }
-    //update the value in the hash table to include the new color setting
+    //Update the value in the hash table to include the new settings
     mcpTable[key(name)] = mcpData;
     for (var i = 0; i < segments.length; i++){
         changeTrack(segments[i], color);
@@ -53,10 +54,10 @@ var ltsFilled = false;
 //Global variable to keep track of whether or not the hash map is filled with the MCPs from Ship to Front
 var stfFilled = false;
 
-//Global variable hash table for storing the mnemonics that correspond to their track segments
+//Global hash table for storing the mnemonics that correspond to their track segments
 var mcpTable = {};
 
-//Load Control Point images as global vars
+//Load Control Point images as global variables
 var cproff = new Image();
 cproff.src = "/public/img/cproff.png";
 var cploff = new Image();
@@ -66,11 +67,11 @@ cpron.src = "/public/img/cpron.png";
 var cplon = new Image();
 cplon.src = "/public/img/cplon.png";
 
-/* This function creates the hash key from the mcp name. The name refers to an MCP object, which holds the MCP
+/* This function creates the hash key from the MCP name. The name refers to an MCP object, which holds the MCP
 segments that will need to be colored. The function takes 11, a prime number, and multiplies that by 53 before adding the ASCII
 code of each letter in the name. This creates a unique key.
 
-The hash map set-up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent,
+The hash map is set-up according to what I found here: http://stackoverflow.com/questions/368280/javascript-hashmap-equivalent,
 but with a different hash function. 
 */
 var key = function(mcpName){
@@ -106,17 +107,17 @@ var drawLurganToShip = function(){
 drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 
 		// Draw Text
-		// Orange, size 1em
 		var fontBase = 1080, // selected default width for canvas
-		fontSize = 12; // default size for font 1em
+		fontSize = 12; // default size for font 
 		ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
+		//Orange, size 12
 		ctx.fillStyle = "#ffa500";
 		ctx.fillText("Lurgan Sub", 0.01*canvas.width, 0.485*canvas.height);
 		ctx.fillText("NS H-Line", 0.01*canvas.width, 0.53*canvas.height);
 		ctx.fillText("to Roanoke", 0.01*canvas.width, 0.55*canvas.height);
 		ctx.fillText("Lurgan Branch", .796*canvas.width, 0.48*canvas.height);
 		ctx.fillText("to Ship", .796*canvas.width, 0.495*canvas.height);
-		// Gray, size 1em
+		//Gray, size 12
 		ctx.fillStyle = "#d3d3d3";
 		ctx.fillText("TOWN", 0.190*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-67", 0.44*canvas.width, 0.5*canvas.height);
@@ -125,8 +126,7 @@ drawLurganToShip.prototype.drawLTSText = function (canvas, ctx){
 		ctx.fillText("CP-62", 0.62*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-53", 0.76*canvas.width, 0.57*canvas.height);
 		ctx.fillText("CP-50", 0.84*canvas.width, 0.57*canvas.height);
-		// Orange, size 0.8em
-
+		// Orange, size 10
 		var fontSize = 10;
 		ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
 		ctx.fillStyle = "#ffa500";
@@ -147,7 +147,8 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
 		var csx_ramp = createTrack(.1861, .470, .206, .485, canvas);
 		// Lurgan Sub
 		var lurgan_straight = createTrack(.116, .495, .226, .495, canvas);
-		var lurgan_ramp = createTrack(.2261, .495, .286, .535, canvas);// NS Industrial Lead
+		var lurgan_ramp = createTrack(.2261, .495, .286, .535, canvas);
+	    // NS Industrial Lead
 		var nsi_ramp = createTrack(.266, .540, .336, .600, canvas);
 		var nsi_straight = createTrack(.3361, .600, .400, .600, canvas);
 		// CSX Lurgan Sub
@@ -200,7 +201,7 @@ drawLurganToShip.prototype.drawLTSTrack = function(canvas, ctx){
         var cp50_straight_bottom = createTrack(.700, .540, .905, .540, canvas)
         var cp50_segments = [cp50_straight_top, cp50_ramp_r, cp50_straight_bottom];
 
-        //only recreate the MCPs and add them to the hash map if this is the initialization stage
+        //Only recreate the MCPs and add them to the hash map if this is the initialization stage
         if (!ltsFilled){
             var town = createMCP("Town", town_segments);
             mcpTable[key(town.name)] = town;
@@ -235,7 +236,6 @@ to hold track and CP mnemonics.
 */
 drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 	// TOWN control points
-	//function toolTip(cp)
 	var ng6rw9 = createControlPoint(.17, .474, "1:6NG/9RW", canvas, cproff);
 	var ng6nw9 = createControlPoint(.17, .501, "1:6NG/9NW", canvas, cproff);
 	var ng2rw7 = createControlPoint(.17, .523, "1:2NG7RW", canvas, cproff);
@@ -290,7 +290,6 @@ drawLurganToShip.prototype.drawLTSControlPoints = function(canvas, ctx){
 
 drawLurganToShip.prototype.draw = function(canvas, ctx){
 		this.drawLTSTrack(canvas, ctx);
-		//this.drawLTSTrackSegments(canvas, ctx);
 		this.drawLTSText(canvas, ctx);
 		this.drawLTSControlPoints(canvas, ctx);
 		return this;
@@ -318,7 +317,7 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
     ctx.fillText("Paxton", canvas.width * .945, canvas.height * .210);
     ctx.fillText("to", canvas.width * .945, canvas.height * .28);
     ctx.fillText("Capitol", canvas.width * .945, canvas.height * .30);
-		// Gray, size 12
+	// Gray, size 12
     ctx.fillStyle = "#d3d3d3";
     ctx.fillText("SHIP", .155 * canvas.width, .28 * canvas.height);
     ctx.fillText("LEES CROSS ROADS", canvas.width * .245, .28 * canvas.height);
@@ -327,13 +326,12 @@ drawShipToFront.prototype.drawSTFText = function(canvas, ctx){
     ctx.fillText("ROSS", .755 * canvas.width, .28 * canvas.height);
     ctx.fillText("FRONT", .860 * canvas.width, .28 * canvas.height);
     // Orange, size 10
-
 	var fontSize = 10;
 	ctx.font = getFont(fontSize, fontBase, canvas) + 'px sans-serif';
     // ctx.font = ("0.8em Arial");
     ctx.fillStyle = "#ffa500";
     ctx.fillText("PPG", .585 * canvas.width, .220 * canvas.height);
-        //Gray, size 10
+    //Gray, size 10
     ctx.fillStyle = "#d3d3d3";
     ctx.fillText("Cleversburg Junction", .22 * canvas.width, .189 * canvas.height);
     ctx.fillText("Viewing Platform", .23 * canvas.width, .205 * canvas.height);
@@ -376,7 +374,7 @@ drawShipToFront.prototype.drawSTFTrack = function(canvas, ctx){
     var front_straight = createTrack(.896, .255, .970, .255, canvas);
     var front_segments = [front_top, front_straight];
 
-    //only recreate the MCPs and add them to the hash map if this is the initialization stage
+    //Only recreate the MCPs and add them to the hash map if this is the initialization stage
     if (!stfFilled) {
          var ship = createMCP("Ship", ship_segments);
          mcpTable[key(ship.name)] = ship;
@@ -474,7 +472,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCanvas.height = (y1*canvas.height-y2*canvas.height);
     		var yflip = true;
     	}
-    //	window.alert(newCanvas.width + " before " + newCanvas.height)
         if (x1 == x2){
     		var vLine = true;
     		newCanvas.width = 8;
@@ -491,7 +488,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(lineWidth, 0);
     		newCtx.lineTo(lineWidth, newCanvas.height);
     		newCtx.stroke();
-			//document.body.appendChild(newCanvas);
 			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width-lineWidth, y1*canvas.height);
     	}
@@ -499,7 +495,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(0, lineWidth);
     		newCtx.lineTo(newCanvas.width, lineWidth);
     		newCtx.stroke();
-			//document.body.appendChild(newCanvas);
 			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height-lineWidth);
     	}
@@ -507,7 +502,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(0, newCanvas.height);
     		newCtx.lineTo(newCanvas.width, 0);
     		newCtx.stroke();
-			//document.body.appendChild(newCanvas);
 			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y2*canvas.height);
     	}
@@ -515,7 +509,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(newCanvas.width, 0);
     		newCtx.lineTo(0, newCanvas.height);
     		newCtx.stroke();
-			//document.body.appendChild(newCanvas);
 			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x2*canvas.width, y1*canvas.height);
     	}
@@ -523,7 +516,6 @@ function createTrackWithWidth(x1, y1, x2, y2, canvas, lineWidth){
     		newCtx.moveTo(0, 0);
     		newCtx.lineTo(newCanvas.width, newCanvas.height);
     		newCtx.stroke();
-			//document.body.appendChild(newCanvas);
 			parent.appendChild(canvas);
     		oldCtx.drawImage(newCanvas, x1*canvas.width, y1*canvas.height);
     	}
@@ -569,8 +561,6 @@ function createTrack(x1, y1, x2, y2, canvas){
 
 // Creates a new control point using the given coordinates, image, and mnemonics.
 function createControlPoint(x, y, cMnemonic, canvas, img){
-	// var newCanvas = document.createElement("canvas");
-	// var newCtx = newCanvas.getContext('2d');
 	//Resize the MCP based on canvas size.
 	var idealWidth = 1080;
 	var idealHeight = 1250;
@@ -581,8 +571,6 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
 	});
 	var cp = {
-		// canvas: newCanvas,
-		// ctx: newCtx,
 		cm: cMnemonic,
 		x: x,
 		y: y,
@@ -600,8 +588,6 @@ function changeTrack(track, color){
     var x2 = track.x2;
     var y1 = track.y1;
     var y2 = track.y2;
-
-	//var newCanvas = document.createElement("canvas");
 	var newCanvas = track.nCanvas
     var parent = track.parent;
     if (x2 >= x1){
@@ -618,7 +604,6 @@ function changeTrack(track, color){
         newCanvas.height = (y1*track.canvas.height-y2*track.canvas.height);
         var yflip = true;
     }
-        //	window.alert(newCanvas.width + " before " + newCanvas.height)
     if (x1 == x2){
         var vLine = true;
         newCanvas.width = 8;
@@ -637,7 +622,6 @@ function changeTrack(track, color){
         newCtx.moveTo(lineWidth, 0);
         newCtx.lineTo(lineWidth, newCanvas.height);
         newCtx.stroke();
-    	//document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width-lineWidth, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
     }
@@ -646,7 +630,6 @@ function changeTrack(track, color){
         newCtx.moveTo(0, lineWidth);
         newCtx.lineTo(newCanvas.width, lineWidth);
         newCtx.stroke();
-    	//document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height-lineWidth);
     	parent.appendChild(track.canvas);
      }
@@ -655,7 +638,6 @@ function changeTrack(track, color){
         newCtx.moveTo(0, newCanvas.height);
         newCtx.lineTo(newCanvas.width, 0);
         newCtx.stroke();
-        //document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y2*track.canvas.height);
         parent.appendChild(track.canvas);
     }
@@ -664,7 +646,6 @@ function changeTrack(track, color){
         newCtx.moveTo(newCanvas.width, 0);
         newCtx.lineTo(0, newCanvas.height);
         newCtx.stroke();
-    	//document.body.appendChild(newCanvas);
     	oldCtx.drawImage(newCanvas, x2*track.canvas.width, y1*track.canvas.height);
 		parent.appendChild(track.canvas);
 
@@ -674,7 +655,6 @@ function changeTrack(track, color){
         newCtx.moveTo(0, 0);
         newCtx.lineTo(newCanvas.width, newCanvas.height);
         newCtx.stroke();
-    	//document.body.appendChild(newCanvas);
 		oldCtx.drawImage(newCanvas, x1*track.canvas.width, y1*track.canvas.height);
     	parent.appendChild(track.canvas);
      }
@@ -712,72 +692,6 @@ function redrawPoint(cp){
 	var cHR = canvas.height/idealHeight;
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(cp.img, cp.x*canvas.width, cp.y*canvas.height, cp.img.width*cWR, cp.img.height*cHR);
-}
-
-/*
-Creates a tooltip displaying an object's mnemonic when it is clicked or tapped.
-Code modified from solution given at http://stackoverflow.com/questions/29489468/popup-tooltip-for-rectangular-region-drawn-in-canvas
- */
-function toolTip(cp){
-	var tt = this,
-		div = document.createElement("div"),
-		canvas = cp.canvas,
-		parent = canvas.parentNode,
-		timeout = 6000;
-		visible = false;
-
-	var twidth = parent*.01;
-
-	div.style.cssText =  "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + twidth + "px";
-	div.innerHTML = cp.cm;
-
-	//show tooltip
-	this.show = function(pos) {
-		if (!visible) {
-			visible = true;
-			setDivPos(pos)
-			parent.appendChild(div);
-			setTimeout(hide, timeout);
-		}
-	}
-
-	 // hide the tool-tip
-	 function hide() {
-	 	visible = false;                            // hide it after sTimeout
-		parent.removeChild(div);                    // remove from DOM
-	 }
-
-	// Check mouse position
-	function check(e){
-		var pos = getPos(e),
-			posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y - not sure about this, honestly. May need to use something else?
-		if (!visible &&
-        	pos.x >= cp.x && pos.x < cp.x + cp.width &&
-        	pos.y >= cp.y && pos.y < cp.y + cp.height) {
-      	tt.show(posAbs);	// Show tooltip at pos
-		}
-		else setDivPos(posAbs);  // else, update position
-	}
-
-	// Get mouse position relative to canvas
-	function getPos(e) {
-		var r = canvas.getBoundingClientRect();
-		return {x: e.clientX - r.left, y: e.clientY - r.top}
-	}
-
-  // Update and adjust div position if needed (anchor to a different corner etc.) - will need to change measurements at end from px
-  function setDivPos(pos) {
-    if (visible){
-      if (pos.x < 0) pos.x = 0;
-      if (pos.y < 0) pos.y = 0;
-      // other bound checks here
-      div.style.left = pos.x + "px";
-      div.style.top = pos.y + "px";
-    }
-  }
-	
-  canvas.addEventListener("mousemove", check);
-  canvas.addEventListener("click", check);
 }
 
 //Changes the track from either green or red back to white (done after a 60 second gap)
