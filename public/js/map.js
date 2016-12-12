@@ -717,13 +717,41 @@ $(document).ready(function(){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
 	var trackData = [];
-	canvas.width = window.innerWidth;
-	canvas.height=window.innerHeight;
-	if (window.innerWidth < 950 || window.innerHeight < 1200) {
-		canvas.width = 950;
-		canvas.height = 1200;
+	canvas.width = 950;
+	canvas.height = 1200;
+	//Checks if user is on a mobile browser. Code from https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
+	var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+	if (isMobile.any()){
+		document.getElementById('mapContainter').style.left = '0vw';
 	}
-
+	else{
+		if(window.innerWidth>(canvas.width+10)||window.innerHeight>canvas.height){
+			document.getElementById('mapContainer').style.left = '25vw';
+		}
+		else{
+			document.getElementById('mapContainer').style.left = '0vw';
+		}
+	}
+	
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	var fontBase = 1080; // selected default width for canvas
 	var fontSize = 24;
@@ -743,13 +771,40 @@ $(document).ready(function(){
 function resizeCanvas(e){
 	var canvas = document.getElementById('mapCanvas');
 	var ctx = canvas.getContext('2d');
-	canvas.width = window.innerWidth;
-	canvas.height=window.innerHeight;
-	if (window.innerWidth < 950 || window.innerHeight < 1200) {
-		canvas.width = 950;
-		canvas.height =1200;
+	canvas.width = 950;
+	canvas.height= 1200;
+	var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+	if (isMobile.any()){
+		document.getElementById('mapContainter').style.left = '0vw';
 	}
-
+	else{
+		if(window.innerWidth>(canvas.width+10)||window.innerHeight>canvas.height){
+			document.getElementById('mapContainer').style.left = '25vw';
+		}
+		else{
+			document.getElementById('mapContainer').style.left = '0vw';
+		}
+	}
+	
 	//Draws the canvas, labels, control points, and segments again
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	var dstf = new drawShipToFront();
