@@ -7,6 +7,7 @@ import (
 	"errors"
 )
 
+//Struct containing all of the data associated with each MCP
 type Mcp struct {
 	Address 		string
 	Name			string
@@ -29,7 +30,7 @@ type Mcp struct {
 	ActivityC		string
 }
 
-//TODO
+//creates a new MCP for the database from the given data
 func NewMCP(str []string) (*Mcp, error) {
 
 	//TODO: WILL need to have a string pattern recognizer.  Indexing is not working, there must be a typo.
@@ -56,31 +57,6 @@ func NewMCP(str []string) (*Mcp, error) {
 	}
 	mcp := Mcp{data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14],data[15],data[16],data[17],data[18]}
 
-	//ms := new(Mcp)
-	//msValuePtr := reflect.ValueOf(&mcp)
-	//msValue := msValuePtr.Elem()
-	//for i := 0; i < msValue.NumField(); i++ {
-	//	field := msValue.Field(i)
-	//	val := strings.Split(data[i], "=")
-		//if len(val) == 2 {
-		//	field.SetString(val[1])
-		//} else {
-		//	field.SetString(data[i])
-		//}
-	//}
-
-
-	//s := reflect.ValueOf(&mcp).Elem()
-	//for i:=0; i < len(data)-1; i++ {
-	//	//val := strings.Split(data[i], "=")[1]
-	//	val := data[i]
-	//	s.Field(i).SetString(val)
-	//
-	//	println(val)
-	//}
-	//println((&mcp).String())
-	//var ret Mcp
-	//ret = mcp
 	return &mcp, nil
 }
 

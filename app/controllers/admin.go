@@ -19,39 +19,12 @@ func (c Admin) Dash() revel.Result {
 	if err != nil {
 		panic(err)
 	}
-	//Check to see if we got any results
-	//if len(users) == 0 {
-	//	return c.Render() // if none, then they don't exist
-	//}
-	fmt.Println("Users: ", users)
-	for i:= 0; i < len(users); i++ {
-		fmt.Println("Approved: ", ((users[i])).(*models.User).Approved)
-	}
+
  	return c.Render(users)
 }
 
-
-
-//Purpose: Utility method to determine if the client is signed in as a User
-//Params: None
-//Returns:
-//	The client as a user if they are connected
-//Prints:
-//	Nothing
-//func (c App) adminConnected() *models.User {
-//	//See if they are registered (Already signed in)
-//	if c.RenderArgs["admin"] != nil {
-//		return c.RenderArgs["admin"].(*models.User)
-//	}
-//	//See if they have a valid session (Remember them or no?)
-//	if email, ok := c.Session["admin"]; ok {
-//		return c.getUser(email)
-//	}
-//	//Otherwise, they aren't logged in
-//	return nil
-//}
-
-
+//Updates a user from unapproved to approved if the Admin approves
+//If the Admin rejects then the user is deleted
 func (c Admin) Approve(UserId int) revel.Result {
 	if c.Params.Get("approve") == "Approve"  {
 		_, err := c.Txn.Exec("update User set Approved = ? where UserId = ?",
@@ -66,9 +39,8 @@ func (c Admin) Approve(UserId int) revel.Result {
 		if err != nil {
 			panic(err)
 		}
-	} else {
-		fmt.Println("Accept: ", c.Params.Get("Accept"), "Reject: ", c.Params.Get("Reject"), " approve: ", c.Params.Get("approve"))
 	}
+
 	// TODO. Use Ajax instead of rerouting.
 	return c.Redirect(routes.Admin.Dash())
 }
