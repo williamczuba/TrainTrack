@@ -16,7 +16,8 @@ type Map struct {
 	App
 }
 
-// Since we had to restrict our program, this hashmap (really a hashset) will store all of the known MCP names from the front end.  This will prevent us from sending out unnecessary packets, and should therefor help minimize server network usage.
+// Since we had to restrict our program, this hashmap (really a hashset) will store all of the known MCP names from the front end.
+// This will prevent us from sending out unnecessary packets, and should therefore help minimize server network usage.
 var KNOWN_MCP map[string]bool = map[string]bool{
 	"CP-50":true,
 	"CP-53":true,
@@ -31,12 +32,11 @@ var KNOWN_MCP map[string]bool = map[string]bool{
 	"Ship":true,
 	"Spring":true,
 	"Town":true,
-	"_proto_":true, // This shows up on the front end, so while I know it doesn't exist in the MCP, I decided to include it for consistency
+	"_proto_":true, // This shows up on the front end, so while I know it doesn't exist in the MCP, we decided to include it for consistency
 }
 
 //Serve the Index page for the map
 func (c Map) Index() revel.Result {
-	// TODO: Check to make sure a user is approved.  Otherwise re-route them to the progress page
 	// if not signed in, go to login
 	if c.connected() == nil {
 		return c.Redirect(routes.App.Index())
@@ -53,6 +53,7 @@ func (c Map) Index() revel.Result {
 	return c.Render()
 }
 
+//Retrieves the MCP from the MCP table and returns it with its relevant information
 func (c Map) GetMCP(address string) *models.Mcp {
 	mcp, err := c.Txn.Select(models.Mcp{}, `select * from MCP where Address = ?`, ""+address)
 	if(err != nil){
@@ -67,7 +68,7 @@ func (c Map) GetMCP(address string) *models.Mcp {
 	return mcp[0].(*models.Mcp)
 }
 
-
+//struct that contains all information from the client that is relevant to drawing our map
 type ClientTrainData struct {
 	Name 			string	`json:name`
 	MilePost		string	`json:"mile_post"`
@@ -138,6 +139,7 @@ func (c Map) checkUser() revel.Result {
 	return nil
 }
 
+
 func (c Map) Settings() revel.Result {
 	if c.connected() == nil {
 		c.Redirect(routes.App.Index())
@@ -145,6 +147,7 @@ func (c Map) Settings() revel.Result {
 	return c.Render()
 }
 
+//Updates the password for a user
 func (c Map) SaveSettings(password, verifyPassword string) revel.Result {
 	models.ValidatePassword(c.Validation, password)
 	c.Validation.Required(verifyPassword).
