@@ -17,11 +17,11 @@ Nate Grosskopf - Primary: ; Secondary: Full-Stack development
 
 William Czubakowski - Primary: Team Management and Full-Stack development; Secondary: Repository Management
 
-# To Vendor Dependencies
+# To Vendor Dependencies - Use godep
 If you write more go code that utilizes an import:
 1) CD into the project (TrainTrack/)
 2) Run "godep save ./..."
-3) That's it!
+That's it!
 
 # To make a docker slug of this app:
 1) Make sure you have docker installed.
@@ -29,6 +29,10 @@ If you write more go code that utilizes an import:
 3) run "sudo docker build -t train-track ."
 4) To test locally, run "sudo docker run -it -p 8080:8080 train-track"
 Congrats, you made a docker slug.  Deploy it anywhere you choose.  As a reference for making the Docker file and running it, I used this blog post: http://jbeckwith.com/2015/05/08/docker-revel-appengine/
+
+# To deploy
+1) First attempt to run a docker slug locally (above)
+2) Follow directions on your hosting site - they're all slightly different. (Example For Heroku: https://devcenter.heroku.com/articles/container-registry-and-runtime  Example for App Enging: http://jbeckwith.com/2015/05/08/docker-revel-appengine/)
 
 # License
 This project is provided under the MIT License as describe by the Open Source Initiative (https://opensource.org/licenses/MIT) on 9/9/16 at 11:41AM EST:
