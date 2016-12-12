@@ -3,7 +3,6 @@ package models
 import (
 	"fmt"
 	"github.com/revel/revel"
-	"regexp"
 )
 
 //Struct for the user
@@ -31,15 +30,15 @@ func (u User) String() string {
 }
 
 //Only allow certain characters for a username (prevent sql injection)
-var userRegex = regexp.MustCompile("^\\w*$")
+//var userRegex = regexp.MustCompile("^\\w*$")
 
 //Validate the user credentials (make sure the user info is valid)
 func (user *User) Validate(v *revel.Validation) {
 	v.Check(user.Email,
-		revel.Required{},
+		//revel.Required{},
 		revel.MaxSize{50},
-		revel.MinSize{4},
-		revel.Match{userRegex},
+		revel.MinSize{1},
+		//revel.Match{userRegex},
 	)
 
 	//Call the validate password function
@@ -47,41 +46,38 @@ func (user *User) Validate(v *revel.Validation) {
 		Key("user.Password")
 
 	v.Check(user.StreetAddress,
-		revel.MinSize{10},
-		revel.MinSize{100})
+		revel.MinSize{1},
+		revel.MaxSize{100})
 	v.Check(user.City,
-		revel.MinSize{10},
-		revel.MinSize{100})
+		revel.MinSize{1},
+		revel.MaxSize{100})
 	v.Check(user.State,
-		revel.MinSize{10},
-		revel.MinSize{50})
+		revel.MinSize{1},
+		revel.MaxSize{50})
 	v.Check(user.Country,
-		revel.MinSize{10},
-		revel.MinSize{100})
+		revel.MinSize{1},
+		revel.MaxSize{100})
 
 	v.Check(user.FirstName,
-		revel.Required{},
-		revel.MinSize{2},
+		//revel.Required{},
+		revel.MinSize{1},
 		revel.MaxSize{100},
 	)
 	//validate the security question and answer
 	v.Check(user.SecurityQuestion,
-		revel.Required{},
-		revel.MinSize{10},
+		//revel.Required{},
+		revel.MinSize{1},
 		revel.MaxSize{100})
 
 	v.Check(user.SecureAnswer,
-		revel.Required{},
-		revel.MinSize{2},
+		//revel.Required{},
+		revel.MinSize{1},
 		revel.MaxSize{100})
 
 	v.Check(user.LastName,
-		revel.Required{},
-		revel.MinSize{2},
+		//revel.Required{},
+		revel.MinSize{1},
 		revel.MaxSize{100})
-
-	v.Check(user.Admin,
-		revel.MaxSize{0})
 
 }
 
@@ -90,7 +86,7 @@ func (user *User) Validate(v *revel.Validation) {
 //Validate the user password (since we don't store plain text passwords, we need to verify it separately)
 func ValidatePassword(v *revel.Validation, password string) *revel.ValidationResult {
 	return v.Check(password,
-		revel.Required{},
+		//revel.Required{},
 		revel.MaxSize{15},
-		revel.MinSize{4})
+		revel.MinSize{1})
 }

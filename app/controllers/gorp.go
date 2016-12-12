@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"strconv"
+	//"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -169,7 +170,7 @@ func InitDB() {
 	//	HashedSecureAnswer: bcryptSecureAnswer,
 	//	Admin: true,
 	//}
-
+	//
 	//if err := Dbm.Insert(demoUser); err != nil {
 	//	panic(err)
 	//}
@@ -181,11 +182,11 @@ func InitDB() {
 	//}
 	//println("Trustme: username:", trustMe.Email, " password:", trustMe.Password)
 	//println("DEMO Question: ", demoUser.SecurityQuestion)
-
-
-	// Initialize the MCPDB every time.
-	//println(r.BasePath)
 	//
+	//
+	//// Initialize the MCPDB every time.
+	////println(r.BasePath)
+	////
 	//fileBytes, err := ioutil.ReadFile(bp + "/public/NS Harrisburg Division - Version 14.8.mcp")
 	//if err != nil {
 	//	panic(err)
@@ -205,8 +206,8 @@ func InitDB() {
 	//		panic(err)
 	//	}
 	//}
-	//
-	//
+
+
 
 }
 //Initialize the MCPDB.  Note this doesn't need to be called again since the MCP DB will be imported from the tmpDb.bin now.

@@ -53,17 +53,24 @@ func (c Admin) Dash() revel.Result {
 
 
 func (c Admin) Approve(UserId int) revel.Result {
+	user := c.getUserById(UserId)
+
 	if c.Params.Get("approve") == "Approve"  {
-		_, err := c.Txn.Exec("update User set Approved = ? where UserId = ?",
-			true, UserId)
+		user.Approved = true
+		_, err := c.Txn.Update(user)
+		//_, err := c.Txn.Exec("UPDATE User set Approved = ? where UserId = ?",
+		//	true, UserId)
 		if err != nil {
+			fmt.Println("Issue Approving!")
 			panic(err)
 		}
 	} else if c.Params.Get("reject") == "Reject" {
 		// delete their user
-		_, err := c.Txn.Exec("DELETE FROM User WHERE UserId = ?;",
-			UserId)
+		_, err := c.Txn.Delete(user)
+		//_, err := c.Txn.Exec("DELETE FROM User WHERE UserId = ?;",
+		//	UserId)
 		if err != nil {
+			fmt.Println("Issue Rejecting!")
 			panic(err)
 		}
 	} else {

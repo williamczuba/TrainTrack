@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"time"
 	"math/rand"
+	"fmt"
 )
 
 //Purpose: Base type of our application; extends the Gorp Controller (for access to the DB)
@@ -76,7 +77,7 @@ func (c App) getUser(email string) *models.User {
 	}
 	//Check to see if we got any results
 	if len(users) == 0 {
-		println("NO user with that name: ", email)
+		//println("NO user with that name: ", email)
 		return nil // if none, then they don't exist
 	}
 	//otherwise return the result
@@ -95,25 +96,29 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	//first check to make sure the email isn't taken
 	if c.getUser(user.Email) != nil {
 		//email is taken.  Let them fix it.
+		fmt.Println("Email is already in use!")
 		c.Flash.Error("Email is already in use.  Please sign-in, or register with a different email.")
 		return c.Redirect(routes.App.Index())
 	}
-
+	fmt.Println("Email available...")
 	//Set the required fields for Revel Validation
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
 		Message("Password does not match")
-	//Validate
-	user.Validate(c.Validation)
-
-	// Check to see if it was validated
-	if c.Validation.HasErrors() {
-		//if not have them try again
-		c.Validation.Keep()
-		c.FlashParams()
-		return c.Redirect(routes.App.Index())
-	}
-
+	fmt.Println("Validating info...")
+	////Validate
+	//user.Validate(c.Validation)
+	//
+	//// Check to see if it was validated
+	//if c.Validation.HasErrors() {
+	//	//if not have them try again
+	//	fmt.Println("errors with validation.")
+	//	c.Validation.Keep()
+	//	c.FlashParams()
+	//	fmt.Println(c.Validation.Errors)
+	//	return c.Redirect(routes.App.Index())
+	//}
+	fmt.Println("Validated, finishing creating user...")
 	//Hash the password
 	user.HashedPassword, _ = bcrypt.GenerateFromPassword(
 		[]byte(user.Password), bcrypt.DefaultCost)
@@ -125,7 +130,11 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	user.Admin = false
 
 	// Insert the user into the DB
+	fmt.Println("Inserting USER INTO DB...")
+
 	err := c.Txn.Insert(&user)
+
+	fmt.Println("user inserted!")
 	// check for error
 	if err != nil {
 		panic(err)

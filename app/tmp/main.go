@@ -129,7 +129,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					32: []string{ 
+					33: []string{ 
 					},
 				},
 			},
@@ -138,7 +138,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					43: []string{ 
+					44: []string{ 
 					},
 				},
 			},
@@ -180,7 +180,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					221: []string{ 
+					230: []string{ 
 					},
 				},
 			},
@@ -190,7 +190,7 @@ func main() {
 					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					237: []string{ 
+					246: []string{ 
 						"email",
 						"question",
 					},
@@ -212,7 +212,7 @@ func main() {
 					&revel.MethodArg{Name: "temp", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					277: []string{ 
+					286: []string{ 
 						"email",
 						"temp",
 					},
@@ -285,27 +285,26 @@ func main() {
 	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
-			103: "verifyPassword",
-			104: "verifyPassword",
+			105: "verifyPassword",
+			106: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
 			150: "verifyPassword",
 			152: "verifyPassword",
 		},
 		"TrainTrack/app/models.(*User).Validate": { 
-			43: "user.Email",
-			51: "user.StreetAddress",
-			54: "user.City",
-			57: "user.State",
-			60: "user.Country",
-			66: "user.FirstName",
-			71: "user.SecurityQuestion",
-			76: "user.SecureAnswer",
-			81: "user.LastName",
-			84: "user.Admin",
+			42: "user.Email",
+			50: "user.StreetAddress",
+			53: "user.City",
+			56: "user.State",
+			59: "user.Country",
+			65: "user.FirstName",
+			70: "user.SecurityQuestion",
+			75: "user.SecureAnswer",
+			80: "user.LastName",
 		},
 		"TrainTrack/app/models.ValidatePassword": { 
-			95: "password",
+			91: "password",
 		},
 	}
 	testing.TestSuites = []interface{}{ 
