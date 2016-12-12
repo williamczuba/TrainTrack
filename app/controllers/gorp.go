@@ -1,46 +1,38 @@
+// Controller to manage the Data base and its communication with our program.
 package controllers
-
 import (
-	//"golang.org/x/crypto/bcrypt"
 	"database/sql"
 	"github.com/go-gorp/gorp"
 	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
-	//"github.com/revel/modules/db/app"
 	"TrainTrack/app/models"
-	//"io/ioutil"
-	//"strings"
-	//"strconv"
-	//"reflect"
 	"fmt"
 	"io/ioutil"
 	"strings"
 	"strconv"
-	//"golang.org/x/crypto/bcrypt"
 )
 
+// Global variable that stored the database object map
 var (
 	Dbm *gorp.DbMap
 )
 
 
-//Purpose: Initialize the Database Table
-//Params: None
-//Returns: Nothing
-//Prints:
-//	Nothing
+// Initialize the Database by importing the sqlite database file, and setting up the Columns.
+// NOTE: This is where admins and MCP database info can be defined.
 func InitDB() {
-	//Initialize the database (for the import)
-	//db.Init()
+	// Base path for reading files
 	bp := r.BasePath
 
-	//Get Sqlite
+	//Get Sqlite database file
 	db, err := sql.Open("sqlite3", bp+"/tmpDb.bin")
 
 	if err != nil {
 		fmt.Println("Sql Open Fail")
 		panic(err)
 	}
+
+	// set the Databse map
 	Dbm = &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
 
 	// Function to set the columns for our Table
@@ -50,24 +42,13 @@ func InitDB() {
 		}
 	}
 
-	// Add the table to the Database with the key as the UserId
+	// Add the user table to the Database
 	t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
 
 	// Ensure the password is transient (we DONT save it)
 	t.ColMap("Password").Transient = true
 
 	// Set the column sizes for the username and name
-	/*
-	FirstName          string
-	LastName	   string
-	StreetAddress	   string
-	City		   string
-	State	           string
-	Email		   string
-	Password           string
-	HashedPassword     []byte
-	Admin		   bool
-	 */
 	setColumnSizes(t, map[string]int{
 		"FirstName":     100,		//changed from Username:20
 		"LastName":      100,
@@ -80,35 +61,9 @@ func InitDB() {
 		"SecurityQuestion": 100,
 		"HashedSecureAnswer":100,
 	})
-	// Set the column sizes for the username and name
-	// Set up database tracing for errors
-	//Dbm.TraceOn("[gorp]", r.INFO)
 
-	// Create the Table
-	//Dbm.CreateTables()
-	/*
-		Address 		string
-	Name			string
-	Milepost		string
-	ControlMessageNo	string
-	ControlBits		string
-	ControlMnemonics	string
-	IndicationMessageNo	string
-	IndicationBits		string
-	IndicationMnemonics	string
-	Subdivision		string
-	StateCounty		string
-	Frequency		string
-	Protocol		string //should all be ATCS...
-	ResetRoutes		string
-	Longitude		string
-	Latitude		string
-	Updated			string
-	ActivityI		string
-	ActivityC		string
-}
-	 */
-	// Add the table to the Database with the key as the UserId
+
+	// Do the same for the MCP
 	t2 := Dbm.AddTable(models.Mcp{})//.SetKeys(true, "Address")
 
 	setColumnSizes(t2, map[string]int{
@@ -133,40 +88,43 @@ func InitDB() {
 		"ActivityC":	  100,
 	})
 
-	// Set the column sizes for the username and name
-	// Set up database tracing for errors
+	// Set up database tracing for errors - commented our for production
 	//Dbm.TraceOn("[gorp]", r.INFO)
 
 	// Create the Table
 	Dbm.CreateTables()
 
 
+	// Should for whatever reason, the SQLite file is deleted, these need to be called to initialize the database with
+	// 	the mcp data and testing user's.
+	// Also - this is where the admin is defined.  To add more admins, simply add them here.
 	//_, err := Dbm.TableFor(reflect.TypeOf(new(models.MCP)),false)
 	//_, err := Dbm.Select(models.Mcp{}, `select * from Mcp`)
 	//if(err!=nil){
 	//	panic(err)
 	//}
 
-	// Make a temporary user demo (pass demo)
+	// Make an admin
+
 	// Hash/encrypt the temp user password
 	//bcryptPassword, _ := bcrypt.GenerateFromPassword(
-	//	[]byte("demo"), bcrypt.DefaultCost)
+	//	[]byte("Gettysburg"), bcrypt.DefaultCost)
 	//bcryptSecureAnswer, _ := bcrypt.GenerateFromPassword(
-	//	[]byte("demo"), bcrypt.DefaultCost)
+	//	[]byte("RodPass"), bcrypt.DefaultCost)
 	//demoUser := &models.User{
 	//	UserId: 0,
-	//	FirstName:  "demoF",
-	//	LastName: "demoL",
-	//	StreetAddress:  "St. Address",
+	//	FirstName:  "Rod",
+	//	LastName: "Tosten",
+	//	StreetAddress:  "Doesn't matter",
 	//	City: "City",
 	//	State: "State",
 	//	Country: "Country",
-	//	Email: "demo",
-	//	Password: "demo",
+	//	Email: "RodTosten",
+	//	Password: "Gettysburg",
 	//	HashedPassword: bcryptPassword,
 	//	Approved: true,
-	//	SecurityQuestion: "What is this?",
-	//	SecureAnswer: "demo",
+	//	SecurityQuestion: "Who shall pass?",
+	//	SecureAnswer: "RodPass",
 	//	HashedSecureAnswer: bcryptSecureAnswer,
 	//	Admin: true,
 	//}
@@ -174,26 +132,25 @@ func InitDB() {
 	//if err := Dbm.Insert(demoUser); err != nil {
 	//	panic(err)
 	//}
+
+	 //Create a test user.
+
 	//bcryptPassword, _ = bcrypt.GenerateFromPassword(
 	//	[]byte("trust"), bcrypt.DefaultCost)
 	//trustMe := &models.User{1, "trustF", "trustL", "St. Address", "City", "State", "Country", "trust", "trust", bcryptPassword, false, "What is this?", "demo", bcryptSecureAnswer, false}
 	//if err := Dbm.Insert(trustMe); err != nil {
 	//	panic(err)
 	//}
-	//println("Trustme: username:", trustMe.Email, " password:", trustMe.Password)
-	//println("DEMO Question: ", demoUser.SecurityQuestion)
-	//
-	//
-	//// Initialize the MCPDB every time.
-	////println(r.BasePath)
-	////
+
+
+	 //Initialize the MCP DB
+
 	//fileBytes, err := ioutil.ReadFile(bp + "/public/NS Harrisburg Division - Version 14.8.mcp")
 	//if err != nil {
 	//	panic(err)
 	//}
 	//fileAsString := string(fileBytes)
 	//lines := strings.Split(fileAsString, "\n")
-	//println("length of lines: ", strconv.Itoa(len(lines)))
 	//newMCP := new(models.Mcp)
 	//for i:= 2; i+19 <= len(lines); i+= 19 {
 	//	newMCP, err = models.NewMCP(lines[i:i+19])
@@ -206,9 +163,6 @@ func InitDB() {
 	//		panic(err)
 	//	}
 	//}
-
-
-
 }
 //Initialize the MCPDB.  Note this doesn't need to be called again since the MCP DB will be imported from the tmpDb.bin now.
 // This was used to convert the NS Harrisburg Division - Verison 14.8.mcp (Which was converted from ISO to UTF-8! this is important since golang reads files as UTF-8.)

@@ -129,7 +129,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					33: []string{ 
+					32: []string{ 
 					},
 				},
 			},
@@ -138,7 +138,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					46: []string{ 
+					45: []string{ 
 					},
 				},
 			},
@@ -180,7 +180,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					227: []string{ 
+					197: []string{ 
 					},
 				},
 			},
@@ -190,7 +190,7 @@ func main() {
 					&revel.MethodArg{Name: "email", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					240: []string{ 
+					210: []string{ 
 						"email",
 						"question",
 					},
@@ -212,7 +212,7 @@ func main() {
 					&revel.MethodArg{Name: "temp", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					275: []string{ 
+					245: []string{ 
 						"email",
 						"temp",
 					},
@@ -228,7 +228,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					23: []string{ 
+					25: []string{ 
 						"users",
 					},
 				},
@@ -285,8 +285,8 @@ func main() {
 	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"TrainTrack/app/controllers.App.SaveUser": { 
-			107: "verifyPassword",
-			108: "verifyPassword",
+			90: "verifyPassword",
+			91: "verifyPassword",
 		},
 		"TrainTrack/app/controllers.Map.SaveSettings": { 
 			153: "verifyPassword",

@@ -1,3 +1,4 @@
+// Will define the default backend controller functionality, including login and registration functionality.
 package controllers
 
 import (
@@ -10,15 +11,13 @@ import (
 	"fmt"
 )
 
-//Purpose: Base type of our application; extends the Gorp Controller (for access to the DB)
+//Base type of our application; extends the Gorp Controller (for access to the DB)
 type App struct {
 	GorpController
 }
 
-//Purpose: Render the html of the Index page (register/login form) and server to the client
-//Params: None
-//Returns:
-//	The revel result of the rendered html page
+//Render the html of the Index page (register/login form) and server to the client.
+// Returns the revel result of the rendered html page
 func (c App) Index() revel.Result {
 	//Check if the person accessing the index is already connected (logged in)
 	if c.connected() != nil {
@@ -45,12 +44,8 @@ func (c App) AppPending() revel.Result{
 	}
 	return c.Render()
 }
-//Purpose: Utility method to determine if the client is signed in as a User
-//Params: None
-//Returns:
-//	The client as a user if they are connected
-//Prints:
-//	Nothing
+//Utility method to determine if the client is signed in as a User
+//Returns the client as a user if they are connected
 func (c App) connected() *models.User {
 	//See if they are registered (Already signed in)
 	if c.RenderArgs["user"] != nil {
@@ -64,12 +59,8 @@ func (c App) connected() *models.User {
 	return nil
 }
 
-//Purpose: Utility method to get the user as a model based on the username
-//Params: Email as a string
-//Returns:
-//	The user type defined in the model
-//Prints:
-//	Nothing
+//Utility method to get the user as a model based on the email as a string
+//Returns the user type defined in the model
 func (c App) getUser(email string) *models.User {
 	//Select from our database
 	users, err := c.Txn.Select(models.User{}, `select * from User where Email = ?`, email)
@@ -86,29 +77,20 @@ func (c App) getUser(email string) *models.User {
 	return users[0].(*models.User)
 }
 
-//Purpose: Utility method to register a new user
-//Params:
-//	User as a model
-//	The Verify Password as a string
-//Returns:
-//	The revel result (redirect to the Map page, or ask to fix errors)
-//Prints:
-//	Nothing
+//Utility method to register a new user
+//Returns the revel result (redirect to the Map page, or ask to fix errors)
 func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	//first check to make sure the email isn't taken
 	if c.getUser(user.Email) != nil {
 		//email is taken.  Let them fix it.
-		fmt.Println("Email is already in use!")
 		c.Flash.Error("Email is already in use.  Please sign-in, or register with a different email.")
 		return c.Redirect(routes.App.Index())
 	}
-	fmt.Println("Email available...")
 	//Set the required fields for Revel Validation
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
 		Message("Password does not match")
-	fmt.Println("Validating info...")
-	////Validate
+	//Validate - Commented out due to last minute bugs
 	//user.Validate(c.Validation)
 	//
 	//// Check to see if it was validated
@@ -120,7 +102,7 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	//	fmt.Println(c.Validation.Errors)
 	//	return c.Redirect(routes.App.Index())
 	//}
-	fmt.Println("Validated, finishing creating user...")
+
 	//Hash the password
 	user.HashedPassword, _ = bcrypt.GenerateFromPassword(
 		[]byte(user.Password), bcrypt.DefaultCost)
@@ -141,20 +123,16 @@ func (c App) SaveUser(user models.User, verifyPassword string) revel.Result {
 	if err != nil {
 		panic(err)
 	}
+
 	// Greet and redirect to the map page
 	c.Session["user"] = user.Email
 	c.Flash.Success("Welcome, " + user.FirstName)
 	return c.Redirect(routes.Map.Index())
 }
 
-//Purpose: Log a user in
-//Params:
-//	username
-//	The Verify Password as a string
-//Returns:
-//	The revel result (redirect to the Map page, or ask to fix errors)
-//Prints:
-//	Nothing
+//Purpose: Log a user in given their email and password as a string.
+// Will attach a cookie if the user wants their login info to be remembered.
+//Returns the revel result (redirect to the Map page, or ask to fix errors)
 func (c App) Login(email, password string, remember bool) revel.Result {
 	//Look up the username
 	user := c.getUser(email)
@@ -187,12 +165,8 @@ func (c App) Login(email, password string, remember bool) revel.Result {
 	return c.Redirect(routes.App.Index())
 }
 
-//Purpose: Utility method to logout a user by deleting their session
-//Params:
-//Returns:
-//	The revel result (redirect to the sign in page)
-//Prints:
-//	Nothing
+//Utility method to logout a user by deleting their session
+//Returns the revel result (redirect to the sign in page)
 func (c App) Logout() revel.Result {
 	//Delete/Free the user session
 	for k := range c.Session {
@@ -202,12 +176,8 @@ func (c App) Logout() revel.Result {
 	return c.Redirect(routes.App.Index())
 }
 
-//Purpose: Utility method to add a user session (Used for both logging in and registration/login)
-//Params:
-//Returns:
-//	The revel result (always nil)
-//Prints:
-//	Nothing
+//Utility method to add a user session (Used for both logging in and registration/login)
+//Returns the revel result (always nil)
 func (c App) AddUser() revel.Result {
 	// Get the connected user (make sure they're actually connected)
 	if user := c.connected(); user != nil {
@@ -275,11 +245,14 @@ func (c App) ShowInfo(email string, temp string) revel.Result {
 	return c.Render(email, temp)
 }
 
-// PASSWORD GENERATION UTILITIES
+// PASSWORD GENERATION UTILITIES - Used for when a user recovers their password.
+
+// Initializes a random number based on the time
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+//Variable of possible password letters
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 //generates the random string for the temporary password

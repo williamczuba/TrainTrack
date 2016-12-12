@@ -1,3 +1,4 @@
+//Initializes the revel controllers
 package controllers
 
 import (
@@ -8,15 +9,13 @@ import (
 
 //Register the revel intercepts and initialize the database
 func init() {
-	//print("InitDB...")
-	//When the app starts, initialize the db
-	//revel.OnAppStart(InitDB)
+	//When the app starts
 	// Initialize the connection to harrisburg
 	revel.OnAppStart(packetDecoding.InitConnection)
 
-	print("Registering Interceptors...")
 	/* REGISTER INTERCEPTORS: run on every action*/
-	//All interceptors that run before the action!
+
+	//All interceptors that run before the action
 	//Start registering with the DB
 	revel.InterceptMethod((*GorpController).Begin, revel.BEFORE)
 	//Add the user to the app
@@ -30,7 +29,6 @@ func init() {
 	//The last thing to run.. is to rollback the DB
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
 
-	print("Init Complete.")
 }
 
 

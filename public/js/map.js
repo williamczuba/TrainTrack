@@ -567,6 +567,8 @@ function createControlPoint(x, y, cMnemonic, canvas, img){
 	var cWR = canvas.width/idealWidth;
 	var cHR = canvas.height/idealHeight;
 	var oldCtx = canvas.getContext('2d');
+	// console.log("CP Canvas size:", canvas);
+
 	$(img).load(function(){
 		oldCtx.drawImage(img,  x*canvas.width, y*canvas.height, img.width*cWR,img.height*cHR);
 	});
@@ -665,6 +667,7 @@ function changePoint(cp){
 	var idealWidth = 1080;
 	var idealHeight = 1250;
 	var canvas = cp.canvas;
+
 	var cWR = canvas.width/idealWidth;
 	var cHR = canvas.height/idealHeight;
 	var ctx = canvas.getContext("2d");
@@ -741,14 +744,17 @@ $(document).ready(function(){
         }
     };
 	if (isMobile.any()){
-		document.getElementById('mapContainter').style.left = '0vw';
+		// document.getElementById('mapContainter').style.left = '0vw';
 	}
 	else{
-		if(window.innerWidth>(canvas.width+10)||window.innerHeight>canvas.height){
-			document.getElementById('mapContainer').style.left = '25vw';
+		if(window.innerWidth>(canvas.width+10)&&window.innerHeight>canvas.height){
+			//document.getElementById('mapContainer').style.left = '25vw';// Dont set the style!...
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
 		}
 		else{
-			document.getElementById('mapContainer').style.left = '0vw';
+			// document.getElementById('mapContainer').style.left = '0vw';
 		}
 	}
 	
@@ -794,14 +800,16 @@ function resizeCanvas(e){
         }
     };
 	if (isMobile.any()){
-		document.getElementById('mapContainter').style.left = '0vw';
+		// document.getElementById('mapContainter').style.left = '0vw';
 	}
 	else{
-		if(window.innerWidth>(canvas.width+10)||window.innerHeight>canvas.height){
-			document.getElementById('mapContainer').style.left = '25vw';
+		if(window.innerWidth>(canvas.width+10)&&window.innerHeight>canvas.height){
+			//document.getElementById('mapContainer').style.left = '25vw';// Dont set the style!...
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
 		}
 		else{
-			document.getElementById('mapContainer').style.left = '0vw';
+			// document.getElementById('mapContainer').style.left = '0vw';
 		}
 	}
 	

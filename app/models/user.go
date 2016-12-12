@@ -1,5 +1,5 @@
+// Will define the user struct and its validation.
 package models
-
 import (
 	"fmt"
 	"github.com/revel/revel"

@@ -1,11 +1,12 @@
+//Will define the MCP model as a struct, and will define the function to create new MCP entries from a MCP file.
 package models
 
 import (
-	"fmt"
-
 	"strings"
+	"fmt"
 	"errors"
 )
+
 
 //Struct containing all of the data associated with each MCP
 type Mcp struct {

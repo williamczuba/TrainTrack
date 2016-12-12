@@ -1,3 +1,4 @@
+//Will connect to the harrisburg server, and serve deciphered packet
 package packetDecoding
 
 import (
@@ -8,45 +9,39 @@ import (
 	"encoding/hex"
 	//"fmt"
 	"fmt"
+	"sync/atomic"
 )
 
-//Purpose: Check for an error, and panic if necessary
-//Params: error
-//Returns:
-//	Nothing
-//Prints:
-//	Nothing
+//Check for an error, and panic if necessary
 func CheckError (e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-//func init() {
-//	InitConnection()
-//}
-
-//Only 1 connection for the entire server!
-//type Connection struct {
-//	connect net.Conn
-//	quit    chan struct{}
-//	ticker  *time.Ticker
-//	packets chan string
-//}
-
 var (
+	// Store the network connection
 	connect net.Conn
+	// Channel to quit - exit gracefully from the connections
 	quit    chan struct{}
+	// Concurrent timer
 	ticker  *time.Ticker
+	// Channel to store packets as they're found
 	packets chan string
+	// stores the amount of time the program has been idle (so we can stop the connection when the program isn't in use, and then restart it when in use)
+	lull uint64
 )
 
-//DON'T forget to call stop to close the connection!
+//Should be called on program exit to execute the connection gracefully.
 func Stop() {
-	close(quit)
-	dis := []byte( "DISCONNECT")
-	connect.Write(dis)
-	connect.Close()
+	select {
+	case <-quit: // If quit was closed, then don't close it...
+	default:
+		close(quit)
+		dis := []byte( "DISCONNECT")
+		connect.Write(dis)
+		connect.Close()
+	}
 }
 
 //TODO "5. Every 2 minutes, if no traffic has been sent by the server, it sends the message "*KEEPALIVE" instead.
@@ -57,54 +52,72 @@ func Stop() {
 // Get the latest and greatest Train Information.
 // Will wait for the server to get a packet, before returning that packet.
 func GetTrainInfo() *TrainInfo{
+	atomic.StoreUint64(&lull, uint64(0)) // reset the lull (since its active)
+	select {
+	case <-quit: // if we quit, we need to restart the connection
+		InitConnection()
+	default: // Otherwise, don't block.
+	}
 	for {
 		select {
 		case data := <- packets:
 			return NewTrainInfo(data)
 		}
 	}
-	//data := <- c.packets
-	//println("HERHERE")
-	//return NewTrainInfo(data)
 }
 
+// Function to keep the connection alive.
 func keepAlive() {
-	for { //infinite loop polling (not very efficient, but works)
+	for {
 		select {
-		case <- ticker.C: // every tick,
-			buf := []byte("Thanks")
-			_,err := connect.Write(buf) //send a thanks message
-
-			CheckError(err)
 		case <- quit: // if we cancel
 			ticker.Stop()	//stop
 			return
+		case <- ticker.C: // every tick,
+			buf := []byte("Thanks")
+			_,err := connect.Write(buf) //send a thanks message
+			CheckError(err)
+			atomic.AddUint64(&lull, 1) // another 1 minutes passed
+			if atomic.LoadUint64(&lull) >= uint64(15){ // If 15 minutes passed without use
+				// Stop the connection.  We can recreate it later.
+				Stop()
+			}
 		}
 	}
 }
 
+// Listen for packets from the harrisburg server, decipher them, and send them to the front end.
+// If the server rejects the connection (which happens a lot) then reset the connection.
 func listen() {
 	for {
 		select {
 		case <-quit:
 		// if we cancel
 			ticker.Stop()        //stop
-			println("STOP")
 			return
 		default:
 			data := bufio.NewReader(connect)
 		// Assume the message is giant - 8 Blocks of 60 bit frames
 			p := make([]byte, 60)
 			_, err := data.Read(p)
-			CheckError(err)
-			str := hex.EncodeToString(p)
-			//fmt.Printf("HEX: %s \n", str)
-			packets <- str//hex.Dump(p)
+			//CheckError(err)
+			if err != nil {
+				fmt.Println("Error in getpackets listen():", err)
+				// reset the connection...
+				Stop()
+				InitConnection()
+				return
+			} else {
+				str := hex.EncodeToString(p)
+				packets <- str//hex.Dump(p)
+			}
+
 		}
 
 	}
 }
-//initialize the connection
+
+//Initialize the connection
 func InitConnection() {
 	//c := new(Connection)
 	url := "NS-HbgDiv.dyndns.org"

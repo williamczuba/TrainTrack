@@ -1,3 +1,4 @@
+// Admin controller to allow the extra admin functionality.
 package controllers
 
 import (
@@ -7,6 +8,7 @@ import (
 	"fmt"
 )
 
+//Admin struct
 type Admin struct {
 	App
 }
@@ -52,12 +54,7 @@ func (c Admin) Approve(UserId int) revel.Result {
 	return c.Redirect(routes.Admin.Dash())
 }
 
-//Purpose: Utility method to get the user as a model based on the username
-//Params: Email as a string
-//Returns:
-//	The user type defined in the model
-//Prints:
-//	Nothing
+//Utility method to get the user as a model based on the userID
 func (c App) getUserById(UserId int) *models.User {
 	//Select from our database
 	users, err := c.Txn.Select(models.User{}, `select * from User where UserId = ?`, UserId)
